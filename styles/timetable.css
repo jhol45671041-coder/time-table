@@ -1,0 +1,312 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Timetable Studio — timetable.css
+   The week grid, lesson blocks, agenda list, print view
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --time-w: 78px;
+  --tt-gap: 6px;
+  --row-h: 62px;
+  --row-h-break: 26px;
+}
+[data-density="compact"] { --row-h: 46px; --row-h-break: 20px; --tt-gap: 4px; --time-w: 62px; }
+[data-density="roomy"] { --row-h: 78px; --row-h-break: 32px; --tt-gap: 8px; --time-w: 92px; }
+
+/* ── toolbar ───────────────────────────────────────────────────────────── */
+.tt-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 12px clamp(14px, 2vw, 20px);
+  border-bottom: var(--hairline) solid var(--line);
+}
+.tt-toolbar .spacer { flex: 1; }
+
+/* ── grid ──────────────────────────────────────────────────────────────── */
+.tt-wrap {
+  overflow: auto;
+  max-height: min(72dvh, 900px);
+  padding: 12px;
+  scroll-behavior: smooth;
+}
+.tt {
+  display: grid;
+  grid-template-columns: var(--time-w) repeat(var(--days, 5), minmax(132px, 1fr));
+  gap: var(--tt-gap);
+  min-width: min-content;
+}
+
+.tt-corner,
+.tt-dayhead {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  background: var(--panel-solid);
+}
+.tt-corner {
+  left: 0;
+  z-index: 8;
+  border-radius: var(--radius-sm);
+  display: grid;
+  place-items: center;
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+  font-weight: 750;
+  border: var(--hairline) solid var(--line);
+  padding: 8px 6px;
+}
+.tt-dayhead {
+  border-radius: var(--radius-sm);
+  border: var(--hairline) solid var(--line);
+  padding: 9px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--panel-solid);
+  transition: border-color var(--t) var(--ease), background-color var(--t) var(--ease);
+}
+.tt-dayhead strong { font-size: 0.9rem; font-weight: 750; letter-spacing: -0.01em; }
+.tt-dayhead span { font-size: 0.68rem; color: var(--faint); margin-left: auto; font-variant-numeric: tabular-nums; }
+.tt-dayhead.is-today {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: var(--shadow-1);
+}
+.tt-dayhead.is-today strong { color: var(--accent); }
+.tt-dayhead .today-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulseRing 2s var(--ease) infinite;
+}
+
+.tt-time {
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  background: var(--panel-solid);
+  border-radius: var(--radius-sm);
+  border: var(--hairline) solid var(--line);
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: var(--rh, var(--row-h));
+}
+.tt-time b {
+  font-size: 0.82rem;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+.tt-time span { font-size: 0.62rem; color: var(--faint); font-variant-numeric: tabular-nums; }
+.tt-time.is-break { background: var(--panel-2); border-style: dashed; }
+.tt-time.is-break b { font-size: 0.62rem; color: var(--faint); text-transform: uppercase; letter-spacing: 0.08em; }
+.tt-time.is-now b { color: var(--accent); }
+
+.tt-cell {
+  position: relative;
+  height: var(--rh, var(--row-h));
+  border-radius: var(--radius-sm);
+  border: var(--hairline) dashed transparent;
+  background: var(--panel-2);
+  transition: background-color var(--t-fast) linear, border-color var(--t-fast) linear,
+    box-shadow var(--t-fast) linear;
+}
+.tt-cell:hover { border-color: var(--line); background: var(--panel-hover); }
+.tt-cell.is-break {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--panel-2) 0 8px,
+    transparent 8px 16px
+  );
+  border-style: dashed;
+  border-color: var(--line);
+  display: grid;
+  place-items: center;
+}
+.tt-cell.is-break span {
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+  font-weight: 700;
+}
+.tt-cell.is-now-cell {
+  border-color: var(--accent-line);
+  border-style: solid;
+  background: var(--accent-soft);
+}
+
+/* ── lesson block ──────────────────────────────────────────────────────── */
+.lesson {
+  /* subject hue, row span and stagger index — all set inline per lesson */
+  --h: 222;
+  --span: 1;
+  --i: 0;
+  position: relative;
+  z-index: 2;
+  height: calc(var(--span, 1) * var(--rh, var(--row-h)) + (var(--span, 1) - 1) * var(--tt-gap));
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: calc(var(--cell-pad) + 2px) 10px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  cursor: grab;
+  isolation: isolate;
+  background:
+    linear-gradient(158deg,
+      hsl(var(--h) var(--subj-s) calc(var(--subj-l) + 4%)) 0%,
+      hsl(var(--h) var(--subj-s) var(--subj-l)) 62%,
+      hsl(var(--h) var(--subj-s) calc(var(--subj-l) - 3%)) 100%);
+  border: var(--hairline) solid hsl(var(--h) var(--subj-s) var(--subj-border-l));
+  border-left: 4px solid hsl(var(--h) calc(var(--subj-s) * 1.05) var(--subj-border-l));
+  color: hsl(var(--h) calc(var(--subj-s) * 0.85) var(--subj-text-l));
+  box-shadow: var(--shadow-1);
+  animation: popIn 220ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 12ms);
+  transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease),
+    filter var(--t-fast) linear;
+}
+.lesson::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(115deg, transparent 40%, hsl(var(--h) 100% 80% / 0.14) 50%, transparent 60%);
+  opacity: 0;
+  transition: opacity var(--t) linear;
+}
+.lesson:hover { transform: translateY(-2px) scale(1.015); box-shadow: var(--shadow-2); filter: saturate(1.12); }
+.lesson:hover::after { opacity: 1; }
+.lesson:active { cursor: grabbing; transform: scale(0.99); }
+.lesson.dragging { opacity: 0.4; cursor: grabbing; }
+.lesson.is-selected {
+  box-shadow: 0 0 0 2px var(--accent), var(--shadow-2);
+  transform: translateY(-2px);
+}
+.lesson.is-locked { border-left-style: double; border-left-width: 6px; }
+.lesson.is-locked::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  right: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: 0.6;
+  clip-path: polygon(50% 0, 100% 38%, 82% 100%, 18% 100%, 0 38%);
+}
+.lesson.is-manual { border-style: dashed; }
+
+.lesson-name {
+  font-size: 0.83rem;
+  font-weight: 750;
+  letter-spacing: -0.012em;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lesson-meta {
+  font-size: 0.68rem;
+  opacity: 0.82;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
+}
+.lesson-meta svg { width: 11px; height: 11px; flex: none; opacity: 0.75; }
+.lesson-time { font-size: 0.64rem; opacity: 0.68; font-variant-numeric: tabular-nums; margin-top: auto; }
+[data-density="compact"] .lesson-time { display: none; }
+[data-density="compact"] .lesson-name { font-size: 0.74rem; }
+[data-density="compact"] .lesson-meta { font-size: 0.62rem; }
+
+
+/* ── agenda view ───────────────────────────────────────────────────────── */
+.agenda { display: flex; flex-direction: column; gap: 18px; padding: 18px clamp(14px, 2vw, 22px); }
+.agenda-day { display: grid; grid-template-columns: 108px minmax(0, 1fr); gap: 16px; }
+.agenda-dayhead { position: sticky; top: 0; }
+.agenda-dayhead strong { display: block; font-size: 1rem; font-weight: 750; }
+.agenda-dayhead span { font-size: 0.72rem; color: var(--faint); }
+.agenda-list { display: flex; flex-direction: column; gap: 6px; }
+.agenda-item {
+  display: grid;
+  grid-template-columns: 74px 4px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--panel-2);
+  border: var(--hairline) solid var(--line);
+  transition: transform var(--t-fast) var(--ease), background-color var(--t-fast) linear,
+    border-color var(--t-fast) linear;
+  cursor: pointer;
+}
+.agenda-item:hover { transform: translateX(4px); background: var(--panel-hover); border-color: var(--accent-line); }
+.agenda-item time { font-size: 0.74rem; font-variant-numeric: tabular-nums; color: var(--muted); font-weight: 650; }
+.agenda-item .bar {
+  align-self: stretch;
+  border-radius: 3px;
+  background: hsl(var(--h) var(--subj-s) var(--subj-border-l));
+}
+.agenda-item .who { font-size: 0.88rem; font-weight: 700; }
+.agenda-item .where { font-size: 0.73rem; color: var(--muted); }
+.agenda-break {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr);
+  gap: 12px;
+  padding: 5px 12px;
+  font-size: 0.72rem;
+  color: var(--faint);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 620px) {
+  .agenda-day { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .agenda-dayhead { position: static; }
+}
+
+/* ── teacher / room summary strips ─────────────────────────────────────── */
+.load-bars { display: flex; flex-direction: column; gap: 9px; }
+.load-row { display: grid; grid-template-columns: 128px minmax(0, 1fr) 46px; gap: 10px; align-items: center; }
+.load-row .name { font-size: 0.8rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.load-row .track { height: 9px; border-radius: var(--radius-pill); background: var(--inset); overflow: hidden; }
+.load-row .track i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, hsl(var(--h, 220) var(--subj-s) var(--subj-border-l)), var(--accent));
+  transform-origin: left;
+  animation: barGrow 800ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 40ms);
+}
+.load-row .val { font-size: 0.76rem; text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+
+/* ── subject legend under the grid ─────────────────────────────────────── */
+.tt-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 12px clamp(14px, 2vw, 20px);
+  border-top: var(--hairline) solid var(--line);
+}
+
+/* ── mobile: horizontal scroll hint ────────────────────────────────────── */
+@media (max-width: 720px) {
+  .tt-wrap { max-height: none; padding: 10px; }
+  :root { --time-w: 56px; }
+  .tt { grid-template-columns: var(--time-w) repeat(var(--days, 5), minmax(120px, 1fr)); }
+}
