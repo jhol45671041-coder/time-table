@@ -3,108 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SYSTEM — Solo Leveling Protocol</title>
+<title>SYSTEM v2.5 — Shadow Monarch Protocol</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
-tailwind.config = {
-  theme: {
-    extend: {
-      fontFamily: {
-        mono: ['"JetBrains Mono"', 'monospace'],
-        display: ['Orbitron', 'sans-serif'],
-        sans: ['Rajdhani', 'sans-serif']
-      },
-      keyframes: {
-        flicker: { '0%,100%':{opacity:1}, '50%':{opacity:0.8} },
-        scan: { '0%':{transform:'translateY(-100%)'}, '100%':{transform:'translateY(100%)'} },
-        glitch: { '0%':{transform:'translate(0)'}, '20%':{transform:'translate(-1px,1px)'}, '40%':{transform:'translate(1px,-1px)'}, '60%':{transform:'translate(-1px,0)'}, '80%':{transform:'translate(1px,1px)'}, '100%':{transform:'translate(0)'} }
-      }
-    }
-  }
-}
+tailwind.config={theme:{extend:{fontFamily:{mono:['JetBrains Mono','monospace'],display:['Orbitron','sans-serif'],sans:['Rajdhani','sans-serif']}}}}
 </script>
 <style>
-  :root { --system-blue: #00D4FF; --system-blue-dark:#0088FF; --bg:#02040A; --panel:#0A101E; --panel2:#0F1A2E; --border:#1A2F5A; --border-glow: rgba(0,212,255,0.4); }
-  body { background: var(--bg); color:#E6F0FF; font-family: Rajdhani, sans-serif; overflow-x:hidden; }
-  body::before {
-    content:''; position:fixed; inset:0;
-    background:
-      radial-gradient(ellipse at 50% 0%, rgba(0,136,255,0.15) 0%, transparent 60%),
-      radial-gradient(ellipse at 0% 100%, rgba(0,212,255,0.08) 0%, transparent 50%),
-      linear-gradient(rgba(0,212,255,0.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,212,255,0.02) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
-    pointer-events:none; z-index:0;
-  }
-  .system-window {
-    background: linear-gradient(180deg, rgba(15,26,46,0.9) 0%, rgba(10,16,30,0.95) 100%);
-    border: 1px solid var(--border);
-    box-shadow: 
-      0 0 0 1px rgba(0,212,255,0.1) inset,
-      0 0 30px rgba(0,136,255,0.15),
-      0 10px 40px rgba(0,0,0,0.6);
-    backdrop-filter: blur(12px);
-    position:relative;
-    overflow:hidden;
-  }
-  .system-window::before {
-    content:''; position:absolute; top:0; left:0; right:0; height:1px;
-    background: linear-gradient(90deg, transparent, var(--system-blue), transparent);
-    opacity:0.8;
-  }
-  .system-window::after {
-    content:''; position:absolute; inset:0;
-    background: linear-gradient(180deg, rgba(0,212,255,0.03) 0%, transparent 20%);
-    pointer-events:none;
-  }
-  .system-header {
-    background: linear-gradient(90deg, rgba(0,212,255,0.15), rgba(0,136,255,0.1));
-    border-bottom: 1px solid var(--border);
-    font-family: 'JetBrains Mono', monospace;
-    font-size:10px; letter-spacing:0.15em; font-weight:700;
-  }
-  .scanline {
-    position:absolute; top:0; left:0; right:0; height:2px;
-    background: linear-gradient(90deg, transparent, var(--system-blue), transparent);
-    opacity:0.3; animation: scan 3s linear infinite;
-    pointer-events:none;
-  }
-  .glow-text { text-shadow: 0 0 10px var(--system-blue); }
-  .glow-border { box-shadow: 0 0 20px var(--border-glow); }
-  .stat-bar { background: rgba(0,0,0,0.5); border:1px solid var(--border); height:6px; overflow:hidden; position:relative; }
-  .stat-bar-fill { height:100%; background: linear-gradient(90deg, var(--system-blue-dark), var(--system-blue)); box-shadow:0 0 10px var(--system-blue); transition: width 0.8s ease; }
-  .quest-item.active { border-color: var(--system-blue) !important; background: rgba(0,212,255,0.08) !important; box-shadow: 0 0 20px rgba(0,212,255,0.2); }
-  .quest-item.completed { opacity:0.5; }
-  .quest-item.failed { border-color:#FF2A2A !important; background: rgba(255,42,42,0.08) !important; }
-  .rank-badge { background: linear-gradient(135deg, var(--system-blue-dark), var(--system-blue)); color:#000; font-family: Orbitron; font-weight:900; }
-  .typewriter { border-right: 2px solid var(--system-blue); animation: flicker 1s infinite; }
-  ::-webkit-scrollbar{ width:5px; height:5px; } ::-webkit-scrollbar-track{ background:#02040A; } ::-webkit-scrollbar-thumb{ background:#1A2F5A; border-radius:10px; } ::-webkit-scrollbar-thumb:hover{ background:#00D4FF; }
-  @keyframes levelUp { 0%{transform:scale(0.8) rotate(-2deg); opacity:0} 50%{transform:scale(1.1) rotate(1deg)} 100%{transform:scale(1) rotate(0); opacity:1} }
-  .levelup-anim{ animation: levelUp 0.6s cubic-bezier(0.34,1.56,0.64,1); }
-  .shadow-particle{ position:absolute; width:3px; height:3px; background: var(--system-blue); border-radius:50%; pointer-events:none; box-shadow:0 0 6px var(--system-blue); }
+:root{--blue:#00D4FF;--blue2:#0088FF;--bg:#02040A;--panel:#0A101E;--panel2:#0F1A2E;--border:#1A2F5A;--gold:#FFD700;--red:#FF2A2A}
+body{background:var(--bg);color:#E6F0FF;font-family:Rajdhani,sans-serif;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%, rgba(0,136,255,0.18) 0%, transparent 60%),radial-gradient(ellipse at 100% 0%, rgba(255,215,0,0.06) 0%, transparent 40%),linear-gradient(rgba(0,212,255,0.02) 1px, transparent 1px),linear-gradient(90deg, rgba(0,212,255,0.02) 1px, transparent 1px);background-size:100% 100%,100% 100%,40px 40px,40px 40px;pointer-events:none;z-index:0}
+.system-window{background:linear-gradient(180deg, rgba(15,26,46,0.92) 0%, rgba(10,16,30,0.98) 100%);border:1px solid var(--border);box-shadow:0 0 0 1px rgba(0,212,255,0.08) inset,0 0 30px rgba(0,136,255,0.12),0 10px 40px rgba(0,0,0,0.6);backdrop-filter:blur(14px);position:relative;overflow:hidden}
+.system-window::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg, transparent, var(--blue), transparent);opacity:0.8}
+.system-header{background:linear-gradient(90deg, rgba(0,212,255,0.15), rgba(0,136,255,0.08));border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;font-weight:700}
+.scanline{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg, transparent, var(--blue), transparent);opacity:0.25;animation:scan 3s linear infinite;pointer-events:none}
+@keyframes scan{0%{transform:translateY(-100%)}100%{transform:translateY(100%)}}
+.glow-text{text-shadow:0 0 12px var(--blue)}
+.glow-gold{box-shadow:0 0 20px rgba(255,215,0,0.25)}
+.stat-bar{background:rgba(0,0,0,0.6);border:1px solid var(--border);height:6px;overflow:hidden}
+.stat-bar-fill{height:100%;background:linear-gradient(90deg, var(--blue2), var(--blue));box-shadow:0 0 10px var(--blue);transition:width 0.8s ease}
+.quest-item.active{border-color:var(--blue)!important;background:rgba(0,212,255,0.08)!important;box-shadow:0 0 20px rgba(0,212,255,0.2)}
+.quest-item.completed{opacity:0.45}
+.quest-item.failed{border-color:var(--red)!important;background:rgba(255,42,42,0.08)!important}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:#02040A}::-webkit-scrollbar-thumb{background:#1A2F5A;border-radius:10px}::-webkit-scrollbar-thumb:hover{background:var(--blue)}
+@keyframes levelUp{0%{transform:scale(0.85) rotate(-1deg);opacity:0}50%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+.levelup-anim{animation:levelUp 0.6s cubic-bezier(0.34,1.56,0.64,1)}
+.shadow-particle{position:absolute;width:3px;height:3px;background:var(--blue);border-radius:50%;pointer-events:none;box-shadow:0 0 6px var(--blue)}
+.nav-tab.active{background:var(--blue);color:#000!important;border-color:var(--blue)!important;font-weight:900}
+.gate-pulse{animation:gatePulse 2s infinite}
+@keyframes gatePulse{0%,100%{box-shadow:0 0 0 0 rgba(0,212,255,0.4)}50%{box-shadow:0 0 0 14px rgba(0,212,255,0)}}
+.boss-bar{height:8px;background:#000;border:1px solid #4A1A1A;overflow:hidden}
+.boss-bar-fill{height:100%;background:linear-gradient(90deg,#FF2A2A,#FF8C00);transition:width 0.5s}
 </style>
 </head>
 <body class="min-h-screen relative">
 
-<!-- Awakening Intro -->
+<!-- Awakening -->
 <div id="awakening" class="fixed inset-0 z-[100] bg-[#02040A] flex items-center justify-center p-6">
   <div class="max-w-[560px] w-full">
     <div class="system-window rounded-[4px] p-8 md:p-10 text-center">
       <div class="scanline"></div>
-      <div class="font-mono text-[10px] tracking-[0.3em] text-[#00D4FF] mb-6">[SYSTEM MESSAGE]</div>
-      <h1 class="font-display text-[28px] md:text-[40px] font-black leading-[0.9] mb-4 glow-text">YOU HAVE BEEN<br>SELECTED AS A<br><span class="text-[#00D4FF]">PLAYER</span></h1>
-      <p id="awakeningText" class="font-mono text-[13px] leading-[1.7] text-white/60 mb-8 min-h-[60px]"></p>
-      <div class="space-y-4">
-        <input id="hunterNameInput" placeholder="ENTER HUNTER NAME" class="w-full bg-black/50 border border-[#1A2F5A] rounded-[4px] px-4 py-3 font-mono text-[13px] tracking-widest text-center focus:border-[#00D4FF] focus:outline-none placeholder:text-white/20" maxlength="16" value="">
-        <button id="awakenBtn" class="w-full h-[48px] bg-[#00D4FF] text-black font-display font-black tracking-[0.15em] text-[13px] rounded-[4px] hover:bg-[#00E5FF] transition glow-border">AWAKEN</button>
-        <div class="font-mono text-[9px] tracking-widest text-white/20">THE SYSTEM WILL ASSIGN HOURLY QUESTS • FAIL TO COMPLY AND FACE PENALTY</div>
+      <div class="font-mono text-[10px] tracking-[0.3em] text-[#00D4FF] mb-6">[SYSTEM v2.5 — SHADOW MONARCH PROTOCOL]</div>
+      <h1 class="font-display text-[30px] md:text-[42px] font-black leading-[0.9] mb-4 glow-text">YOU HAVE BEEN<br>SELECTED AS A<br><span class="text-[#00D4FF]">PLAYER</span></h1>
+      <p id="awakeningText" class="font-mono text-[13px] leading-[1.7] text-white/60 mb-8 min-h-[90px]"></p>
+      <div class="space-y-3">
+        <input id="hunterNameInput" placeholder="ENTER HUNTER NAME" class="w-full bg-black/50 border border-[#1A2F5A] rounded-[4px] px-4 py-3 font-mono text-[13px] tracking-widest text-center focus:border-[#00D4FF] focus:outline-none placeholder:text-white/20" maxlength="16">
+        <button id="awakenBtn" class="w-full h-[48px] bg-[#00D4FF] text-black font-display font-black tracking-[0.15em] text-[13px] rounded-[4px] hover:bg-[#00E5FF] transition">AWAKEN — BECOME MONARCH</button>
+        <div class="font-mono text-[9px] tracking-widest text-white/20">NEW: DUNGEONS • SHADOW ARMY • SHOP • SKILLS • BOSS RAIDS • DOUBLE DUNGEONS</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Level Up Overlay -->
+<!-- Level Up -->
 <div id="levelUpModal" class="fixed inset-0 z-[90] bg-black/90 backdrop-blur-md hidden items-center justify-center p-6">
   <div class="max-w-[520px] w-full system-window rounded-[4px] p-8 text-center levelup-anim relative overflow-hidden">
     <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(0,212,255,0.15)_0%,_transparent_70%)]"></div>
@@ -113,7 +64,7 @@ tailwind.config = {
       <div class="font-display text-[56px] font-black leading-none glow-text mb-2">LEVEL UP!</div>
       <div id="levelUpInfo" class="font-mono text-[14px] text-white/70 mb-6">Lv. 1 → Lv. 2</div>
       <div class="bg-black/50 border border-[#1A2F5A] rounded-[4px] p-4 mb-6 text-left">
-        <div class="font-mono text-[10px] tracking-widest text-white/30 mb-3">STAT POINTS +5 • ALLOCATE</div>
+        <div class="font-mono text-[10px] tracking-widest text-white/30 mb-3">STAT POINTS +5 • ALLOCATE TO GROW STRONGER</div>
         <div id="levelUpStats" class="space-y-2"></div>
       </div>
       <button id="levelUpConfirm" class="w-full h-[44px] bg-[#00D4FF] text-black font-display font-bold tracking-widest text-[12px] rounded-[4px]">CONTINUE</button>
@@ -121,880 +72,1007 @@ tailwind.config = {
   </div>
 </div>
 
-<!-- Penalty Modal -->
+<!-- Penalty -->
 <div id="penaltyModal" class="fixed inset-0 z-[80] bg-[#FF0000]/[0.08] backdrop-blur-md hidden items-center justify-center p-6">
   <div class="max-w-[480px] w-full system-window rounded-[4px] p-8 border-[#FF2A2A]/50" style="box-shadow:0 0 40px rgba(255,42,42,0.3)">
-    <div class="font-mono text-[10px] tracking-[0.3em] text-[#FF2A2A] mb-4">[PENALTY QUEST]</div>
+    <div class="font-mono text-[10px] tracking-[0.3em] text-[#FF2A2A] mb-4">[PENALTY QUEST — SURVIVAL]</div>
     <h2 class="font-display text-[28px] font-black leading-[0.9] mb-3">YOU HAVE FAILED<br><span class="text-[#FF2A2A]">TO COMPLETE</span> QUESTS</h2>
-    <p class="font-mono text-[12px] text-white/60 leading-[1.6] mb-6">The System does not tolerate laziness. Complete the penalty quest or face consequences. Time limit: 10 minutes.</p>
+    <p class="font-mono text-[12px] text-white/60 leading-[1.6] mb-6">The System does not tolerate weakness. You are teleported to penalty zone. Survive.</p>
     <div class="bg-[#FF2A2A]/10 border border-[#FF2A2A]/30 rounded-[4px] p-4 mb-6">
       <div class="font-mono text-[11px] font-bold tracking-widest">PENALTY: 100 BURPEES + 100 PUSH-UPS + 100 SQUATS</div>
-      <div class="font-mono text-[10px] text-white/40 mt-1">Failure will result in teleportation to penalty zone.</div>
+      <div class="flex gap-2 mt-3">
+        <div class="flex-1 stat-bar rounded-full"><div id="penaltyProgress" class="h-full bg-[#FF2A2A]" style="width:0%"></div></div>
+        <span id="penaltyCount" class="font-mono text-[10px]">0/100</span>
+      </div>
+      <button id="penaltyDoRep" class="mt-3 w-full h-10 bg-[#FF2A2A] text-white font-mono font-bold text-[12px] rounded-[2px]">DO 1 REP (CLICK / SPACE)</button>
     </div>
-    <button id="penaltyAccept" class="w-full h-[44px] bg-[#FF2A2A] text-white font-display font-bold tracking-widest text-[12px] rounded-[4px]">ACCEPT PENALTY</button>
+    <button id="penaltyAccept" class="w-full h-[44px] bg-[#FF2A2A] text-white font-display font-bold tracking-widest text-[12px] rounded-[4px]">ENTER PENALTY ZONE</button>
+  </div>
+</div>
+
+<!-- Dungeon Gate Modal -->
+<div id="dungeonModal" class="fixed inset-0 z-[85] bg-black/80 backdrop-blur-md hidden items-center justify-center p-6">
+  <div class="max-w-[560px] w-full system-window rounded-[4px] p-0 overflow-hidden">
+    <div class="system-header px-5 py-3 flex items-center justify-between bg-gradient-to-r from-[#FF8C00]/20 to-[#FF2A2A]/20">
+      <span class="flex items-center gap-2">🌀 DUNGEON BREAK — <span id="dungeonRank" class="text-[#FF8C00]">C-RANK GATE</span></span>
+      <span id="dungeonTimer" class="bg-[#FF2A2A] text-white px-2 py-0.5 rounded-[2px] font-mono text-[10px]">29:59</span>
+    </div>
+    <div class="p-6">
+      <h2 id="dungeonName" class="font-display font-black text-[26px] leading-[0.9] mb-2">Red Gate: Frost Cavern</h2>
+      <p id="dungeonDesc" class="font-mono text-[12px] text-white/60 mb-5">A C-Rank gate has opened near you. Clear 3 floors to obtain rare rewards. Failure will increase dungeon break risk.</p>
+      
+      <div class="space-y-3 mb-6" id="dungeonFloors">
+        <!-- floors -->
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <button id="dungeonLeave" class="h-11 rounded-[4px] border border-[#1A2F5A] font-mono text-[11px] font-bold tracking-widest">ABANDON GATE</button>
+        <button id="dungeonEnter" class="h-11 rounded-[4px] bg-[#00D4FF] text-black font-display font-bold tracking-widest text-[12px]">ENTER GATE</button>
+      </div>
+      <div class="font-mono text-[9px] text-white/20 text-center mt-3">Gates disappear after 30 minutes. Boss floor gives Shadow extraction chance.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Shop Modal -->
+<div id="shopModal" class="fixed inset-0 z-[85] bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+  <div class="max-w-[720px] w-full max-h-[90vh] overflow-auto system-window rounded-[4px] p-0">
+    <div class="system-header px-5 py-3 flex items-center justify-between sticky top-0 bg-[#0A101E] z-10">
+      <span>SYSTEM SHOP — GOLD: <span id="shopGold" class="text-[#FFD700]">0</span> G</span>
+      <button onclick="closeModal('shopModal')" class="w-6 h-6 border border-[#1A2F5A] rounded-[2px] flex items-center justify-center hover:border-white/20">✕</button>
+    </div>
+    <div class="p-5 grid md:grid-cols-2 gap-3" id="shopGrid">
+      <!-- shop items -->
+    </div>
+  </div>
+</div>
+
+<!-- Skills Modal -->
+<div id="skillsModal" class="fixed inset-0 z-[85] bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+  <div class="max-w-[720px] w-full max-h-[90vh] overflow-auto system-window rounded-[4px] p-0">
+    <div class="system-header px-5 py-3 flex items-center justify-between sticky top-0 bg-[#0A101E] z-10">
+      <span>SKILLS — MONARCH'S ABILITIES</span>
+      <button onclick="closeModal('skillsModal')" class="w-6 h-6 border border-[#1A2F5A] rounded-[2px] flex items-center justify-center">✕</button>
+    </div>
+    <div class="p-5 grid md:grid-cols-2 gap-3" id="skillsGrid"></div>
+  </div>
+</div>
+
+<!-- Achievements Modal -->
+<div id="achievementsModal" class="fixed inset-0 z-[85] bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+  <div class="max-w-[640px] w-full max-h-[90vh] overflow-auto system-window rounded-[4px] p-0">
+    <div class="system-header px-5 py-3 flex items-center justify-between sticky top-0 bg-[#0A101E] z-10">
+      <span>ACHIEVEMENTS — <span id="achCount">0/12</span> UNLOCKED</span>
+      <button onclick="closeModal('achievementsModal')" class="w-6 h-6 border border-[#1A2F5A] rounded-[2px] flex items-center justify-center">✕</button>
+    </div>
+    <div class="p-4 space-y-2" id="achievementsList"></div>
+  </div>
+</div>
+
+<!-- Calendar Modal -->
+<div id="calendarModal" class="fixed inset-0 z-[85] bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+  <div class="max-w-[520px] w-full system-window rounded-[4px] p-0">
+    <div class="system-header px-5 py-3 flex items-center justify-between">
+      <span>CALENDAR — TRAINING LOG</span>
+      <button onclick="closeModal('calendarModal')" class="w-6 h-6 border border-[#1A2F5A] rounded-[2px] flex items-center justify-center">✕</button>
+    </div>
+    <div class="p-5">
+      <div class="grid grid-cols-7 gap-1.5 mb-3 font-mono text-[9px] text-white/20 text-center"><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span><span>SUN</span></div>
+      <div id="calendarGrid" class="grid grid-cols-7 gap-1.5"></div>
+      <div class="mt-5 flex items-center justify-between font-mono text-[10px]">
+        <span class="text-white/30">STREAK: <span id="calendarStreak" class="text-[#00D4FF] font-bold">0 days</span></span>
+        <span class="text-white/30">TOTAL: <span id="calendarTotal" class="text-white">0 quests</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Job Change Modal -->
+<div id="jobModal" class="fixed inset-0 z-[90] bg-black/90 backdrop-blur-md hidden items-center justify-center p-6">
+  <div class="max-w-[520px] w-full system-window rounded-[4px] p-8 text-center border-[#FFD700]/50 glow-gold relative overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,215,0,0.12)_0%,_transparent_70%)]"></div>
+    <div class="relative z-10">
+      <div class="font-mono text-[10px] tracking-[0.4em] text-[#FFD700] mb-3">★ JOB CHANGE QUEST ★</div>
+      <div id="jobTitle" class="font-display text-[32px] font-black leading-[0.9] mb-3">BECOME A<br><span class="text-[#FFD700]">SHADOW MONARCH</span></div>
+      <p id="jobDesc" class="font-mono text-[12px] text-white/60 mb-6 leading-[1.6]">You have met the requirements. Complete the trial to evolve.</p>
+      <div id="jobReqs" class="bg-black/50 border border-[#FFD700]/20 rounded-[4px] p-4 mb-6 text-left space-y-2 font-mono text-[11px]"></div>
+      <button id="jobAccept" class="w-full h-12 bg-[#FFD700] text-black font-display font-black tracking-widest text-[12px] rounded-[4px]">ACCEPT TRIAL</button>
+    </div>
   </div>
 </div>
 
 <!-- Header -->
-<header class="relative z-20 sticky top-0 border-b border-[#1A2F5A]/50 backdrop-blur-xl bg-[#02040A]/80">
-  <div class="max-w-[1400px] mx-auto px-4 md:px-6 h-[56px] flex items-center justify-between">
-    <div class="flex items-center gap-6">
+<header class="relative z-20 sticky top-0 border-b border-[#1A2F5A]/50 backdrop-blur-xl bg-[#02040A]/85">
+  <div class="max-w-[1440px] mx-auto px-4 md:px-6 h-[56px] flex items-center justify-between gap-4">
+    <div class="flex items-center gap-4">
       <div class="flex items-center gap-3">
         <div class="w-8 h-8 bg-[#00D4FF] rounded-[4px] flex items-center justify-center font-display font-black text-black text-[14px]">S</div>
-        <div>
-          <div class="font-display font-black text-[16px] tracking-[0.05em] leading-none">SYSTEM</div>
-          <div class="font-mono text-[8px] tracking-[0.2em] text-[#00D4FF] -mt-0.5">SOLO LEVELING PROTOCOL</div>
+        <div class="hidden md:block">
+          <div class="font-display font-black text-[15px] tracking-[0.05em] leading-none">SYSTEM v2.5</div>
+          <div class="font-mono text-[7px] tracking-[0.2em] text-[#00D4FF] -mt-0.5">SHADOW MONARCH</div>
         </div>
       </div>
-      <div class="hidden lg:flex items-center gap-4 font-mono text-[10px]">
-        <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span> <span class="text-white/40">SERVER</span> <span class="text-emerald-400">ONLINE</span></span>
-        <span class="text-white/10">|</span>
-        <span class="text-white/40">NEXT QUEST IN</span>
-        <span id="nextQuestTimer" class="bg-[#00D4FF] text-black px-2 py-0.5 rounded-[2px] font-bold">00:00</span>
+      <div class="hidden xl:flex items-center gap-2">
+        <button data-tab="quests" class="nav-tab active px-3 py-1.5 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px] tracking-widest">QUESTS</button>
+        <button data-tab="gates" class="nav-tab px-3 py-1.5 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px] tracking-widest flex items-center gap-1.5"><span>🌀</span> GATES <span id="gateCount" class="bg-[#FF8C00] text-black px-1 rounded-[1px] text-[9px] hidden">0</span></button>
+        <button data-tab="shop" class="nav-tab px-3 py-1.5 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px] tracking-widest">SHOP</button>
+        <button data-tab="skills" class="nav-tab px-3 py-1.5 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px] tracking-widest">SKILLS</button>
+        <button data-tab="army" class="nav-tab px-3 py-1.5 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px] tracking-widest">ARMY [<span id="navArmy">0</span>]</button>
       </div>
     </div>
-    <div class="flex items-center gap-3">
-      <div class="hidden md:flex items-center gap-3 bg-[#0A101E] border border-[#1A2F5A] rounded-[4px] px-3 py-1.5">
-        <div class="font-mono text-[10px]"><span class="text-white/30">HUNTER</span> <span id="headerHunterName" class="text-white font-bold ml-1">JIN-WOO</span></div>
-        <div class="w-px h-4 bg-[#1A2F5A]"></div>
-        <div class="font-mono text-[10px]"><span class="text-white/30">RANK</span> <span id="headerRank" class="ml-1 px-1.5 py-0.5 bg-[#00D4FF] text-black font-black rounded-[2px]">E</span></div>
+
+    <div class="flex items-center gap-2 md:gap-3">
+      <div class="flex items-center gap-2 bg-[#0A101E] border border-[#1A2F5A] rounded-[4px] px-2.5 py-1.5">
+        <span class="text-[12px]">💰</span>
+        <span id="goldDisplay" class="font-mono text-[12px] font-bold text-[#FFD700]">0</span>
+        <span class="font-mono text-[9px] text-white/30">G</span>
       </div>
-      <button id="systemLogBtn" class="w-8 h-8 bg-[#0A101E] border border-[#1A2F5A] rounded-[4px] flex items-center justify-center hover:border-[#00D4FF]/50 transition">
-        <span class="font-mono text-[10px]">≡</span>
-      </button>
+      <div class="hidden md:flex items-center gap-2 bg-[#0A101E] border border-[#1A2F5A] rounded-[4px] px-3 py-1.5">
+        <span id="headerHunter" class="font-mono text-[10px] font-bold">JIN-WOO</span>
+        <span class="w-px h-3 bg-[#1A2F5A]"></span>
+        <span id="headerRank" class="font-mono text-[10px] px-1.5 py-0.5 bg-[#00D4FF] text-black font-black rounded-[2px]">E</span>
+        <span id="headerLevel" class="font-mono text-[10px] text-white/60">Lv.1</span>
+      </div>
+      <button id="notifBtn" class="w-8 h-8 bg-[#0A101E] border border-[#1A2F5A] rounded-[4px] flex items-center justify-center hover:border-[#00D4FF]/50">🔔</button>
+      <button id="menuBtn" class="xl:hidden w-8 h-8 bg-[#0A101E] border border-[#1A2F5A] rounded-[4px] flex items-center justify-center">≡</button>
     </div>
   </div>
-  <div class="lg:hidden px-4 pb-2 flex items-center gap-3 font-mono text-[10px]">
-    <span id="nextQuestTimerMobile" class="bg-[#00D4FF] text-black px-2 py-0.5 rounded-[2px] font-bold">00:00</span>
-    <span class="text-white/40">UNTIL NEXT QUEST</span>
-    <span class="ml-auto text-white/20" id="liveTimeMobile">00:00:00</span>
+  <!-- Mobile nav + timers -->
+  <div class="xl:hidden px-4 py-2 border-t border-[#1A2F5A]/30 flex items-center gap-2 overflow-x-auto">
+    <button data-tab="quests" class="nav-tab active whitespace-nowrap px-3 py-1 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px]">QUESTS</button>
+    <button data-tab="gates" class="nav-tab whitespace-nowrap px-3 py-1 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px]">GATES</button>
+    <button data-tab="shop" class="nav-tab whitespace-nowrap px-3 py-1 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px]">SHOP</button>
+    <button data-tab="skills" class="nav-tab whitespace-nowrap px-3 py-1 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px]">SKILLS</button>
+    <button data-tab="army" class="nav-tab whitespace-nowrap px-3 py-1 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px]">ARMY</button>
+    <span class="ml-auto flex items-center gap-2 font-mono text-[10px]"><span class="text-white/40">NEXT</span><span id="nextQuestTimerMobile" class="bg-[#00D4FF] text-black px-2 py-0.5 rounded-[2px] font-bold">00:00</span></span>
   </div>
 </header>
 
-<main class="relative z-10 max-w-[1400px] mx-auto px-4 md:px-6 py-4 md:py-6 grid grid-cols-12 gap-4 md:gap-5">
+<!-- Global Alerts -->
+<div id="globalAlerts" class="relative z-10 max-w-[1440px] mx-auto px-4 md:px-6 pt-3 space-y-2">
+  <!-- dungeon alert injected -->
+  <!-- boss alert injected -->
+  <!-- double dungeon alert -->
+</div>
 
-  <!-- LEFT: STATUS WINDOW -->
+<main class="relative z-10 max-w-[1440px] mx-auto px-4 md:px-6 py-4 grid grid-cols-12 gap-4">
+
+  <!-- LEFT: STATUS + BUFFS -->
   <div class="col-span-12 lg:col-span-3 space-y-4">
-    <!-- Player Status -->
     <div class="system-window rounded-[4px]">
       <div class="system-header px-4 py-2 flex items-center justify-between">
         <span>STATUS WINDOW</span>
-        <span class="w-2 h-2 bg-[#00D4FF] rounded-full animate-pulse"></span>
+        <div class="flex items-center gap-2">
+          <span id="jobDisplay" class="text-[#FFD700]">E-Rank Hunter</span>
+          <span class="w-2 h-2 bg-[#00D4FF] rounded-full animate-pulse"></span>
+        </div>
       </div>
       <div class="p-4 space-y-4">
         <div class="flex gap-4">
           <div class="w-16 h-16 bg-gradient-to-br from-[#0F1A2E] to-[#1A2F5A] border border-[#1A2F5A] rounded-[4px] flex items-center justify-center relative overflow-hidden">
-            <span class="font-display font-black text-[28px] text-[#00D4FF]">?</span>
+            <span id="avatarLetter" class="font-display font-black text-[28px] text-[#00D4FF]">J</span>
             <div class="absolute bottom-0 left-0 right-0 h-1 bg-[#00D4FF]"></div>
           </div>
           <div class="flex-1">
-            <div id="playerName" class="font-display font-bold text-[18px] leading-none">SUNG JIN-WOO</div>
-            <div class="font-mono text-[10px] text-white/40 mt-1">THE WEAKEST HUNTER</div>
+            <div id="playerName" class="font-display font-bold text-[16px] leading-none">SUNG JIN-WOO</div>
+            <div id="playerTitle" class="font-mono text-[10px] text-white/40 mt-1">The Weakest Hunter</div>
             <div class="flex items-center gap-2 mt-2">
-              <span id="playerLevel" class="font-mono text-[12px] font-bold bg-[#00D4FF] text-black px-2 py-0.5 rounded-[2px]">Lv.1</span>
-              <span id="playerTitle" class="font-mono text-[10px] text-[#00D4FF] border border-[#00D4FF]/30 px-2 py-0.5 rounded-[2px]">E-RANK</span>
+              <span id="playerLevel" class="font-mono text-[11px] font-bold bg-[#00D4FF] text-black px-2 py-0.5 rounded-[2px]">Lv.1</span>
+              <span id="streakDisplay" class="font-mono text-[10px] text-[#FF8C00] border border-[#FF8C00]/30 px-2 py-0.5 rounded-[2px]">🔥 0</span>
             </div>
           </div>
         </div>
 
-        <!-- XP / HP / MP -->
         <div class="space-y-3">
           <div>
             <div class="flex justify-between font-mono text-[9px] tracking-widest mb-1"><span class="text-white/30">EXP</span><span id="expText" class="text-white/60">0 / 100</span></div>
             <div class="stat-bar rounded-full"><div id="expBar" class="stat-bar-fill" style="width:0%"></div></div>
           </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <div class="flex justify-between font-mono text-[9px] tracking-widest mb-1"><span class="text-white/30">HP</span><span id="hpText" class="text-[#FF4D4D]">100/100</span></div>
-              <div class="stat-bar rounded-full"><div class="h-full bg-gradient-to-r from-[#FF2A2A] to-[#FF6B6B] w-full"></div></div>
-            </div>
-            <div>
-              <div class="flex justify-between font-mono text-[9px] tracking-widest mb-1"><span class="text-white/30">MP</span><span id="mpText" class="text-[#00D4FF]">50/50</span></div>
-              <div class="stat-bar rounded-full"><div class="h-full bg-gradient-to-r from-[#0088FF] to-[#00D4FF] w-full"></div></div>
-            </div>
+          <div class="grid grid-cols-3 gap-2">
+            <div><div class="flex justify-between font-mono text-[8px] mb-1"><span class="text-white/30">HP</span><span id="hpText" class="text-[#FF4D4D]">100</span></div><div class="stat-bar rounded-full"><div class="h-full bg-gradient-to-r from-[#FF2A2A] to-[#FF6B6B] w-full"></div></div></div>
+            <div><div class="flex justify-between font-mono text-[8px] mb-1"><span class="text-white/30">MP</span><span id="mpText" class="text-[#00D4FF]">50</span></div><div class="stat-bar rounded-full"><div class="h-full bg-gradient-to-r from-[#0088FF] to-[#00D4FF] w-full"></div></div></div>
+            <div><div class="flex justify-between font-mono text-[8px] mb-1"><span class="text-white/30">FATIGUE</span><span id="fatigueText" class="text-[#FFD700]">0%</span></div><div class="stat-bar rounded-full"><div id="fatigueBar" class="h-full bg-gradient-to-r from-[#FFD700] to-[#FF8C00]" style="width:0%"></div></div></div>
           </div>
         </div>
 
-        <!-- Stats -->
         <div>
-          <div class="font-mono text-[10px] tracking-[0.2em] text-white/30 mb-3 flex items-center justify-between">
-            <span>STATS</span>
-            <span id="statPoints" class="text-[#00D4FF]">+0 POINTS</span>
-          </div>
-          <div id="statsList" class="space-y-2.5">
-            <!-- injected -->
-          </div>
+          <div class="font-mono text-[10px] tracking-[0.2em] text-white/30 mb-3 flex items-center justify-between"><span>STATS</span><span id="statPoints" class="text-[#00D4FF]">+0 POINTS</span></div>
+          <div id="statsList" class="space-y-2"></div>
         </div>
 
-        <!-- Rank Progress -->
         <div class="bg-black/40 border border-[#1A2F5A]/50 rounded-[4px] p-3">
           <div class="font-mono text-[9px] tracking-widest text-white/30 mb-2">RANK PROGRESSION</div>
-          <div class="flex justify-between">
-            <div class="flex gap-1">
-              <span class="rank-badge px-1.5 py-0.5 rounded-[2px] text-[10px]">E</span>
-              <span class="px-1.5 py-0.5 rounded-[2px] text-[10px] border border-[#1A2F5A] text-white/20">D</span>
-              <span class="px-1.5 py-0.5 rounded-[2px] text-[10px] border border-[#1A2F5A] text-white/20">C</span>
-              <span class="px-1.5 py-0.5 rounded-[2px] text-[10px] border border-[#1A2F5A] text-white/20">B</span>
-              <span class="px-1.5 py-0.5 rounded-[2px] text-[10px] border border-[#1A2F5A] text-white/20">A</span>
-              <span class="px-1.5 py-0.5 rounded-[2px] text-[10px] border border-[#1A2F5A] text-white/20">S</span>
-            </div>
-            <span id="rankProgressText" class="font-mono text-[10px] text-white/40">1 / 100</span>
+          <div class="flex justify-between items-center">
+            <div class="flex gap-1 text-[10px]"><span class="rank-badge px-1.5 py-0.5 rounded-[2px]">E</span><span class="px-1 py-0.5 border border-[#1A2F5A] text-white/20 rounded-[2px]">D</span><span class="px-1 py-0.5 border border-[#1A2F5A] text-white/20 rounded-[2px]">C</span><span class="px-1 py-0.5 border border-[#1A2F5A] text-white/20 rounded-[2px]">B</span><span class="px-1 py-0.5 border border-[#1A2F5A] text-white/20 rounded-[2px]">A</span><span class="px-1 py-0.5 border border-[#1A2F5A] text-white/20 rounded-[2px]">S</span></div>
+            <span id="rankProgressText" class="font-mono text-[10px] text-white/40">1/100</span>
           </div>
           <div class="stat-bar rounded-full mt-2"><div id="rankBar" class="stat-bar-fill" style="width:5%"></div></div>
         </div>
+
+        <div id="activeBuffs" class="space-y-2">
+          <div class="font-mono text-[9px] tracking-widest text-white/30">ACTIVE BUFFS</div>
+          <div id="buffsList" class="flex flex-wrap gap-1.5">
+            <span class="font-mono text-[9px] text-white/20">No buffs active</span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Inventory / Shadows -->
     <div class="system-window rounded-[4px]">
-      <div class="system-header px-4 py-2">SHADOW ARMY [ <span id="shadowCount">0</span> ]</div>
-      <div class="p-3 grid grid-cols-4 gap-2">
-        <div class="aspect-square bg-black/40 border border-[#1A2F5A] rounded-[4px] flex items-center justify-center text-[16px] opacity-30">?</div>
-        <div class="aspect-square bg-black/40 border border-[#1A2F5A] rounded-[4px] flex items-center justify-center text-[16px] opacity-30">?</div>
-        <div class="aspect-square bg-black/40 border border-[#1A2F5A] rounded-[4px] flex items-center justify-center text-[16px] opacity-30">?</div>
-        <div class="aspect-square bg-black/40 border border-[#1A2F5A] rounded-[4px] flex items-center justify-center text-[16px] opacity-30">?</div>
+      <div class="system-header px-4 py-2 flex items-center justify-between"><span>SHADOW ARMY [<span id="shadowCount">0</span>]</span><button id="armyManageBtn" class="text-[9px] hover:text-white">MANAGE</button></div>
+      <div class="p-3">
+        <div id="shadowGrid" class="grid grid-cols-4 gap-2 mb-3"></div>
+        <div class="bg-black/40 border border-[#1A2F5A]/50 rounded-[2px] p-2.5">
+          <div class="font-mono text-[9px] text-white/30 mb-1">SHADOW ABILITY</div>
+          <div class="font-mono text-[10px] text-white/60">Shadows can auto-complete 1 hourly quest per day. Assign from Army.</div>
+          <div class="mt-2 flex gap-2">
+            <button id="extractShadowBtn" class="flex-1 h-7 bg-[#0A101E] border border-[#1A2F5A] rounded-[2px] font-mono text-[10px] font-bold">EXTRACT (100G)</button>
+            <button id="summonArmyBtn" class="flex-1 h-7 bg-[#00D4FF]/20 border border-[#00D4FF]/40 rounded-[2px] font-mono text-[10px] font-bold text-[#00D4FF]">SUMMON</button>
+          </div>
+        </div>
       </div>
-      <div class="px-3 pb-3 font-mono text-[9px] text-white/20">Complete quests to extract shadows. Shadows fight for you when you skip.</div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3">
+      <button id="openCalendar" class="system-window rounded-[4px] p-3 text-left hover:border-[#00D4FF]/30 transition"><div class="font-mono text-[9px] text-white/30">CALENDAR</div><div class="font-display font-bold text-[14px] mt-1">📅 LOG</div><div id="calendarPreview" class="font-mono text-[10px] text-white/40">0 days</div></button>
+      <button id="openAchievements" class="system-window rounded-[4px] p-3 text-left hover:border-[#FFD700]/30 transition"><div class="font-mono text-[9px] text-white/30">ACHIEVEMENTS</div><div class="font-display font-bold text-[14px] mt-1">🏆 <span id="achPreview">0/12</span></div><div class="font-mono text-[10px] text-[#FFD700]">+0 titles</div></button>
     </div>
   </div>
 
-  <!-- CENTER: CURRENT QUEST -->
+  <!-- CENTER -->
   <div class="col-span-12 lg:col-span-6 space-y-4">
-    
-    <div class="flex items-center gap-3">
+    <div class="flex flex-wrap items-center gap-2">
       <div class="font-mono text-[10px] tracking-[0.2em] text-[#00D4FF] bg-[#00D4FF]/10 border border-[#00D4FF]/20 px-3 py-1 rounded-[2px]">[EMERGENCY QUEST]</div>
       <div id="questTimeSlot" class="font-mono text-[10px] text-white/30 tracking-widest">14:00 — 15:00</div>
-      <div class="ml-auto hidden md:flex items-center gap-2 font-mono text-[10px] text-emerald-400"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>LIVE</div>
+      <div class="hidden md:flex items-center gap-2 font-mono text-[10px] text-emerald-400 ml-auto"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>LIVE • <span id="nextQuestTimer" class="bg-[#00D4FF] text-black px-2 py-0.5 rounded-[2px] font-bold">00:00</span></div>
     </div>
 
     <div class="system-window rounded-[4px] overflow-hidden">
       <div class="scanline"></div>
       <div class="system-header px-5 py-2.5 flex items-center justify-between">
         <span class="flex items-center gap-2"><span class="text-[#00D4FF]">▶</span> QUEST INFO</span>
-        <span id="questRank" class="bg-[#FF2A2A] text-white px-2 py-0.5 rounded-[2px] text-[9px]">E-RANK</span>
+        <div class="flex items-center gap-2">
+          <span id="questRank" class="bg-[#FF2A2A] text-white px-2 py-0.5 rounded-[2px] text-[9px]">E-RANK</span>
+          <span id="questGold" class="bg-[#FFD700]/20 text-[#FFD700] border border-[#FFD700]/30 px-2 py-0.5 rounded-[2px] text-[9px]">+15G</span>
+        </div>
       </div>
-      
-      <div class="p-5 md:p-7">
-        <!-- Quest Title -->
-        <div class="mb-6">
+      <div class="p-5 md:p-6">
+        <div class="mb-5">
           <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
-            <h1 id="questTitle" class="font-display font-black text-[28px] md:text-[36px] leading-[0.9] tracking-[-0.01em] max-w-[400px]">Loading quest...</h1>
+            <h1 id="questTitle" class="font-display font-black text-[26px] md:text-[32px] leading-[0.9] tracking-[-0.01em] max-w-[380px]">Loading quest...</h1>
             <div id="questIcon" class="w-14 h-14 bg-[#00D4FF]/10 border border-[#00D4FF]/30 rounded-[4px] flex items-center justify-center text-[28px] shrink-0">⚔️</div>
           </div>
-          <p id="questDesc" class="font-mono text-[13px] leading-[1.6] text-white/60 max-w-[520px]">The System has issued a quest. Complete it to grow stronger.</p>
+          <p id="questDesc" class="font-mono text-[12px] leading-[1.6] text-white/60 max-w-[520px]">The System has issued a quest.</p>
         </div>
 
-        <!-- Rewards -->
-        <div class="grid grid-cols-3 gap-2 mb-6">
-          <div class="bg-black/40 border border-[#1A2F5A] rounded-[4px] p-3">
-            <div class="font-mono text-[8px] tracking-widest text-white/30">REWARD</div>
-            <div class="font-mono text-[12px] font-bold text-[#00D4FF] mt-1 flex items-center gap-1"><span>EXP</span> <span id="rewardExp">+40</span></div>
-          </div>
-          <div class="bg-black/40 border border-[#1A2F5A] rounded-[4px] p-3">
-            <div class="font-mono text-[8px] tracking-widest text-white/30">STAT</div>
-            <div id="rewardStat" class="font-mono text-[12px] font-bold text-white mt-1">STR +1</div>
-          </div>
-          <div class="bg-black/40 border border-[#1A2F5A] rounded-[4px] p-3">
-            <div class="font-mono text-[8px] tracking-widest text-white/30">DURATION</div>
-            <div id="rewardTime" class="font-mono text-[12px] font-bold text-white mt-1">3 MIN</div>
-          </div>
+        <div class="grid grid-cols-4 gap-2 mb-5">
+          <div class="bg-black/40 border border-[#1A2F5A] rounded-[4px] p-2.5"><div class="font-mono text-[8px] text-white/30">EXP</div><div id="rewardExp" class="font-mono text-[11px] font-bold text-[#00D4FF] mt-1">+40</div></div>
+          <div class="bg-black/40 border border-[#1A2F5A] rounded-[4px] p-2.5"><div class="font-mono text-[8px] text-white/30">STAT</div><div id="rewardStat" class="font-mono text-[11px] font-bold text-white mt-1">STR +1</div></div>
+          <div class="bg-black/40 border border-[#1A2F5A] rounded-[4px] p-2.5"><div class="font-mono text-[8px] text-white/30">GOLD</div><div id="rewardGold" class="font-mono text-[11px] font-bold text-[#FFD700] mt-1">+20G</div></div>
+          <div class="bg-black/40 border border-[#1A2F5A] rounded-[4px] p-2.5"><div class="font-mono text-[8px] text-white/30">TIME</div><div id="rewardTime" class="font-mono text-[11px] font-bold text-white mt-1">3 MIN</div></div>
         </div>
 
-        <!-- Objectives -->
-        <div class="bg-[#02040A] border border-[#1A2F5A]/50 rounded-[4px] p-4 mb-6">
+        <div class="bg-[#02040A] border border-[#1A2F5A]/50 rounded-[4px] p-4 mb-5">
           <div class="font-mono text-[10px] tracking-[0.2em] text-white/30 mb-3">OBJECTIVES</div>
-          <div id="questObjectives" class="space-y-2.5">
-            <!-- injected -->
-          </div>
+          <div id="questObjectives" class="space-y-2.5"></div>
         </div>
 
-        <!-- Timer + Actions -->
-        <div class="grid md:grid-cols-[1.3fr_0.7fr] gap-4">
-          <div class="bg-black/60 border border-[#1A2F5A] rounded-[4px] p-4 flex flex-col">
+        <div class="grid md:grid-cols-[1.2fr_0.8fr] gap-4">
+          <div class="bg-black/60 border border-[#1A2F5A] rounded-[4px] p-4">
             <div class="font-mono text-[9px] tracking-[0.2em] text-white/30 mb-3">QUEST TIMER</div>
-            <div class="flex-1 flex items-center gap-5">
-              <div class="relative w-[96px] h-[96px] shrink-0">
-                <svg class="w-full h-full rotate-[-90deg]">
-                  <circle cx="48" cy="48" r="42" fill="none" stroke="rgba(26,47,90,0.5)" stroke-width="6"/>
-                  <circle id="questProgress" cx="48" cy="48" r="42" fill="none" stroke="#00D4FF" stroke-width="6" stroke-linecap="round" stroke-dasharray="263.8" stroke-dashoffset="263.8" style="filter: drop-shadow(0 0 6px #00D4FF)"/>
-                </svg>
-                <div class="absolute inset-0 flex flex-col items-center justify-center">
-                  <div id="questTimerDisplay" class="font-display font-black text-[22px] leading-none">02:00</div>
-                  <div class="font-mono text-[8px] tracking-widest text-white/30">REMAINING</div>
-                </div>
+            <div class="flex items-center gap-4">
+              <div class="relative w-[88px] h-[88px] shrink-0">
+                <svg class="w-full h-full rotate-[-90deg]"><circle cx="44" cy="44" r="38" fill="none" stroke="rgba(26,47,90,0.5)" stroke-width="6"/><circle id="questProgress" cx="44" cy="44" r="38" fill="none" stroke="#00D4FF" stroke-width="6" stroke-linecap="round" stroke-dasharray="238.7" stroke-dashoffset="238.7" style="filter:drop-shadow(0 0 6px #00D4FF)"/></svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center"><div id="questTimerDisplay" class="font-display font-black text-[20px] leading-none">02:00</div><div class="font-mono text-[7px] tracking-widest text-white/30">REMAINING</div></div>
               </div>
               <div class="flex-1">
-                <div id="questStatusText" class="font-mono text-[11px] leading-[1.5] text-white/50">The System is watching. Prove your worth, Hunter.</div>
-                <div class="mt-3 flex gap-2">
-                  <div class="h-1.5 flex-1 bg-[#0A101E] border border-[#1A2F5A] rounded-full overflow-hidden"><div id="questMiniBar" class="h-full bg-[#00D4FF]" style="width:0%"></div></div>
-                  <span id="questPercent" class="font-mono text-[10px] text-[#00D4FF]">0%</span>
-                </div>
+                <div id="questStatusText" class="font-mono text-[11px] leading-[1.4] text-white/50">The System is watching.</div>
+                <div class="mt-3 flex gap-2"><div class="h-1.5 flex-1 bg-[#0A101E] border border-[#1A2F5A] rounded-full overflow-hidden"><div id="questMiniBar" class="h-full bg-[#00D4FF]" style="width:0%"></div></div><span id="questPercent" class="font-mono text-[10px] text-[#00D4FF]">0%</span></div>
               </div>
             </div>
           </div>
-
-          <div class="flex flex-col gap-2.5">
-            <button id="acceptBtn" class="flex-1 min-h-[52px] bg-[#00D4FF] text-black font-display font-black tracking-[0.1em] text-[13px] rounded-[4px] hover:bg-[#00E5FF] transition flex items-center justify-center gap-2 glow-border">
-              <span>▶</span> ACCEPT QUEST
-            </button>
+          <div class="flex flex-col gap-2">
+            <button id="acceptBtn" class="flex-1 min-h-[48px] bg-[#00D4FF] text-black font-display font-black tracking-[0.1em] text-[12px] rounded-[4px] hover:bg-[#00E5FF] transition flex items-center justify-center gap-2">▶ ACCEPT QUEST</button>
             <div class="grid grid-cols-2 gap-2">
-              <button id="completeQuestBtn" class="h-[40px] bg-[#0A101E] border border-[#1A2F5A] rounded-[4px] font-mono text-[11px] font-bold tracking-widest hover:border-[#00D4FF]/50 transition">COMPLETE</button>
-              <button id="abandonBtn" class="h-[40px] bg-transparent border border-[#FF2A2A]/30 text-[#FF2A2A]/70 rounded-[4px] font-mono text-[11px] font-bold tracking-widest hover:bg-[#FF2A2A]/10 transition">ABANDON</button>
+              <button id="completeQuestBtn" class="h-[38px] bg-[#0A101E] border border-[#1A2F5A] rounded-[4px] font-mono text-[10px] font-bold tracking-widest hover:border-[#00D4FF]/50">COMPLETE</button>
+              <button id="abandonBtn" class="h-[38px] bg-transparent border border-[#FF2A2A]/30 text-[#FF2A2A]/70 rounded-[4px] font-mono text-[10px] font-bold tracking-widest hover:bg-[#FF2A2A]/10">ABANDON</button>
             </div>
-            <div class="font-mono text-[8px] text-center text-white/20 tracking-widest">ABANDONING QUESTS REDUCES STATS</div>
+            <div class="font-mono text-[8px] text-center text-white/20 tracking-widest">ABANDON = STAT -1 • USE SHADOW TO SKIP</div>
           </div>
         </div>
       </div>
+      <div class="border-t border-[#1A2F5A]/50 bg-[#02040A]/50 px-5 py-2.5 flex items-center justify-between">
+        <div class="flex items-center gap-3"><span class="font-mono text-[9px] tracking-widest text-white/20">NEXT QUEST</span><span id="nextQuestPreview" class="font-mono text-[11px] text-white/50">Loading...</span></div>
+        <div class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[#00D4FF] rounded-full animate-pulse"></div><span id="nextQuestIn" class="font-mono text-[10px] text-[#00D4FF]">in 00:00</span></div>
+      </div>
+    </div>
 
-      <!-- Next Quest Preview -->
-      <div class="border-t border-[#1A2F5A]/50 bg-[#02040A]/50 px-5 py-3 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <span class="font-mono text-[9px] tracking-widest text-white/20">NEXT QUEST</span>
-          <span id="nextQuestPreview" class="font-mono text-[11px] text-white/50">Shadow Step Training • 2 min</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <div class="w-1.5 h-1.5 bg-[#00D4FF] rounded-full animate-pulse"></div>
-          <span id="nextQuestIn" class="font-mono text-[10px] text-[#00D4FF]">in 32:11</span>
+    <!-- Boss Raid Bar -->
+    <div id="bossRaidBar" class="system-window rounded-[4px] p-0 overflow-hidden border-[#FF2A2A]/30 hidden">
+      <div class="px-4 py-2.5 flex items-center justify-between bg-gradient-to-r from-[#FF2A2A]/20 to-[#FF8C00]/10">
+        <span class="font-mono text-[10px] tracking-widest flex items-center gap-2">⚔️ BOSS RAID: <span id="bossName" class="text-[#FF2A2A] font-bold">IGRIS</span> — <span id="bossTimer" class="bg-[#FF2A2A] text-white px-1.5 py-0.5 rounded-[2px]">15:00</span></span>
+        <span id="bossHpText" class="font-mono text-[10px] text-white/60">HP 100%</span>
+      </div>
+      <div class="p-3">
+        <div class="boss-bar rounded-full"><div id="bossHpBar" class="boss-bar-fill" style="width:100%"></div></div>
+        <div class="mt-2 flex gap-2">
+          <button id="bossAttackBtn" class="flex-1 h-8 bg-[#FF2A2A] text-white font-mono text-[11px] font-bold rounded-[2px]">ATTACK (DO QUEST)</button>
+          <button id="bossFleeBtn" class="px-4 h-8 border border-[#1A2F5A] rounded-[2px] font-mono text-[10px]">FLEE</button>
         </div>
       </div>
     </div>
 
-    <!-- System Log -->
     <div class="system-window rounded-[4px]">
-      <div class="system-header px-4 py-2 flex items-center justify-between">
-        <span>SYSTEM LOG</span>
-        <button id="clearLog" class="font-mono text-[9px] text-white/20 hover:text-white/40">[CLEAR]</button>
-      </div>
-      <div id="systemLog" class="p-3 h-[140px] overflow-y-auto font-mono text-[11px] leading-[1.6] space-y-1">
-        <div class="text-[#00D4FF]">[SYSTEM] Hunter detected. Initializing...</div>
-        <div class="text-white/40">[SYSTEM] Hourly quests will be issued. Do not disappoint the System.</div>
-      </div>
+      <div class="system-header px-4 py-2 flex items-center justify-between"><span>SYSTEM LOG</span><div class="flex gap-2"><button id="clearLog" class="font-mono text-[9px] text-white/20 hover:text-white/40">[CLEAR]</button><button id="exportBtn" class="font-mono text-[9px] text-white/20 hover:text-white/40">[EXPORT]</button></div></div>
+      <div id="systemLog" class="p-3 h-[130px] overflow-y-auto font-mono text-[11px] leading-[1.6] space-y-1"></div>
     </div>
   </div>
 
-  <!-- RIGHT: DAILY QUEST + TIMELINE -->
+  <!-- RIGHT -->
   <div class="col-span-12 lg:col-span-3 space-y-4">
-    
-    <!-- Daily Quest -->
-    <div class="system-window rounded-[4px] border-[#FFD700]/30" style="box-shadow: 0 0 20px rgba(255,215,0,0.1), 0 0 0 1px rgba(255,215,0,0.1) inset">
-      <div class="system-header px-4 py-2 flex items-center justify-between" style="background: linear-gradient(90deg, rgba(255,215,0,0.15), rgba(255,140,0,0.1)); border-color: rgba(255,215,0,0.2)">
-        <span class="flex items-center gap-2"><span>⚠</span> DAILY QUEST</span>
-        <span id="dailyQuestCount" class="bg-[#FFD700] text-black px-2 py-0.5 rounded-[2px] text-[10px] font-bold">0/8</span>
-      </div>
+    <div class="system-window rounded-[4px] border-[#FFD700]/30" style="box-shadow:0 0 20px rgba(255,215,0,0.08)">
+      <div class="system-header px-4 py-2 flex items-center justify-between" style="background:linear-gradient(90deg, rgba(255,215,0,0.15), rgba(255,140,0,0.08))"><span class="flex items-center gap-2">⚠ DAILY QUEST</span><span id="dailyQuestCount" class="bg-[#FFD700] text-black px-2 py-0.5 rounded-[2px] text-[10px] font-bold">0/8</span></div>
       <div class="p-4">
-        <h3 class="font-display font-bold text-[14px] leading-[1.2]">Become Strong Enough to Survive</h3>
-        <p class="font-mono text-[11px] text-white/50 mt-1 leading-[1.4]">Complete 8 hourly quests today. Failure will result in penalty quest.</p>
-        
-        <div class="mt-4 space-y-2">
-          <div class="flex justify-between font-mono text-[9px] tracking-widest"><span class="text-white/30">PROGRESS</span><span id="dailyProgressText" class="text-[#FFD700]">0%</span></div>
-          <div class="stat-bar rounded-full"><div id="dailyProgressBar" class="h-full bg-gradient-to-r from-[#FF8C00] to-[#FFD700]" style="width:0%"></div></div>
-        </div>
-
-        <div class="mt-4 bg-black/40 border border-[#FFD700]/20 rounded-[4px] p-3">
-          <div class="font-mono text-[9px] tracking-widest text-[#FFD700]/60 mb-2">REWARDS</div>
-          <div class="space-y-1.5 font-mono text-[11px]">
-            <div class="flex justify-between"><span class="text-white/40">• EXP</span><span class="text-[#FFD700]">+500</span></div>
-            <div class="flex justify-between"><span class="text-white/40">• STAT POINTS</span><span class="text-[#FFD700]">+3</span></div>
-            <div class="flex justify-between"><span class="text-white/40">• TITLE</span><span class="text-white">Survivor</span></div>
-          </div>
-        </div>
-
-        <div id="penaltyWarning" class="hidden mt-3 bg-[#FF2A2A]/10 border border-[#FF2A2A]/30 rounded-[4px] p-2.5 flex gap-2">
-          <span class="text-[#FF2A2A]">⚠</span>
-          <span class="font-mono text-[10px] text-[#FF2A2A]/80 leading-[1.4]">3 quests failed. Penalty imminent.</span>
-        </div>
+        <h3 class="font-display font-bold text-[13px] leading-[1.2]">Become Strong Enough to Survive</h3>
+        <p class="font-mono text-[10px] text-white/50 mt-1 leading-[1.4]">Complete 8 hourly quests. Failure triggers penalty.</p>
+        <div class="mt-3 space-y-2"><div class="flex justify-between font-mono text-[9px]"><span class="text-white/30">PROGRESS</span><span id="dailyProgressText" class="text-[#FFD700]">0%</span></div><div class="stat-bar rounded-full"><div id="dailyProgressBar" class="h-full bg-gradient-to-r from-[#FF8C00] to-[#FFD700]" style="width:0%"></div></div></div>
+        <div class="mt-3 bg-black/40 border border-[#FFD700]/20 rounded-[4px] p-2.5"><div class="font-mono text-[8px] tracking-widest text-[#FFD700]/60 mb-1.5">REWARDS</div><div class="space-y-1 font-mono text-[10px]"><div class="flex justify-between"><span class="text-white/40">• EXP</span><span class="text-[#FFD700]">+500</span></div><div class="flex justify-between"><span class="text-white/40">• GOLD</span><span class="text-[#FFD700]">+200G</span></div><div class="flex justify-between"><span class="text-white/40">• SHADOW</span><span class="text-white">+1 Extract</span></div></div></div>
+        <div id="penaltyWarning" class="hidden mt-3 bg-[#FF2A2A]/10 border border-[#FF2A2A]/30 rounded-[4px] p-2 flex gap-2"><span class="text-[#FF2A2A]">⚠</span><span class="font-mono text-[10px] text-[#FF2A2A]/80">3 fails — Penalty imminent</span></div>
       </div>
     </div>
 
-    <!-- Quest Log (Timeline) -->
     <div class="system-window rounded-[4px]">
-      <div class="system-header px-4 py-2 flex items-center justify-between">
-        <span>QUEST LOG [06:00-23:00]</span>
-        <div class="flex gap-1">
-          <button id="questLogPrev" class="w-5 h-5 bg-[#0A101E] border border-[#1A2F5A] rounded-[2px] flex items-center justify-center text-[10px] hover:border-[#00D4FF]/50">‹</button>
-          <button id="questLogNext" class="w-5 h-5 bg-[#0A101E] border border-[#1A2F5A] rounded-[2px] flex items-center justify-center text-[10px] hover:border-[#00D4FF]/50">›</button>
-        </div>
-      </div>
-      <div id="questLog" class="p-2 space-y-1.5 max-h-[380px] overflow-y-auto">
-        <!-- injected -->
-      </div>
-      <div class="border-t border-[#1A2F5A]/30 px-3 py-2 flex justify-between font-mono text-[9px]">
-        <span class="text-white/20">TIMEZONE</span>
-        <span id="tz" class="text-white/40">--</span>
-      </div>
+      <div class="system-header px-4 py-2 flex items-center justify-between"><span>QUEST LOG [06:00-23:00]</span><span id="tz" class="text-[9px] text-white/30">--</span></div>
+      <div id="questLog" class="p-2 space-y-1.5 max-h-[340px] overflow-y-auto"></div>
     </div>
 
-    <!-- Monarch / Difficulty -->
     <div class="system-window rounded-[4px]">
-      <div class="system-header px-4 py-2">DIFFICULTY PROTOCOL</div>
+      <div class="system-header px-4 py-2">WORLD PROTOCOL</div>
       <div class="p-4 space-y-4">
-        <div>
-          <div class="font-mono text-[9px] tracking-widest text-white/30 mb-2">WORLD DIFFICULTY</div>
-          <div class="grid grid-cols-3 gap-1.5">
-            <button data-diff="normal" class="diff-btn h-8 rounded-[2px] border font-mono text-[10px] font-bold bg-[#00D4FF] text-black border-[#00D4FF]">NORMAL</button>
-            <button data-diff="hard" class="diff-btn h-8 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px] font-bold hover:border-[#FF8C00]/50">HARD</button>
-            <button data-diff="nightmare" class="diff-btn h-8 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px] font-bold hover:border-[#FF2A2A]/50">NIGHTMARE</button>
-          </div>
-        </div>
-        <div>
-          <div class="font-mono text-[9px] tracking-widest text-white/30 mb-2">HUNTER FOCUS</div>
-          <div class="flex flex-wrap gap-1.5">
-            <button data-focus="str" class="focus-btn px-2.5 py-1 rounded-[2px] bg-[#00D4FF] text-black font-mono text-[10px] font-bold">STR</button>
-            <button data-focus="agi" class="focus-btn px-2.5 py-1 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px] font-bold hover:border-[#00D4FF]/30">AGI</button>
-            <button data-focus="vit" class="focus-btn px-2.5 py-1 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px] font-bold hover:border-[#00D4FF]/30">VIT</button>
-            <button data-focus="int" class="focus-btn px-2.5 py-1 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px] font-bold hover:border-[#00D4FF]/30">INT</button>
-          </div>
-        </div>
-        <div class="bg-black/40 border border-[#1A2F5A]/50 rounded-[4px] p-2.5 flex items-center justify-between">
-          <span class="font-mono text-[10px] text-white/40">NOTIFY ON NEW QUEST</span>
-          <button id="notifToggle" class="w-9 h-5 bg-[#1A2F5A] rounded-full relative transition"><span class="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full transition-all"></span></button>
-        </div>
+        <div><div class="font-mono text-[9px] tracking-widest text-white/30 mb-2">DIFFICULTY</div><div class="grid grid-cols-3 gap-1.5"><button data-diff="normal" class="diff-btn h-8 rounded-[2px] border font-mono text-[10px] font-bold bg-[#00D4FF] text-black border-[#00D4FF]">NORMAL</button><button data-diff="hard" class="diff-btn h-8 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px] font-bold">HARD</button><button data-diff="nightmare" class="diff-btn h-8 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px] font-bold">NIGHTMARE</button></div></div>
+        <div><div class="font-mono text-[9px] tracking-widest text-white/30 mb-2">HUNTER FOCUS</div><div class="flex flex-wrap gap-1.5"><button data-focus="str" class="focus-btn px-2.5 py-1 rounded-[2px] bg-[#00D4FF] text-black font-mono text-[10px] font-bold">STR</button><button data-focus="agi" class="focus-btn px-2.5 py-1 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px] font-bold">AGI</button><button data-focus="vit" class="focus-btn px-2.5 py-1 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px] font-bold">VIT</button><button data-focus="int" class="focus-btn px-2.5 py-1 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px] font-bold">INT</button></div></div>
+        <div class="bg-black/40 border border-[#1A2F5A]/50 rounded-[4px] p-2.5 flex items-center justify-between"><span class="font-mono text-[10px] text-white/40">NOTIFY</span><button id="notifToggle" class="w-9 h-5 bg-[#1A2F5A] rounded-full relative transition"><span class="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full transition-all"></span></button></div>
       </div>
     </div>
   </div>
 </main>
 
-<!-- Toast -->
-<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] system-window rounded-[4px] px-5 py-3 flex items-center gap-3 translate-y-[150%] transition-transform duration-500">
-  <div class="w-6 h-6 bg-[#00D4FF] rounded-[2px] flex items-center justify-center text-black font-bold text-[12px]">!</div>
-  <span id="toastText" class="font-mono text-[12px]">Quest completed</span>
-</div>
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] system-window rounded-[4px] px-5 py-3 flex items-center gap-3 translate-y-[150%] transition-transform duration-500"><div class="w-6 h-6 bg-[#00D4FF] rounded-[2px] flex items-center justify-center text-black font-bold text-[12px]">!</div><span id="toastText" class="font-mono text-[12px]">Quest completed</span></div>
 
 <script>
-// ---------- SOLO LEVELING QUEST DB ----------
+// ---------- DATA ----------
 const QUESTS = [
-  { id:1, name:"Push-up Endurance: Break The Limit", rank:"E", stat:"STR", icon:"💪", dur:2, exp:35, desc:"The weak must become strong. Your arms tremble now, but tomorrow they will crush gates.", objs:["10x Desk Push-ups","20s Plank of Willpower","Repeat 2x - No Rest for the Weak"], color:"#00D4FF" },
-  { id:2, name:"Shadow Step: Escape the Dungeon", rank:"E", stat:"AGI", icon:"⚡", dur:3, exp:55, desc:"Monsters chase you through the corridors. Run, or become prey.", objs:["30s Shadow Sprint (High Knees)","20x Squat Dodges","30s Rest - Repeat if Alive"], color:"#8B5CF6" },
-  { id:3, name:"Mana Breathing: Control Your Fear", rank:"E", stat:"INT", icon:"🧘", dur:2, exp:25, desc:"Even an E-Rank must control mana. Breathe, or your heart will burst from fear.", objs:["Box Breathing 4-4-4-4 x4 cycles","Hold final breath to limit","Feel mana stabilize"], color:"#06B6D4" },
-  { id:4, name:"Iron Body: Survive the Red Gate", rank:"D", stat:"VIT", icon:"🛡️", dur:3, exp:50, desc:"You entered a Red Gate alone. Your body must endure what your rank cannot.", objs:["Wall Sit 40s - Don't Fall","Wall Push Hold 30s","Plank Until Failure"], color:"#FF8C00" },
-  { id:5, name:"Lunge Matrix: Hunter's Footwork", rank:"E", stat:"AGI", icon:"🦵", dur:3, exp:45, desc:"A Hunter who cannot move is dead. Learn to step between life and death.", objs:["8x Forward Lunge (each leg)","8x Lateral Lunge","8x Reverse Lunge + Hold"], color:"#00D4FF" },
-  { id:6, name:"Berserk Rush: Unleash Rage", rank:"D", stat:"STR", icon:"🥊", dur:2, exp:60, desc:"Let your anger become strength. Punch until your knuckles bleed - then punch more.", objs:["30s Jab-Cross Fury","30s Hook Uppercut Storm","60s Freestyle Annihilation"], color:"#FF2A2A" },
-  { id:7, name:"Monarch's Grip: Hang or Die", rank:"C", stat:"STR", icon:"🦍", dur:2, exp:70, desc:"The Shadow Monarch watches. Show him you can hold on when everything wants you to fall.", objs:["Dead Hang 30s","10x Scapular Pulls","Hang 30s Again - Do Not Fall"], color:"#FFD700" },
-  { id:8, name:"Joint Restoration: After Battle", rank:"E", stat:"VIT", icon:"🌀", dur:2, exp:20, desc:"Every battle leaves wounds. Heal them before they become permanent.", objs:["Ankle Circles 15x each","Wrist Circles 20s","Calf Raises 20x Slow"], color:"#06B6D4" },
-  { id:9, name:"Core of a Monarch", rank:"D", stat:"VIT", icon:"👑", dur:3, exp:55, desc:"A true Monarch's power comes from within. Forge your core like a dungeon core.", objs:["30s Dead Bug","30s Side Plank each side","20x Bird-Dog"], color:"#FFD700" },
-  { id:10, name:"Mind Palace: See Through Lies", rank:"E", stat:"INT", icon:"👁️", dur:2, exp:20, desc:"Your eyes are tired from staring into the abyss. Rest them, Hunter.", objs:["20ft Gaze 20s (20-20-20 Rule)","Chin Tucks 10x","Trap Stretch 20s each"], color:"#8B5CF6" },
-  { id:11, name:"Leap of Faith: Double Dungeon", rank:"C", stat:"AGI", icon:"🚀", dur:3, exp:75, desc:"You fell into a double dungeon. Jump, or be buried alive.", objs:["5x Jump Squats","10x Air Squats","Rest 15s - Repeat 3x"], color:"#FF2A2A" },
-  { id:12, name:"Flexibility: Escape Chains", rank:"E", stat:"VIT", icon:"⛓️", dur:3, exp:30, desc:"You are chained in a dungeon. Become flexible enough to slip free.", objs:["Hip Flexor Stretch 45s each","Glute Bridge 15x","Pigeon Stretch 30s each"], color:"#06B6D4" },
-  { id:13, name:"Igris Duel: Hold Your Ground", rank:"B", stat:"STR", icon:"⚔️", dur:3, exp:85, desc:"Face Igris, the Blood-Red Commander. Do not kneel. Do not retreat.", objs:["Isometric Wall Sit 40s","Wall Push 30s","Plank to Wall Walk 30s"], color:"#FFD700" },
-  { id:14, name:"Arise: Command Shadows", rank:"A", stat:"INT", icon:"🌑", dur:2, exp:90, desc:"Speak the word. Command the fallen to rise and serve you.", objs:["Balance Left Leg 30s Eyes Open","Balance Right 30s Eyes Closed","10x Single-Leg Calf Raises"], color:"#000000" },
-  { id:15, name:"Daily Grind: The Weakest's Path", rank:"E", stat:"STR", icon:"📈", dur:3, exp:40, desc:"100 push-ups, 100 sit-ups, 100 squats, 10km run. Every day. No excuses.", objs:["5x Burpees EMOM","5x Burpees EMOM","5x Burpees + Max Squats"], color:"#00D4FF" },
-  { id:16, name:"Dragon's Fear: Stand Tall", rank:"B", stat:"VIT", icon:"🐉", dur:2, exp:80, desc:"Kamish's roar shakes your soul. If you kneel now, you will kneel forever.", objs:["Open Book Stretch 8x each","Thread Needle 30s each","Doorway Chest Stretch 30s"], color:"#FF2A2A" },
+  {id:1,name:"Push-up Endurance: Break The Limit",rank:"E",stat:"STR",icon:"💪",dur:2,exp:35,gold:15,desc:"The weak must become strong. Your arms tremble now, but tomorrow they will crush gates.",objs:["10x Desk Push-ups","20s Plank of Willpower","Repeat 2x - No Rest"],color:"#00D4FF"},
+  {id:2,name:"Shadow Step: Escape the Dungeon",rank:"E",stat:"AGI",icon:"⚡",dur:3,exp:55,gold:20,desc:"Monsters chase you. Run, or become prey.",objs:["30s Shadow Sprint","20x Squat Dodges","30s Rest - Repeat if Alive"],color:"#8B5CF6"},
+  {id:3,name:"Mana Breathing: Control Fear",rank:"E",stat:"INT",icon:"🧘",dur:2,exp:25,gold:12,desc:"Even E-Rank must control mana. Breathe, or burst.",objs:["Box Breathing 4-4-4-4 x4","Hold final breath","Feel mana stabilize"],color:"#06B6D4"},
+  {id:4,name:"Iron Body: Survive Red Gate",rank:"D",stat:"VIT",icon:"🛡️",dur:3,exp:50,gold:25,desc:"You entered Red Gate alone. Endure what rank cannot.",objs:["Wall Sit 40s","Wall Push Hold 30s","Plank Until Failure"],color:"#FF8C00"},
+  {id:5,name:"Lunge Matrix: Hunter Footwork",rank:"E",stat:"AGI",icon:"🦵",dur:3,exp:45,gold:18,desc:"A Hunter who cannot move is dead.",objs:["8x Forward Lunge each","8x Lateral Lunge","8x Reverse Lunge + Hold"],color:"#00D4FF"},
+  {id:6,name:"Berserk Rush: Unleash Rage",rank:"D",stat:"STR",icon:"🥊",dur:2,exp:60,gold:28,desc:"Let anger become strength. Punch until knuckles bleed.",objs:["30s Jab-Cross Fury","30s Hook Storm","60s Annihilation"],color:"#FF2A2A"},
+  {id:7,name:"Monarch's Grip: Hang or Die",rank:"C",stat:"STR",icon:"🦍",dur:2,exp:70,gold:35,desc:"Shadow Monarch watches. Hold on when all wants you to fall.",objs:["Dead Hang 30s","10x Scapular Pulls","Hang 30s Again"],color:"#FFD700"},
+  {id:8,name:"Joint Restoration: After Battle",rank:"E",stat:"VIT",icon:"🌀",dur:2,exp:20,gold:10,desc:"Every battle leaves wounds. Heal them.",objs:["Ankle Circles 15x","Wrist Circles 20s","Calf Raises 20x"],color:"#06B6D4"},
+  {id:9,name:"Core of a Monarch",rank:"D",stat:"VIT",icon:"👑",dur:3,exp:55,gold:26,desc:"True Monarch's power comes from within.",objs:["30s Dead Bug","30s Side Plank each","20x Bird-Dog"],color:"#FFD700"},
+  {id:10,name:"Mind Palace: See Lies",rank:"E",stat:"INT",icon:"👁️",dur:2,exp:20,gold:10,desc:"Eyes tired from abyss. Rest them, Hunter.",objs:["20ft Gaze 20s","Chin Tucks 10x","Trap Stretch 20s each"],color:"#8B5CF6"},
+  {id:11,name:"Leap of Faith: Double Dungeon",rank:"C",stat:"AGI",icon:"🚀",dur:3,exp:75,gold:40,desc:"You fell into double dungeon. Jump, or be buried.",objs:["5x Jump Squats","10x Air Squats","Rest 15s x3"],color:"#FF2A2A"},
+  {id:12,name:"Flexibility: Escape Chains",rank:"E",stat:"VIT",icon:"⛓️",dur:3,exp:30,gold:14,desc:"Chained in dungeon. Become flexible to slip free.",objs:["Hip Flexor 45s each","Glute Bridge 15x","Pigeon 30s each"],color:"#06B6D4"},
+  {id:13,name:"Igris Duel: Hold Ground",rank:"B",stat:"STR",icon:"⚔️",dur:3,exp:85,gold:50,desc:"Face Igris, Blood-Red Commander. Do not kneel.",objs:["Wall Sit 40s","Wall Push 30s","Plank to Wall Walk 30s"],color:"#FFD700"},
+  {id:14,name:"Arise: Command Shadows",rank:"A",stat:"INT",icon:"🌑",dur:2,exp:90,gold:60,desc:"Speak the word. Command fallen to rise.",objs:["Balance Left 30s","Balance Right 30s Eyes Closed","10x Single-Leg Raises"],color:"#000"},
+  {id:15,name:"Daily Grind: Weakest Path",rank:"E",stat:"STR",icon:"📈",dur:3,exp:40,gold:16,desc:"100 push-ups, sit-ups, squats, 10km run. Every day.",objs:["5x Burpees EMOM","5x Burpees EMOM","5x Burpees + Max Squats"],color:"#00D4FF"},
+  {id:16,name:"Dragon's Fear: Stand Tall",rank:"B",stat:"VIT",icon:"🐉",dur:2,exp:80,gold:45,desc:"Kamish's roar shakes soul. Kneel now, kneel forever.",objs:["Open Book 8x each","Thread Needle 30s each","Doorway Stretch 30s"],color:"#FF2A2A"},
+  {id:17,name:"Tusk's Magic: Endure Spells",rank:"B",stat:"INT",icon:"🧙",dur:3,exp:85,gold:48,desc:"High Orc shaman casts. Your mind must not break.",objs:["30s High Knees","15x Push-up to Shoulder Tap","30s Mountain Climbers"],color:"#8B5CF6"},
+  {id:18,name:"Beru's Hunt: Predator Speed",rank:"A",stat:"AGI",icon:"🦁",dur:3,exp:95,gold:65,desc:"Ant King hunts. You are prey. Move faster than thought.",objs:["40s Sprint in Place","20x Lunge Jumps","20s Burpee Frenzy"],color:"#FF2A2A"},
+];
+
+const DUNGEONS = [
+  {name:"Frost Cavern",rank:"C",floors:3,exp:200,gold:150,desc:"C-Rank gate frozen over. Clear before break."},
+  {name:"Goblin Hive",rank:"D",floors:3,exp:150,gold:100,desc:"D-Rank but swarming. Numbers are danger."},
+  {name:"Demon Castle",rank:"B",floors:5,exp:400,gold:300,desc:"B-Rank. Demon monarch's castle. High risk."},
+  {name:"Red Gate: Desert",rank:"A",floors:5,exp:600,gold:500,desc:"A-Rank Red Gate. Time flows differently. Survive."},
+];
+
+const BOSSES = [
+  {name:"IGRIS",hp:100,exp:300,gold:250,icon:"⚔️"},
+  {name:"TUSK",hp:120,exp:400,gold:300,icon:"🧙"},
+  {name:"BERU",hp:150,exp:600,gold:500,icon:"🦁"},
+  {name:"KAMISH",hp:200,exp:1000,gold:800,icon:"🐉"},
+];
+
+const SHOP_ITEMS = [
+  {id:"hp_potion",name:"HP Potion",icon:"🧪",price:50,desc:"Restore HP & clear fatigue. +20 HP",effect:"hp"},
+  {id:"exp_boost",name:"Double EXP Scroll",icon:"📜",price:100,desc:"2x EXP for next 3 quests (30 min)",effect:"exp_boost"},
+  {id:"shadow_key",name:"Shadow Extraction Key",icon:"🔑",price:100,desc:"Extract a shadow from last quest",effect:"shadow"},
+  {id:"gate_key",name:"Gate Key",icon:"🌀",price:80,desc:"Force spawn a C-Rank gate",effect:"gate"},
+  {id:"streak_freeze",name:"Streak Freeze",icon:"❄️",price:120,desc:"Prevent streak reset for 1 missed day",effect:"freeze"},
+  {id:"stat_reset",name:"Stat Reset Potion",icon:"💊",price:200,desc:"Reset all stats & reclaim points",effect:"reset"},
+  {id:"monarch_blessing",name:"Monarch's Blessing",icon:"👑",price:300,desc:"All stats +2 for 1 hour + 100G bonus",effect:"blessing"},
+  {id:"auto_shadow",name:"Auto Shadow Contract",icon:"🤖",price:250,desc:"Shadow auto-completes next hourly quest",effect:"auto"},
+];
+
+const SKILLS = [
+  {id:"stealth",name:"Stealth",icon:"👤",level:5,desc:"Skip 1 quest per day without penalty",cd:"24h",passive:false},
+  {id:"iron_will",name:"Iron Will",icon:"🛡️",level:8,desc:"Quest timer +60s bonus. Passive",cd:"passive",passive:true},
+  {id:"arise",name:"Arise",icon:"🌑",level:12,desc:"Extract shadow with 50% more chance",cd:"passive",passive:true},
+  {id:"monarch_domain",name:"Monarch's Domain",icon:"🏰",level:15,desc:"2x EXP and Gold for 10 minutes",cd:"2h",passive:false},
+  {id:"bloodlust",name:"Bloodlust",icon:"🩸",level:20,desc:"Complete quest instantly (1 per day)",cd:"24h",passive:false},
+  {id:"shadow_exchange",name:"Shadow Exchange",icon:"🔄",level:25,desc:"Swap places with shadow — auto complete current quest",cd:"12h",passive:false},
+];
+
+const ACHIEVEMENTS = [
+  {id:"first_blood",name:"First Blood",icon:"🩸",desc:"Complete first quest",cond:s=>Object.keys(s.completed).length>=1,reward:"10G"},
+  {id:"ten_quests",name:"Hunter's Path",icon:"⚔️",desc:"Complete 10 quests",cond:s=>Object.keys(s.completed).length>=10,reward:"50G"},
+  {id:"fifty_quests",name:"Veteran Hunter",icon:"🎖️",desc:"Complete 50 quests",cond:s=>Object.keys(s.completed).length>=50,reward:"200G + Title"},
+  {id:"early_bird",name:"Early Bird",icon:"🌅",desc:"Complete 6AM quest",cond:s=>Object.keys(s.completed).some(k=>k.endsWith('-6')),reward:"20G"},
+  {id:"night_owl",name:"Night Owl",icon:"🦉",desc:"Complete 11PM quest",cond:s=>Object.keys(s.completed).some(k=>k.endsWith('-23')),reward:"20G"},
+  {id:"no_skip_week",name:"Unyielding",icon:"🔥",desc:"7 day streak",cond:s=>s.streak>=7,reward:"100G + Shadow"},
+  {id:"first_gate",name:"Gate Breaker",icon:"🌀",desc:"Clear first dungeon",cond:s=>s.dungeonsCleared>=1,reward:"100G"},
+  {id:"boss_slayer",name:"Boss Slayer",icon:"👑",desc:"Defeat a boss",cond:s=>s.bossesDefeated>=1,reward:"150G"},
+  {id:"shadow_army_5",name:"Shadow Commander",icon:"🌑",desc:"Have 5 shadows",cond:s=>s.shadows>=5,reward:"Title: Monarch"},
+  {id:"level_25",name:"Rising Star",icon:"⭐",desc:"Reach Lv.25",cond:s=>s.level>=25,reward:"200G"},
+  {id:"secret_found",name:"Double Dungeon",icon:"🕳️",desc:"Find secret double dungeon",cond:s=>s.secretFound,reward:"500G"},
+  {id:"gold_1000",name:"Wealthy Hunter",icon:"💰",desc:"Earn 1000 gold",cond:s=>s.totalGold>=1000,reward:"Title: Tycoon"},
+];
+
+const JOBS = [
+  {level:10,name:"C-Rank Hunter",title:"C-Rank Hunter",req:"Complete 20 quests, Reach Lv.10, Clear 1 gate",rewards:"+10 all stats, New skills"},
+  {level:25,name:"A-Rank Hunter",title:"A-Rank Hunter",req:"50 quests, Lv.25, Defeat Igris",rewards:"+20 all stats, Shadow Monarch path"},
+  {level:50,name:"Shadow Monarch",title:"Shadow Monarch",req:"100 quests, Lv.50, 10 shadows, Defeat Beru",rewards:"All stats +30, Arise true power"},
 ];
 
 const TITLES = ["The Weakest Hunter","E-Rank Survivor","Dungeon Scavenger","C-Rank Hunter","B-Rank Elite","A-Rank Hunter","S-Rank Monarch","Shadow Monarch","National Level Hunter"];
-const RANKS = ["E","E","D","D","C","B","A","S","S+"];
 
 // ---------- STATE ----------
 let state = {
-  hunterName: localStorage.getItem('sl-hunter') || 'SUNG JIN-WOO',
+  hunterName: localStorage.getItem('sl-hunter')||'SUNG JIN-WOO',
   level: parseInt(localStorage.getItem('sl-level')||'1'),
   exp: parseInt(localStorage.getItem('sl-exp')||'0'),
   statPoints: parseInt(localStorage.getItem('sl-statPoints')||'0'),
   stats: JSON.parse(localStorage.getItem('sl-stats')||'{"STR":10,"AGI":10,"VIT":10,"INT":10,"PER":10}'),
+  gold: parseInt(localStorage.getItem('sl-gold')||'100'),
+  totalGold: parseInt(localStorage.getItem('sl-totalGold')||'100'),
   completed: JSON.parse(localStorage.getItem('sl-completed')||'{}'),
   failed: JSON.parse(localStorage.getItem('sl-failed')||'{}'),
   difficulty: localStorage.getItem('sl-diff')||'normal',
   focuses: JSON.parse(localStorage.getItem('sl-focuses')||'["str"]'),
   notif: localStorage.getItem('sl-notif')==='true',
-  timerSec: 0,
-  timerTotal: 0,
-  timerRunning:false,
-  timerInt:null,
-  lastHour:null,
-  shadows: parseInt(localStorage.getItem('sl-shadows')||'0')
+  shadows: parseInt(localStorage.getItem('sl-shadows')||'0'),
+  shadowList: JSON.parse(localStorage.getItem('sl-shadowList')||'[]'),
+  inventory: JSON.parse(localStorage.getItem('sl-inv')||'{"hp_potion":1}'),
+  skillsUnlocked: JSON.parse(localStorage.getItem('sl-skills')||'[]'),
+  skillsCd: JSON.parse(localStorage.getItem('sl-skillsCd')||'{}'),
+  achievements: JSON.parse(localStorage.getItem('sl-ach')||'{}'),
+  dungeonsCleared: parseInt(localStorage.getItem('sl-dungeons')||'0'),
+  bossesDefeated: parseInt(localStorage.getItem('sl-bosses')||'0'),
+  streak: parseInt(localStorage.getItem('sl-streak')||'0'),
+  lastActive: localStorage.getItem('sl-lastActive')||'',
+  job: localStorage.getItem('sl-job')||'E-Rank Hunter',
+  jobLevel: parseInt(localStorage.getItem('sl-jobLevel')||'0'),
+  buffs: JSON.parse(localStorage.getItem('sl-buffs')||'[]'),
+  fatigue: parseInt(localStorage.getItem('sl-fatigue')||'0'),
+  secretFound: localStorage.getItem('sl-secret')==='true',
+  dungeonActive: null,
+  dungeonTimer: null,
+  bossActive: null,
+  bossTimer: null,
+  secretActive: false,
+  timerSec:0,timerTotal:0,timerRunning:false,timerInt:null,lastHour:null,
+  penaltyCount:0,
 };
 
 function save(){
-  localStorage.setItem('sl-level', state.level);
-  localStorage.setItem('sl-exp', state.exp);
-  localStorage.setItem('sl-statPoints', state.statPoints);
-  localStorage.setItem('sl-stats', JSON.stringify(state.stats));
-  localStorage.setItem('sl-completed', JSON.stringify(state.completed));
-  localStorage.setItem('sl-failed', JSON.stringify(state.failed));
-  localStorage.setItem('sl-shadows', state.shadows);
+  localStorage.setItem('sl-level',state.level);localStorage.setItem('sl-exp',state.exp);localStorage.setItem('sl-statPoints',state.statPoints);
+  localStorage.setItem('sl-stats',JSON.stringify(state.stats));localStorage.setItem('sl-gold',state.gold);localStorage.setItem('sl-totalGold',state.totalGold);
+  localStorage.setItem('sl-completed',JSON.stringify(state.completed));localStorage.setItem('sl-failed',JSON.stringify(state.failed));
+  localStorage.setItem('sl-shadows',state.shadows);localStorage.setItem('sl-shadowList',JSON.stringify(state.shadowList));
+  localStorage.setItem('sl-inv',JSON.stringify(state.inventory));localStorage.setItem('sl-skills',JSON.stringify(state.skillsUnlocked));
+  localStorage.setItem('sl-skillsCd',JSON.stringify(state.skillsCd));localStorage.setItem('sl-ach',JSON.stringify(state.achievements));
+  localStorage.setItem('sl-dungeons',state.dungeonsCleared);localStorage.setItem('sl-bosses',state.bossesDefeated);
+  localStorage.setItem('sl-streak',state.streak);localStorage.setItem('sl-lastActive',state.lastActive);
+  localStorage.setItem('sl-job',state.job);localStorage.setItem('sl-jobLevel',state.jobLevel);
+  localStorage.setItem('sl-buffs',JSON.stringify(state.buffs));localStorage.setItem('sl-fatigue',state.fatigue);
+  localStorage.setItem('sl-secret',state.secretFound);
 }
 
 // ---------- HELPERS ----------
-function getToday(){ return new Date().toISOString().slice(0,10); }
-function getHourKey(d=new Date()){ return `${getToday()}-${d.getHours()}`; }
-function hashHour(d){
-  const s = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}-${d.getHours()}-${state.difficulty}-${state.focuses.join('')}`;
-  let h=0; for(let i=0;i<s.length;i++){ h=((h<<5)-h)+s.charCodeAt(i); h|=0; } return Math.abs(h);
-}
+function getToday(){return new Date().toISOString().slice(0,10)}
+function getHourKey(d=new Date()){return `${getToday()}-${d.getHours()}`}
+function hashHour(d){const s=`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}-${d.getHours()}-${state.difficulty}-${state.focuses.join('')}`;let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0}return Math.abs(h)}
 function getQuestForHour(d=new Date()){
-  let pool = QUESTS;
-  if(state.focuses.length){
-    const map = {str:'STR',agi:'AGI',vit:'VIT',int:'INT'};
-    const wanted = state.focuses.map(f=>map[f]);
-    const filtered = QUESTS.filter(q=> wanted.includes(q.stat));
-    if(filtered.length) pool=filtered;
-  }
-  if(state.difficulty==='normal') pool=pool.filter(q=> ['E','D'].includes(q.rank));
-  if(state.difficulty==='hard') pool=pool.filter(q=> ['D','C','B'].includes(q.rank));
-  if(state.difficulty==='nightmare') pool=pool.filter(q=> ['B','A','S'].includes(q.rank));
-  if(!pool.length) pool=QUESTS;
+  let pool=QUESTS;
+  if(state.focuses.length){const map={str:'STR',agi:'AGI',vit:'VIT',int:'INT'};const wanted=state.focuses.map(f=>map[f]);const f=QUESTS.filter(q=>wanted.includes(q.stat));if(f.length)pool=f}
+  if(state.difficulty==='normal')pool=pool.filter(q=>['E','D'].includes(q.rank));
+  if(state.difficulty==='hard')pool=pool.filter(q=>['D','C','B'].includes(q.rank));
+  if(state.difficulty==='nightmare')pool=pool.filter(q=>['B','A','S'].includes(q.rank));
+  if(!pool.length)pool=QUESTS;
   return pool[hashHour(d)%pool.length];
 }
-function expNeeded(lvl){ return 100 + (lvl-1)*50 + Math.floor(lvl*lvl*5); }
-function getRank(lvl){
-  if(lvl<5) return 'E';
-  if(lvl<10) return 'D';
-  if(lvl<20) return 'C';
-  if(lvl<35) return 'B';
-  if(lvl<55) return 'A';
-  if(lvl<80) return 'S';
-  return 'NATIONAL';
-}
-function getTitle(lvl){
-  if(lvl<3) return TITLES[0];
-  if(lvl<6) return TITLES[1];
-  if(lvl<10) return TITLES[2];
-  if(lvl<20) return TITLES[3];
-  if(lvl<35) return TITLES[4];
-  if(lvl<55) return TITLES[5];
-  if(lvl<75) return TITLES[6];
-  if(lvl<90) return TITLES[7];
-  return TITLES[8];
-}
-function formatCountdown(ms){
-  const s = Math.max(0, Math.floor(ms/1000));
-  const m = Math.floor(s/60).toString().padStart(2,'0');
-  const sec = (s%60).toString().padStart(2,'0');
-  return `${m}:${sec}`;
-}
+function expNeeded(lvl){return 100+(lvl-1)*50+Math.floor(lvl*lvl*5)}
+function getRank(lvl){if(lvl<5)return'E';if(lvl<10)return'D';if(lvl<20)return'C';if(lvl<35)return'B';if(lvl<55)return'A';if(lvl<80)return'S';return'NATIONAL'}
+function getTitle(lvl){if(lvl<3)return TITLES[0];if(lvl<6)return TITLES[1];if(lvl<10)return TITLES[2];if(lvl<20)return TITLES[3];if(lvl<35)return TITLES[4];if(lvl<55)return TITLES[5];if(lvl<75)return TITLES[6];if(lvl<90)return TITLES[7];return TITLES[8]}
+function formatCountdown(ms){const s=Math.max(0,Math.floor(ms/1000));const m=Math.floor(s/60).toString().padStart(2,'0');const sec=(s%60).toString().padStart(2,'0');return `${m}:${sec}`}
+function hasBuff(id){return state.buffs.some(b=>b.id===id && b.expires>Date.now())}
+function addBuff(id,name,durationMin,icon){state.buffs=state.buffs.filter(b=>b.id!==id);state.buffs.push({id,name,icon,expires:Date.now()+durationMin*60000});save();renderBuffs()}
 
-// ---------- RENDER STATUS ----------
+// ---------- RENDER ----------
 function renderStatus(){
-  document.getElementById('playerName').textContent = state.hunterName;
-  document.getElementById('headerHunterName').textContent = state.hunterName;
-  document.getElementById('playerLevel').textContent = `Lv.${state.level}`;
-  document.getElementById('playerTitle').textContent = getTitle(state.level);
-  document.getElementById('headerRank').textContent = getRank(state.level);
-  document.getElementById('expText').textContent = `${state.exp} / ${expNeeded(state.level)}`;
-  document.getElementById('expBar').style.width = `${(state.exp/expNeeded(state.level))*100}%`;
-  document.getElementById('statPoints').textContent = `+${state.statPoints} POINTS`;
-  document.getElementById('shadowCount').textContent = state.shadows;
-  document.getElementById('rankProgressText').textContent = `${state.level} / 100`;
-  document.getElementById('rankBar').style.width = `${Math.min(100, state.level)}%`;
-
-  const statsList = document.getElementById('statsList');
-  statsList.innerHTML='';
+  document.getElementById('playerName').textContent=state.hunterName;
+  document.getElementById('headerHunter').textContent=state.hunterName;
+  document.getElementById('avatarLetter').textContent=state.hunterName[0]||'J';
+  document.getElementById('playerLevel').textContent=`Lv.${state.level}`;
+  document.getElementById('headerLevel').textContent=`Lv.${state.level}`;
+  document.getElementById('playerTitle').textContent=getTitle(state.level);
+  document.getElementById('headerRank').textContent=getRank(state.level);
+  document.getElementById('jobDisplay').textContent=state.job;
+  document.getElementById('expText').textContent=`${state.exp} / ${expNeeded(state.level)}`;
+  document.getElementById('expBar').style.width=`${(state.exp/expNeeded(state.level))*100}%`;
+  document.getElementById('statPoints').textContent=`+${state.statPoints} POINTS`;
+  document.getElementById('goldDisplay').textContent=state.gold;
+  document.getElementById('shopGold').textContent=state.gold;
+  document.getElementById('shadowCount').textContent=state.shadows;
+  document.getElementById('navArmy').textContent=state.shadows;
+  document.getElementById('streakDisplay').textContent=`🔥 ${state.streak}`;
+  document.getElementById('rankProgressText').textContent=`${state.level}/100`;
+  document.getElementById('rankBar').style.width=`${Math.min(100,state.level)}%`;
+  document.getElementById('fatigueText').textContent=`${state.fatigue}%`;
+  document.getElementById('fatigueBar').style.width=`${state.fatigue}%`;
+  document.getElementById('hpText').textContent=`${Math.max(10,100-state.fatigue)}`;
+  // stats
+  const list=document.getElementById('statsList');list.innerHTML='';
   Object.entries(state.stats).forEach(([k,v])=>{
-    const div = document.createElement('div');
+    const div=document.createElement('div');
     div.className='flex items-center justify-between bg-black/30 border border-[#1A2F5A]/30 rounded-[2px] px-3 py-2';
-    div.innerHTML = `
-      <div class="flex items-center gap-2">
-        <span class="font-mono text-[10px] font-bold tracking-widest w-8">${k}</span>
-        <span class="font-mono text-[13px] font-bold">${v}</span>
-      </div>
-      <div class="flex items-center gap-2">
-        <div class="w-16 h-1 bg-[#0A101E] rounded-full overflow-hidden"><div class="h-full bg-[#00D4FF]" style="width:${Math.min(100, v)}%"></div></div>
-        <button data-stat="${k}" class="stat-plus w-5 h-5 bg-[#00D4FF]/20 border border-[#00D4FF]/40 rounded-[2px] flex items-center justify-center font-mono text-[12px] hover:bg-[#00D4FF] hover:text-black transition ${state.statPoints>0?'':'opacity-20 pointer-events-none'}">+</button>
-      </div>
-    `;
-    statsList.appendChild(div);
+    div.innerHTML=`<div class="flex items-center gap-2"><span class="font-mono text-[10px] font-bold w-8">${k}</span><span class="font-mono text-[13px] font-bold">${v}</span></div><div class="flex items-center gap-2"><div class="w-12 h-1 bg-[#0A101E] rounded-full overflow-hidden"><div class="h-full bg-[#00D4FF]" style="width:${Math.min(100,v)}%"></div></div><button data-stat="${k}" class="w-5 h-5 bg-[#00D4FF]/20 border border-[#00D4FF]/40 rounded-[2px] flex items-center justify-center font-mono text-[12px] hover:bg-[#00D4FF] hover:text-black transition ${state.statPoints>0?'':'opacity-20 pointer-events-none'}">+</button></div>`;
+    list.appendChild(div);
   });
-  statsList.querySelectorAll('.stat-plus').forEach(b=>{
-    b.onclick = ()=>{
-      if(state.statPoints<=0) return;
-      const s = b.dataset.stat;
-      state.stats[s]++; state.statPoints--;
-      save(); renderStatus();
-      addLog(`[SYSTEM] ${s} increased to ${state.stats[s]}.`, '#00D4FF');
-    };
+  list.querySelectorAll('button').forEach(b=>b.onclick=()=>{if(state.statPoints<=0)return;const s=b.dataset.stat;state.stats[s]++;state.statPoints--;save();renderStatus();addLog(`[SYSTEM] ${s} increased to ${state.stats[s]}.`,'#00D4FF')});
+  renderShadows();renderBuffs();renderCalendarPreview();
+}
+
+function renderShadows(){
+  const grid=document.getElementById('shadowGrid');grid.innerHTML='';
+  const shadows = state.shadowList.length? state.shadowList : Array(state.shadows).fill(null).map((_,i)=>({name:`Shadow ${i+1}`,icon:['💀','👤','⚔️','🛡️'][i%4]}));
+  for(let i=0;i<8;i++){
+    const s=shadows[i];
+    const div=document.createElement('div');
+    div.className=`aspect-square bg-black/40 border ${s?'border-[#00D4FF]/30 bg-[#00D4FF]/5':'border-[#1A2F5A] opacity-30'} rounded-[4px] flex flex-col items-center justify-center text-[14px] relative`;
+    if(s){div.innerHTML=`<span class="text-[18px]">${s.icon}</span><span class="font-mono text-[7px] mt-1 text-white/40">${s.name.slice(0,8)}</span><span class="absolute -top-1 -right-1 w-3 h-3 bg-[#00D4FF] rounded-full flex items-center justify-center text-[7px] text-black font-bold">S</span>`;div.title=s.name}
+    else div.innerHTML='?';
+    grid.appendChild(div);
+  }
+}
+
+function renderBuffs(){
+  const list=document.getElementById('buffsList');
+  const active=state.buffs.filter(b=>b.expires>Date.now());
+  if(!active.length){list.innerHTML='<span class="font-mono text-[9px] text-white/20">No buffs active</span>';return}
+  list.innerHTML='';
+  active.forEach(b=>{
+    const mins=Math.ceil((b.expires-Date.now())/60000);
+    const div=document.createElement('div');
+    div.className='px-2 py-1 rounded-[2px] bg-[#00D4FF]/10 border border-[#00D4FF]/20 font-mono text-[9px] flex items-center gap-1';
+    div.innerHTML=`<span>${b.icon}</span><span class="text-[#00D4FF]">${b.name}</span><span class="text-white/30">${mins}m</span>`;
+    list.appendChild(div);
   });
 }
 
-// ---------- RENDER QUEST ----------
 function renderQuest(){
-  const now = new Date();
-  const quest = getQuestForHour(now);
-  const slot = `${now.getHours().toString().padStart(2,'0')}:00 — ${(now.getHours()+1)%24===0?0:(now.getHours()+1)%24}:00`.padStart(2,'0');
-  document.getElementById('questTimeSlot').textContent = `${now.getHours().toString().padStart(2,'0')}:00 — ${((now.getHours()+1)%24).toString().padStart(2,'0')}:00`;
-  document.getElementById('questTitle').textContent = quest.name;
-  document.getElementById('questDesc').textContent = quest.desc;
-  document.getElementById('questIcon').textContent = quest.icon;
-  document.getElementById('questRank').textContent = `${quest.rank}-RANK`;
-  document.getElementById('questRank').className = `px-2 py-0.5 rounded-[2px] text-[9px] font-mono font-bold ${quest.rank==='E'?'bg-[#00D4FF] text-black':quest.rank==='D'?'bg-[#8B5CF6] text-white':quest.rank==='C'?'bg-[#FF8C00] text-black':quest.rank==='B'?'bg-[#FF2A2A] text-white':'bg-[#FFD700] text-black'}`;
-  document.getElementById('rewardExp').textContent = `+${quest.exp}`;
-  document.getElementById('rewardStat').textContent = `${quest.stat} +1`;
-  document.getElementById('rewardTime').textContent = `${quest.dur} MIN`;
-  
-  const objs = document.getElementById('questObjectives');
-  objs.innerHTML='';
-  quest.objs.forEach((o,i)=>{
-    const d = document.createElement('div');
-    d.className='flex gap-3 items-start';
-    d.innerHTML=`<span class="w-5 h-5 rounded-[2px] bg-[#0A101E] border border-[#1A2F5A] flex items-center justify-center font-mono text-[10px] shrink-0">${i+1}</span><span class="font-mono text-[12px] leading-[1.4] text-white/70">${o}</span>`;
-    objs.appendChild(d);
-  });
-
-  const key = getHourKey();
-  const done = !!state.completed[key];
-  const btn = document.getElementById('acceptBtn');
-  if(done){
-    btn.innerHTML='✓ QUEST COMPLETED'; btn.disabled=true; btn.className='flex-1 min-h-[52px] bg-[#0A101E] border border-[#1A2F5A] text-white/30 font-display font-bold tracking-[0.1em] text-[13px] rounded-[4px] flex items-center justify-center gap-2';
-    document.getElementById('questStatusText').textContent='Quest completed. The System acknowledges your growth.';
-  } else {
-    btn.disabled=false;
-    btn.className='flex-1 min-h-[52px] bg-[#00D4FF] text-black font-display font-black tracking-[0.1em] text-[13px] rounded-[4px] hover:bg-[#00E5FF] transition flex items-center justify-center gap-2 glow-border';
-    btn.innerHTML = state.timerRunning ? '⏸ PAUSE QUEST' : '▶ ACCEPT QUEST';
-    document.getElementById('questStatusText').textContent = state.timerRunning ? 'Quest in progress. Do not falter, Hunter.' : 'The System is watching. Prove your worth, Hunter.';
-  }
-
-  if(!state.timerRunning){
-    state.timerTotal = quest.dur*60;
-    state.timerSec = quest.dur*60;
-    updateQuestTimer();
-  }
-
-  const nextHour = new Date(now); nextHour.setHours(now.getHours()+1,0,0,0);
-  const nextQ = getQuestForHour(nextHour);
-  document.getElementById('nextQuestPreview').textContent = `${nextQ.name} • ${nextQ.dur} min`;
+  const now=new Date();const quest=getQuestForHour(now);
+  document.getElementById('questTimeSlot').textContent=`${now.getHours().toString().padStart(2,'0')}:00 — ${((now.getHours()+1)%24).toString().padStart(2,'0')}:00`;
+  document.getElementById('questTitle').textContent=quest.name;
+  document.getElementById('questDesc').textContent=quest.desc;
+  document.getElementById('questIcon').textContent=quest.icon;
+  document.getElementById('questRank').textContent=`${quest.rank}-RANK`;
+  document.getElementById('questRank').className=`px-2 py-0.5 rounded-[2px] text-[9px] font-mono font-bold ${quest.rank==='E'?'bg-[#00D4FF] text-black':quest.rank==='D'?'bg-[#8B5CF6] text-white':quest.rank==='C'?'bg-[#FF8C00] text-black':quest.rank==='B'?'bg-[#FF2A2A] text-white':'bg-[#FFD700] text-black'}`;
+  document.getElementById('rewardExp').textContent=`+${quest.exp}${hasBuff('exp_boost')?' x2':''}`;
+  document.getElementById('rewardStat').textContent=`${quest.stat} +1`;
+  document.getElementById('rewardGold').textContent=`+${quest.gold}G${hasBuff('blessing')?' +100':''}`;
+  document.getElementById('rewardTime').textContent=`${quest.dur} MIN`;
+  document.getElementById('questGold').textContent=`+${quest.gold}G`;
+  const objs=document.getElementById('questObjectives');objs.innerHTML='';
+  quest.objs.forEach((o,i)=>{const d=document.createElement('div');d.className='flex gap-3 items-start';d.innerHTML=`<span class="w-5 h-5 rounded-[2px] bg-[#0A101E] border border-[#1A2F5A] flex items-center justify-center font-mono text-[10px] shrink-0">${i+1}</span><span class="font-mono text-[11px] leading-[1.4] text-white/70">${o}</span>`;objs.appendChild(d)});
+  const key=getHourKey();const done=!!state.completed[key];const btn=document.getElementById('acceptBtn');
+  if(done){btn.innerHTML='✓ QUEST COMPLETED';btn.disabled=true;btn.className='flex-1 min-h-[48px] bg-[#0A101E] border border-[#1A2F5A] text-white/30 font-display font-bold text-[12px] rounded-[4px] flex items-center justify-center gap-2';document.getElementById('questStatusText').textContent='Quest completed. System acknowledges growth.'}
+  else{btn.disabled=false;btn.className='flex-1 min-h-[48px] bg-[#00D4FF] text-black font-display font-black text-[12px] rounded-[4px] hover:bg-[#00E5FF] transition flex items-center justify-center gap-2';btn.innerHTML=state.timerRunning?'⏸ PAUSE QUEST':'▶ ACCEPT QUEST';document.getElementById('questStatusText').textContent=state.timerRunning?'Quest in progress. Do not falter, Hunter.':'The System is watching. Prove worth, Hunter.'}
+  if(!state.timerRunning){state.timerTotal=quest.dur*60+(state.skillsUnlocked.includes('iron_will')?60:0);state.timerSec=quest.dur*60+(state.skillsUnlocked.includes('iron_will')?60:0);updateQuestTimer()}
+  const nextHour=new Date(now);nextHour.setHours(now.getHours()+1,0,0,0);const nextQ=getQuestForHour(nextHour);document.getElementById('nextQuestPreview').textContent=`${nextQ.name} • ${nextQ.dur} min`;
 }
 
 function updateQuestTimer(){
-  const m = Math.floor(state.timerSec/60).toString().padStart(2,'0');
-  const s = (state.timerSec%60).toString().padStart(2,'0');
-  document.getElementById('questTimerDisplay').textContent = `${m}:${s}`;
-  const pct = state.timerTotal? ((state.timerTotal-state.timerSec)/state.timerTotal)*100 : 0;
-  document.getElementById('questProgress').style.strokeDashoffset = 263.8 - (263.8*pct/100);
-  document.getElementById('questMiniBar').style.width = `${pct}%`;
-  document.getElementById('questPercent').textContent = `${Math.floor(pct)}%`;
+  const m=Math.floor(state.timerSec/60).toString().padStart(2,'0');const s=(state.timerSec%60).toString().padStart(2,'0');
+  document.getElementById('questTimerDisplay').textContent=`${m}:${s}`;
+  const pct=state.timerTotal?((state.timerTotal-state.timerSec)/state.timerTotal)*100:0;
+  document.getElementById('questProgress').style.strokeDashoffset=238.7-(238.7*pct/100);
+  document.getElementById('questMiniBar').style.width=`${pct}%`;
+  document.getElementById('questPercent').textContent=`${Math.floor(pct)}%`;
 }
 
-// ---------- QUEST LOG ----------
 function renderQuestLog(){
-  const log = document.getElementById('questLog');
-  log.innerHTML='';
-  const today = getToday();
-  let completedToday=0, failedToday=0;
-  for(let h=6; h<=23; h++){
-    const d = new Date(); d.setHours(h,0,0,0);
-    const key = `${today}-${h}`;
-    const q = getQuestForHour(d);
-    const isCurrent = h===new Date().getHours();
-    const isDone = !!state.completed[key];
-    const isFailed = !!state.failed[key];
-    const isPast = h<new Date().getHours();
-    if(isDone) completedToday++;
-    if(isFailed) failedToday++;
-
-    const item = document.createElement('div');
-    item.className=`quest-item group flex items-center gap-2.5 p-2.5 rounded-[2px] border bg-[#02040A] border-[#1A2F5A]/30 cursor-pointer hover:border-[#1A2F5A] transition ${isCurrent?'active':''} ${isDone?'completed':''} ${isFailed?'failed':''}`;
-    item.innerHTML=`
-      <div class="w-8 h-8 rounded-[2px] ${isCurrent?'bg-[#00D4FF] text-black':'bg-[#0A101E] border border-[#1A2F5A]'} flex items-center justify-center text-[14px] shrink-0 relative">
-        ${q.icon}
-        ${isDone?'<div class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-500 rounded-full flex items-center justify-center"><span class="text-[8px] text-black font-bold">✓</span></div>':''}
-        ${isFailed?'<div class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-[#FF2A2A] rounded-full flex items-center justify-center"><span class="text-[8px] text-white font-bold">✕</span></div>':''}
-      </div>
-      <div class="flex-1 min-w-0">
-        <div class="flex items-center gap-1.5">
-          <span class="font-mono text-[9px] ${isCurrent?'text-black/60':'text-white/30'}">${h.toString().padStart(2,'0')}:00</span>
-          ${isCurrent?'<span class="font-mono text-[8px] font-bold tracking-widest bg-black text-[#00D4FF] px-1 rounded-[1px]">NOW</span>':''}
-          <span class="font-mono text-[8px] px-1 rounded-[1px] ${q.rank==='E'?'bg-[#00D4FF]/20 text-[#00D4FF]':'bg-[#FF2A2A]/20 text-[#FF2A2A]'}">${q.rank}</span>
-        </div>
-        <div class="font-mono text-[11px] font-bold truncate ${isCurrent?'text-black':'text-white/80'}">${q.name.split(':')[0]}</div>
-        <div class="font-mono text-[9px] ${isCurrent?'text-black/50':'text-white/30'}">${q.stat} • ${q.dur}m • ${q.exp}EXP</div>
-      </div>
-    `;
+  const log=document.getElementById('questLog');log.innerHTML='';const today=getToday();let doneToday=0,failToday=0;
+  for(let h=6;h<=23;h++){const d=new Date();d.setHours(h,0,0,0);const key=`${today}-${h}`;const q=getQuestForHour(d);const isCurrent=h===new Date().getHours();const isDone=!!state.completed[key];const isFailed=!!state.failed[key];if(isDone)doneToday++;if(isFailed)failToday++;
+    const item=document.createElement('div');item.className=`quest-item group flex items-center gap-2.5 p-2.5 rounded-[2px] border bg-[#02040A] border-[#1A2F5A]/30 cursor-pointer hover:border-[#1A2F5A] transition ${isCurrent?'active':''} ${isDone?'completed':''} ${isFailed?'failed':''}`;
+    item.innerHTML=`<div class="w-8 h-8 rounded-[2px] ${isCurrent?'bg-[#00D4FF] text-black':'bg-[#0A101E] border border-[#1A2F5A]'} flex items-center justify-center text-[14px] shrink-0 relative">${q.icon}${isDone?'<div class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-500 rounded-full flex items-center justify-center"><span class="text-[8px] text-black font-bold">✓</span></div>':''}${isFailed?'<div class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-[#FF2A2A] rounded-full flex items-center justify-center"><span class="text-[8px] text-white font-bold">✕</span></div>':''}</div><div class="flex-1 min-w-0"><div class="flex items-center gap-1.5"><span class="font-mono text-[9px] ${isCurrent?'text-black/60':'text-white/30'}">${h.toString().padStart(2,'0')}:00</span>${isCurrent?'<span class="font-mono text-[8px] font-bold tracking-widest bg-black text-[#00D4FF] px-1 rounded-[1px]">NOW</span>':''}<span class="font-mono text-[8px] px-1 rounded-[1px] ${q.rank==='E'?'bg-[#00D4FF]/20 text-[#00D4FF]':'bg-[#FF2A2A]/20 text-[#FF2A2A]'}">${q.rank}</span></div><div class="font-mono text-[11px] font-bold truncate ${isCurrent?'text-black':'text-white/80'}">${q.name.split(':')[0]}</div><div class="font-mono text-[9px] ${isCurrent?'text-black/50':'text-white/30'}">${q.stat} • ${q.dur}m • ${q.exp}EXP</div></div>`;
     log.appendChild(item);
   }
-  document.getElementById('dailyQuestCount').textContent = `${completedToday}/8`;
-  document.getElementById('dailyProgressText').textContent = `${Math.floor((completedToday/8)*100)}%`;
-  document.getElementById('dailyProgressBar').style.width = `${(completedToday/8)*100}%`;
-  document.getElementById('tz').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  document.getElementById('dailyQuestCount').textContent=`${doneToday}/8`;
+  document.getElementById('dailyProgressText').textContent=`${Math.floor((doneToday/8)*100)}%`;
+  document.getElementById('dailyProgressBar').style.width=`${(doneToday/8)*100}%`;
+  document.getElementById('tz').textContent=Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const penalty=document.getElementById('penaltyWarning');if(failToday>=3||(new Date().getHours()>=20&&doneToday<3))penalty.classList.remove('hidden');else penalty.classList.add('hidden');
+  if(doneToday>=8&&!localStorage.getItem(`daily-reward-${today}`)){localStorage.setItem(`daily-reward-${today}`,'1');const bonus=hasBuff('blessing')?100:0;state.exp+=500;state.gold+=200+bonus;state.totalGold+=200+bonus;state.statPoints+=3;state.shadows++;state.shadowList.push({name:`Shadow ${state.shadows}`,icon:['💀','👤','⚔️','🛡️','🐺'][state.shadows%5]});save();renderStatus();addLog(`[DAILY QUEST COMPLETE] +500 EXP, +${200+bonus}G, +3 Points, Shadow Extracted.`,'#FFD700');showToast('DAILY QUEST COMPLETE! +500 EXP • Shadow Army +1');if(state.exp>=expNeeded(state.level))checkLevelUp();checkAchievements()}
+}
 
-  const penalty = document.getElementById('penaltyWarning');
-  if(failedToday>=3 || (new Date().getHours()>=20 && completedToday<3)){
-    penalty.classList.remove('hidden');
-  } else penalty.classList.add('hidden');
+function renderShop(){
+  const grid=document.getElementById('shopGrid');grid.innerHTML='';
+  SHOP_ITEMS.forEach(item=>{
+    const owned=state.inventory[item.id]||0;
+    const div=document.createElement('div');
+    div.className='bg-black/40 border border-[#1A2F5A] rounded-[4px] p-4 flex gap-3';
+    div.innerHTML=`<div class="w-12 h-12 bg-[#0A101E] border border-[#1A2F5A] rounded-[4px] flex items-center justify-center text-[22px] shrink-0">${item.icon}</div><div class="flex-1"><div class="flex items-center justify-between"><span class="font-display font-bold text-[13px]">${item.name}</span><span class="font-mono text-[10px] bg-[#FFD700]/20 text-[#FFD700] border border-[#FFD700]/30 px-2 py-0.5 rounded-[2px]">${item.price}G</span></div><div class="font-mono text-[11px] text-white/50 mt-1 leading-[1.3]">${item.desc}</div><div class="mt-2 flex items-center justify-between"><span class="font-mono text-[9px] text-white/30">OWNED: ${owned}</span><button data-id="${item.id}" class="buy-btn h-7 px-3 bg-[#00D4FF] text-black font-mono text-[10px] font-bold rounded-[2px] hover:bg-[#00E5FF]">BUY</button></div></div>`;
+    grid.appendChild(div);
+  });
+  grid.querySelectorAll('.buy-btn').forEach(b=>b.onclick=()=>buyItem(b.dataset.id));
+}
 
-  // daily reward check
-  if(completedToday>=8 && !localStorage.getItem(`daily-reward-${today}`)){
-    localStorage.setItem(`daily-reward-${today}`,'1');
-    state.exp+=500; state.statPoints+=3; state.shadows++;
-    save(); renderStatus();
-    addLog(`[DAILY QUEST COMPLETE] All 8 quests cleared! +500 EXP, +3 Stat Points, Shadow Extracted.`, '#FFD700');
-    showToast('DAILY QUEST COMPLETE! +500 EXP • Shadow Army +1');
-    if(state.exp>=expNeeded(state.level)) checkLevelUp();
+function renderSkills(){
+  const grid=document.getElementById('skillsGrid');grid.innerHTML='';
+  SKILLS.forEach(skill=>{
+    const unlocked=state.skillsUnlocked.includes(skill.id);
+    const canUnlock=state.level>=skill.level;
+    const onCd=state.skillsCd[skill.id]&&state.skillsCd[skill.id]>Date.now();
+    const cdText=onCd?`${Math.ceil((state.skillsCd[skill.id]-Date.now())/60000)}m CD`:'READY';
+    const div=document.createElement('div');
+    div.className=`bg-black/40 border rounded-[4px] p-4 flex gap-3 ${unlocked?'border-[#00D4FF]/40 bg-[#00D4FF]/5':'border-[#1A2F5A] opacity-70'}`;
+    div.innerHTML=`<div class="w-12 h-12 bg-[#0A101E] border border-[#1A2F5A] rounded-[4px] flex items-center justify-center text-[22px] shrink-0">${skill.icon}</div><div class="flex-1"><div class="flex items-center justify-between"><span class="font-display font-bold text-[13px]">${skill.name}</span><span class="font-mono text-[9px] px-2 py-0.5 rounded-[2px] ${unlocked?'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30':canUnlock?'bg-[#FFD700]/20 text-[#FFD700] border border-[#FFD700]/30':'bg-[#1A2F5A] text-white/30'}">${unlocked?'UNLOCKED':canUnlock?'UNLOCK':'Lv.'+skill.level}</span></div><div class="font-mono text-[11px] text-white/50 mt-1 leading-[1.3]">${skill.desc}</div><div class="mt-2 flex items-center justify-between"><span class="font-mono text-[9px] text-white/30">${skill.passive?'PASSIVE':'CD: '+skill.cd} • ${onCd?cdText:'READY'}</span>${!unlocked&&canUnlock?`<button data-skill="${skill.id}" class="unlock-btn h-6 px-3 bg-[#FFD700] text-black font-mono text-[10px] font-bold rounded-[2px]">UNLOCK (100G)</button>`:unlocked&&!skill.passive&&!onCd?`<button data-use="${skill.id}" class="use-btn h-6 px-3 bg-[#00D4FF] text-black font-mono text-[10px] font-bold rounded-[2px]">USE</button>`:`<span class="font-mono text-[9px] text-white/20">${onCd?cdText:''}</span>`}</div></div>`;
+    grid.appendChild(div);
+  });
+  grid.querySelectorAll('.unlock-btn').forEach(b=>b.onclick=()=>unlockSkill(b.dataset.skill));
+  grid.querySelectorAll('.use-btn').forEach(b=>b.onclick=()=>useSkill(b.dataset.use));
+}
+
+function renderAchievements(){
+  const list=document.getElementById('achievementsList');list.innerHTML='';let unlockedCount=0;
+  ACHIEVEMENTS.forEach(ach=>{
+    const unlocked=!!state.achievements[ach.id]||ach.cond(state);
+    if(unlocked&&!state.achievements[ach.id]){state.achievements[ach.id]=true;save();addLog(`[ACHIEVEMENT UNLOCKED] ${ach.name} — ${ach.desc}`,'#FFD700');showToast(`🏆 ${ach.name} unlocked! ${ach.reward}`);if(ach.id==='secret_found')state.gold+=500;if(ach.id==='gold_1000')state.gold+=100}
+    if(unlocked)unlockedCount++;
+    const div=document.createElement('div');
+    div.className=`flex items-center gap-3 p-3 rounded-[4px] border ${unlocked?'bg-[#FFD700]/5 border-[#FFD700]/20':'bg-black/20 border-[#1A2F5A]/30 opacity-50'}`;
+    div.innerHTML=`<div class="w-10 h-10 rounded-[4px] bg-[#0A101E] border border-[#1A2F5A] flex items-center justify-center text-[18px]">${ach.icon}</div><div class="flex-1"><div class="font-display font-bold text-[12px]">${ach.name}</div><div class="font-mono text-[10px] text-white/40">${ach.desc}</div></div><div class="text-right"><div class="font-mono text-[9px] px-2 py-0.5 rounded-[2px] ${unlocked?'bg-[#FFD700] text-black':'bg-[#1A2F5A] text-white/30'}">${unlocked?'DONE':ach.reward}</div></div>`;
+    list.appendChild(div);
+  });
+  document.getElementById('achCount').textContent=`${unlockedCount}/${ACHIEVEMENTS.length}`;
+  document.getElementById('achPreview').textContent=`${unlockedCount}/${ACHIEVEMENTS.length}`;
+}
+
+function renderCalendar(){
+  const grid=document.getElementById('calendarGrid');grid.innerHTML='';
+  const today=new Date();const year=today.getFullYear();const month=today.getMonth();
+  const firstDay=new Date(year,month,1);const lastDay=new Date(year,month+1,0);
+  const startDay=(firstDay.getDay()+6)%7; // Monday start
+  for(let i=0;i<startDay;i++){const d=document.createElement('div');d.className='aspect-square';grid.appendChild(d)}
+  let total=0;
+  for(let d=1;d<=lastDay.getDate();d++){
+    const date=new Date(year,month,d);
+    const key=date.toISOString().slice(0,10);
+    const count=Object.keys(state.completed).filter(k=>k.startsWith(key)).length;
+    total+=count;
+    const div=document.createElement('div');
+    const intensity=count===0?0:count<3?1:count<6?2:3;
+    const bg=['bg-[#0A101E] border-[#1A2F5A]/30','bg-[#00D4FF]/10 border-[#00D4FF]/20','bg-[#00D4FF]/30 border-[#00D4FF]/40','bg-[#00D4FF] border-[#00D4FF] text-black'][intensity];
+    div.className=`aspect-square rounded-[4px] border flex flex-col items-center justify-center font-mono text-[10px] ${bg}`;
+    div.innerHTML=`<span>${d}</span><span class="text-[8px]">${count?count:''}</span>`;
+    grid.appendChild(div);
+  }
+  document.getElementById('calendarTotal').textContent=`${total} quests`;
+  document.getElementById('calendarStreak').textContent=`${state.streak} days`;
+}
+
+function renderCalendarPreview(){document.getElementById('calendarPreview').textContent=`${state.streak} day streak`}
+
+function renderDungeonAlert(){
+  const container=document.getElementById('globalAlerts');container.innerHTML='';
+  if(state.dungeonActive){
+    const timeLeft=Math.max(0, Math.floor((state.dungeonActive.expires-Date.now())/1000));
+    const m=Math.floor(timeLeft/60).toString().padStart(2,'0');const s=(timeLeft%60).toString().padStart(2,'0');
+    const div=document.createElement('div');
+    div.className='system-window rounded-[4px] p-3 border-[#FF8C00]/50 flex items-center justify-between gate-pulse';
+    div.innerHTML=`<div class="flex items-center gap-3"><span class="text-[18px]">🌀</span><div><div class="font-display font-bold text-[12px] tracking-widest">${state.dungeonActive.data.name} — ${state.dungeonActive.data.rank}-RANK GATE OPEN</div><div class="font-mono text-[10px] text-white/50">${state.dungeonActive.data.desc} • Expires in ${m}:${s}</div></div></div><button onclick="openDungeonModal()" class="h-8 px-4 bg-[#FF8C00] text-black font-mono text-[11px] font-bold rounded-[2px]">ENTER GATE</button>`;
+    container.appendChild(div);
+  }
+  if(state.secretActive){
+    const div=document.createElement('div');
+    div.className='system-window rounded-[4px] p-3 border-[#8B5CF6]/50 flex items-center justify-between';
+    div.style.boxShadow='0 0 20px rgba(139,92,246,0.3)';
+    div.innerHTML=`<div class="flex items-center gap-3"><span class="text-[18px]">🕳️</span><div><div class="font-display font-bold text-[12px] tracking-widest text-[#8B5CF6]">DOUBLE DUNGEON DETECTED — SECRET QUEST</div><div class="font-mono text-[10px] text-white/50">You found a hidden double dungeon! Clear it for 500G + rare shadow.</div></div></div><button onclick="startSecretDungeon()" class="h-8 px-4 bg-[#8B5CF6] text-white font-mono text-[11px] font-bold rounded-[2px]">ENTER</button>`;
+    container.appendChild(div);
+  }
+  if(state.bossActive){
+    const timeLeft=Math.max(0, Math.floor((state.bossActive.expires-Date.now())/1000));
+    const m=Math.floor(timeLeft/60).toString().padStart(2,'0');const s=(timeLeft%60).toString().padStart(2,'0');
+    const div=document.createElement('div');
+    div.className='system-window rounded-[4px] p-3 border-[#FF2A2A]/50 flex items-center justify-between';
+    div.innerHTML=`<div class="flex items-center gap-3"><span class="text-[18px]">${state.bossActive.data.icon}</span><div><div class="font-display font-bold text-[12px] tracking-widest text-[#FF2A2A]">BOSS RAID: ${state.bossActive.data.name} — HP ${state.bossActive.hp}%</div><div class="font-mono text-[10px] text-white/50">Defeat before ${m}:${s} or gate breaks. Attack by completing quests.</div></div></div><button onclick="document.getElementById('bossRaidBar').scrollIntoView({behavior:'smooth'})" class="h-8 px-4 bg-[#FF2A2A] text-white font-mono text-[11px] font-bold rounded-[2px]">FIGHT</button>`;
+    container.appendChild(div);
   }
 }
 
-// ---------- SYSTEM LOG ----------
-function addLog(msg, color='#fff'){
-  const log = document.getElementById('systemLog');
-  const div = document.createElement('div');
-  div.style.color=color;
-  div.textContent=`[${new Date().toLocaleTimeString()}] ${msg}`;
-  log.appendChild(div);
-  log.scrollTop = log.scrollHeight;
+// ---------- ACTIONS ----------
+function buyItem(id){
+  const item=SHOP_ITEMS.find(i=>i.id===id);
+  if(!item)return;
+  if(state.gold<item.price){showToast('Not enough gold!');return}
+  state.gold-=item.price;
+  state.inventory[id]=(state.inventory[id]||0)+1;
+  save();renderStatus();renderShop();
+  addLog(`[SHOP] Purchased ${item.name} for ${item.price}G.`,'#FFD700');
+  showToast(`Purchased ${item.name}!`);
+  // instant effects for some
+  if(id==='hp_potion'){state.fatigue=Math.max(0,state.fatigue-40);save();renderStatus();addLog('[ITEM USED] HP Potion — fatigue -40%',' #00D4FF')}
 }
 
-// ---------- TIMER ----------
+function unlockSkill(id){
+  const skill=SKILLS.find(s=>s.id===id);
+  if(!skill||state.skillsUnlocked.includes(id))return;
+  if(state.gold<100){showToast('Need 100G to unlock skill');return}
+  if(state.level<skill.level){showToast(`Need Lv.${skill.level}`);return}
+  state.gold-=100;state.skillsUnlocked.push(id);save();renderSkills();renderStatus();
+  addLog(`[SKILL UNLOCKED] ${skill.name} — ${skill.desc}`,'#00D4FF');showToast(`Skill unlocked: ${skill.name}!`);
+}
+
+function useSkill(id){
+  const skill=SKILLS.find(s=>s.id===id);
+  if(!skill||!state.skillsUnlocked.includes(id))return;
+  if(state.skillsCd[id]&&state.skillsCd[id]>Date.now()){showToast('Skill on cooldown');return}
+  if(id==='stealth'){
+    // skip current quest without penalty
+    const key=getHourKey();
+    if(state.completed[key]){showToast('Quest already done');return}
+    state.completed[key]=true;state.gold+=getQuestForHour().gold;save();renderQuest();renderQuestLog();renderStatus();
+    state.skillsCd[id]=Date.now()+24*3600000;save();addLog('[SKILL] Stealth — quest skipped without penalty','#00D4FF');showToast('Stealth used — quest skipped!');
+  }
+  if(id==='monarch_domain'){
+    addBuff('monarch_domain',"Monarch's Domain",10,'🏰');addBuff('exp_boost','Double EXP',10,'📜');state.skillsCd[id]=Date.now()+2*3600000;save();renderSkills();showToast("Monarch's Domain active — 2x EXP/Gold 10min!");
+  }
+  if(id==='bloodlust'){
+    completeQuest(true);state.skillsCd[id]=Date.now()+24*3600000;save();renderSkills();showToast('Bloodlust — quest instantly completed!');
+  }
+  if(id==='shadow_exchange'){
+    const key=getHourKey();
+    if(state.shadows<=0){showToast('No shadows!');return}
+    state.completed[key]=true;save();renderQuest();renderQuestLog();state.skillsCd[id]=Date.now()+12*3600000;save();renderSkills();showToast('Shadow Exchange — shadow completed quest!');
+  }
+}
+
+function openDungeonModal(){
+  if(!state.dungeonActive)return;
+  const d=state.dungeonActive.data;
+  document.getElementById('dungeonRank').textContent=`${d.rank}-RANK GATE`;
+  document.getElementById('dungeonName').textContent=d.name;
+  document.getElementById('dungeonDesc').textContent=d.desc;
+  const floors=document.getElementById('dungeonFloors');floors.innerHTML='';
+  for(let i=1;i<=d.floors;i++){
+    const div=document.createElement('div');
+    const done=i<=state.dungeonActive.progress;
+    div.className=`flex items-center gap-3 p-3 rounded-[4px] border ${done?'bg-emerald-500/10 border-emerald-500/30':'bg-black/40 border-[#1A2F5A]'}`;
+    div.innerHTML=`<div class="w-8 h-8 rounded-[2px] ${done?'bg-emerald-500 text-black':'bg-[#0A101E] border border-[#1A2F5A]'} flex items-center justify-center font-mono text-[12px]">${done?'✓':i}</div><div class="flex-1"><div class="font-mono text-[11px] font-bold">Floor ${i} — ${['Goblins','Orcs','Boss'][Math.min(2,i-1)]}</div><div class="font-mono text-[9px] text-white/40">${done?'Cleared':'Clear hourly quest to advance'}</div></div><span class="font-mono text-[10px] ${done?'text-emerald-400':'text-white/20'}">${done?'DONE':'LOCKED'}</span>`;
+    floors.appendChild(div);
+  }
+  document.getElementById('dungeonModal').classList.remove('hidden');document.getElementById('dungeonModal').classList.add('flex');
+}
+
+function spawnDungeon(){
+  if(state.dungeonActive)return;
+  const dungeon=DUNGEONS[Math.floor(Math.random()*DUNGEONS.length)];
+  state.dungeonActive={data:dungeon,expires:Date.now()+30*60000,progress:0};
+  renderDungeonAlert();addLog(`[GATE OPEN] ${dungeon.rank}-Rank Gate: ${dungeon.name} has opened! 30 min to clear.`,'#FF8C00');showToast(`🌀 GATE OPEN: ${dungeon.name} [${dungeon.rank}]`);
+  // auto expire check
+  const int=setInterval(()=>{if(!state.dungeonActive){clearInterval(int);return}if(Date.now()>state.dungeonActive.expires){addLog(`[GATE CLOSED] ${state.dungeonActive.data.name} closed. Dungeon break risk increased.`,'#FF2A2A');state.dungeonActive=null;renderDungeonAlert();clearInterval(int)}else renderDungeonAlert()},1000);
+}
+
+function startSecretDungeon(){
+  if(!state.secretActive)return;
+  state.secretActive=false;
+  state.gold+=500;state.totalGold+=500;state.shadows++;state.shadowList.push({name:'Secret Shadow',icon:'🕳️'});state.secretFound=true;save();
+  renderStatus();renderDungeonAlert();addLog('[SECRET DUNGEON CLEARED] Double dungeon cleared! +500G, +1 rare shadow.',' #8B5CF6');showToast('🕳️ SECRET DUNGEON CLEARED! +500G + Rare Shadow!');
+  checkAchievements();
+}
+
+function spawnBoss(){
+  if(state.bossActive)return;
+  const boss=BOSSES[Math.floor(Math.random()*BOSSES.length)];
+  state.bossActive={data:boss,hp:100,expires:Date.now()+20*60000};
+  document.getElementById('bossRaidBar').classList.remove('hidden');
+  document.getElementById('bossName').textContent=boss.name;
+  document.getElementById('bossHpBar').style.width='100%';
+  document.getElementById('bossHpText').textContent='HP 100%';
+  renderDungeonAlert();addLog(`[BOSS RAID] ${boss.name} has appeared! Defeat in 20 min.`,'#FF2A2A');showToast(`⚔️ BOSS RAID: ${boss.name} appeared!`);
+  const int=setInterval(()=>{if(!state.bossActive){clearInterval(int);return}const left=Math.max(0,Math.floor((state.bossActive.expires-Date.now())/1000));const m=Math.floor(left/60).toString().padStart(2,'0');const s=(left%60).toString().padStart(2,'0');document.getElementById('bossTimer').textContent=`${m}:${s}`;document.getElementById('bossHpBar').style.width=`${state.bossActive.hp}%`;document.getElementById('bossHpText').textContent=`HP ${state.bossActive.hp}%`;if(Date.now()>state.bossActive.expires){addLog(`[BOSS ESCAPED] ${state.bossActive.data.name} escaped. Gate break imminent.`,'#FF2A2A');state.bossActive=null;document.getElementById('bossRaidBar').classList.add('hidden');renderDungeonAlert();clearInterval(int)}},1000);
+}
+
+function attackBoss(){
+  if(!state.bossActive)return;
+  // each quest complete = 25% damage
+  state.bossActive.hp-=25;
+  if(state.bossActive.hp<=0){
+    const boss=state.bossActive.data;
+    state.gold+=boss.gold;state.totalGold+=boss.gold;state.exp+=boss.exp;state.bossesDefeated++;state.shadows++;state.shadowList.push({name:boss.name,icon:boss.icon});
+    save();renderStatus();addLog(`[BOSS DEFEATED] ${boss.name} defeated! +${boss.exp} EXP, +${boss.gold}G, Shadow extracted.`,'#FFD700');showToast(`⚔️ ${boss.name} DEFEATED! +${boss.gold}G + Shadow!`);
+    state.bossActive=null;document.getElementById('bossRaidBar').classList.add('hidden');renderDungeonAlert();
+    if(state.exp>=expNeeded(state.level))checkLevelUp();
+    checkAchievements();
+  } else {
+    document.getElementById('bossHpBar').style.width=`${state.bossActive.hp}%`;document.getElementById('bossHpText').textContent=`HP ${state.bossActive.hp}%`;
+    addLog(`[BOSS] ${state.bossActive.data.name} HP ${state.bossActive.hp}% — Keep attacking!`,'#FF2A2A');
+  }
+}
+
+function checkAchievements(){renderAchievements()}
+
+function closeModal(id){document.getElementById(id).classList.add('hidden');document.getElementById(id).classList.remove('flex')}
+
+function addLog(msg,color='#fff'){const log=document.getElementById('systemLog');const div=document.createElement('div');div.style.color=color;div.textContent=`[${new Date().toLocaleTimeString()}] ${msg}`;log.appendChild(div);log.scrollTop=log.scrollHeight}
+
+function showToast(msg){const t=document.getElementById('toast');document.getElementById('toastText').textContent=msg;t.style.transform='translate(-50%,0)';setTimeout(()=>{t.style.transform='translate(-50%,150%)'},3500)}
+
+function spawnParticles(){for(let i=0;i<20;i++){const p=document.createElement('div');p.className='shadow-particle';p.style.left='50%';p.style.top='50%';document.body.appendChild(p);const angle=Math.random()*Math.PI*2;const dist=100+Math.random()*200;p.animate([{transform:`translate(-50%,-50%)`,opacity:1},{transform:`translate(calc(-50% + ${Math.cos(angle)*dist}px), calc(-50% + ${Math.sin(angle)*dist}px))`,opacity:0}],{duration:800+Math.random()*400,easing:'cubic-bezier(0.25,0.46,0.45,0.94)'}).onfinish=()=>p.remove()}}
+
+// ---------- TIMER & QUEST ----------
 function startQuest(){
-  const key = getHourKey();
-  if(state.completed[key]) return;
-  if(state.timerRunning){
-    clearInterval(state.timerInt); state.timerRunning=false;
-    document.getElementById('acceptBtn').innerHTML='▶ RESUME QUEST';
-    addLog('[SYSTEM] Quest paused. The dungeon waits for no one.', '#FF8C00');
-    return;
-  }
-  state.timerRunning=true;
-  document.getElementById('acceptBtn').innerHTML='⏸ PAUSE QUEST';
-  addLog(`[QUEST STARTED] ${getQuestForHour().name} — Prove yourself.`, '#00D4FF');
-  state.timerInt = setInterval(()=>{
-    if(state.timerSec>0){
-      state.timerSec--; updateQuestTimer();
-    } else {
-      clearInterval(state.timerInt); state.timerRunning=false;
-      completeQuest(true);
-    }
-  },1000);
+  const key=getHourKey();if(state.completed[key])return;
+  if(state.timerRunning){clearInterval(state.timerInt);state.timerRunning=false;document.getElementById('acceptBtn').innerHTML='▶ RESUME QUEST';addLog('[SYSTEM] Quest paused.',' #FF8C00');return}
+  state.timerRunning=true;document.getElementById('acceptBtn').innerHTML='⏸ PAUSE QUEST';addLog(`[QUEST STARTED] ${getQuestForHour().name}`,'#00D4FF');
+  state.timerInt=setInterval(()=>{if(state.timerSec>0){state.timerSec--;updateQuestTimer()}else{clearInterval(state.timerInt);state.timerRunning=false;completeQuest(true)}},1000);
 }
 
 function completeQuest(auto=false){
-  const key = getHourKey();
-  if(state.completed[key] && !auto) return;
-  const quest = getQuestForHour();
-  state.completed[key]=true;
-  delete state.failed[key];
-  state.exp+=quest.exp;
-  state.stats[quest.stat] = (state.stats[quest.stat]||10)+1;
-  save(); renderQuest(); renderQuestLog(); renderStatus();
-  addLog(`[QUEST COMPLETE] ${quest.name} cleared! +${quest.exp} EXP, ${quest.stat} +1`, '#00D4FF');
-  showToast(`QUEST CLEAR! +${quest.exp} EXP • ${quest.stat} +1`);
-  // particles
-  spawnParticles();
-  if(state.exp>=expNeeded(state.level)) checkLevelUp();
-  else {
-    // check daily
-    const today = getToday();
-    const doneToday = Object.keys(state.completed).filter(k=>k.startsWith(today)).length;
-    if(doneToday===4) addLog('[SYSTEM] Halfway there, Hunter. Keep going.', '#FFD700');
-  }
+  const key=getHourKey();if(state.completed[key]&&!auto)return;
+  const quest=getQuestForHour();state.completed[key]=true;delete state.failed[key];
+  const expGain=quest.exp*(hasBuff('exp_boost')||hasBuff('monarch_domain')?2:1);
+  const goldGain=quest.gold+(hasBuff('blessing')||hasBuff('monarch_domain')?100:0);
+  state.exp+=expGain;state.gold+=goldGain;state.totalGold+=goldGain;state.stats[quest.stat]=(state.stats[quest.stat]||10)+1;
+  state.fatigue=Math.min(100,state.fatigue+5);
+  // dungeon progress
+  if(state.dungeonActive){state.dungeonActive.progress++;if(state.dungeonActive.progress>=state.dungeonActive.data.floors){const d=state.dungeonActive.data;state.gold+=d.gold;state.totalGold+=d.gold;state.exp+=d.exp;state.dungeonsCleared++;state.shadows++;state.shadowList.push({name:d.name,icon:'🌀'});addLog(`[GATE CLEARED] ${d.name} cleared! +${d.exp} EXP, +${d.gold}G, Shadow +1`,'#FF8C00');showToast(`🌀 GATE CLEARED! +${d.gold}G + Shadow!`);state.dungeonActive=null;renderDungeonAlert()} }
+  // boss damage
+  if(state.bossActive){attackBoss()}
+  // secret chance 8%
+  if(Math.random()<0.08&&!state.secretActive){state.secretActive=true;renderDungeonAlert();addLog('[SECRET] Double dungeon detected! Hidden gate opened.',' #8B5CF6');showToast('🕳️ SECRET DOUBLE DUNGEON FOUND!')}
+  // streak
+  const today=getToday();if(state.lastActive!==today){if(state.lastActive){const y=new Date();y.setDate(y.getDate()-1);if(state.lastActive===y.toISOString().slice(0,10)||state.inventory['streak_freeze']>0){if(state.inventory['streak_freeze']>0&&state.lastActive!==y.toISOString().slice(0,10)){state.inventory['streak_freeze']--;addLog('[ITEM] Streak Freeze used — streak saved!',' #00D4FF')}state.streak++}else state.streak=1}else state.streak=1;state.lastActive=today}
+  save();renderQuest();renderQuestLog();renderStatus();spawnParticles();
+  addLog(`[QUEST COMPLETE] ${quest.name} +${expGain} EXP, +${goldGain}G, ${quest.stat} +1`,'#00D4FF');showToast(`QUEST CLEAR! +${expGain} EXP +${goldGain}G`);
+  if(state.exp>=expNeeded(state.level))checkLevelUp();
+  checkAchievements();checkJobChange();
 }
 
 function abandonQuest(){
-  const key = getHourKey();
-  if(state.completed[key]) return;
-  if(!confirm('Abandon quest? Stats will decrease and System will be displeased.')) return;
-  state.failed[key]=true;
-  state.stats[Object.keys(state.stats)[Math.floor(Math.random()*5)]] = Math.max(1, state.stats[Object.keys(state.stats)[Math.floor(Math.random()*5)]]-1);
-  save(); renderQuest(); renderQuestLog(); renderStatus();
-  addLog('[WARNING] Quest abandoned. Stat decreased. The System remembers.', '#FF2A2A');
-  showToast('Quest abandoned • Stat -1 • System displeased');
-  // check penalty
-  const today = getToday();
-  const failedToday = Object.keys(state.failed).filter(k=>k.startsWith(today)).length;
-  if(failedToday>=3){
-    document.getElementById('penaltyModal').classList.remove('hidden');
-    document.getElementById('penaltyModal').classList.add('flex');
-  }
+  const key=getHourKey();if(state.completed[key])return;
+  if(!confirm('Abandon? Stat -1, fatigue +10, System displeased. Use shadow to skip safely.'))return;
+  state.failed[key]=true;const statKeys=Object.keys(state.stats);const rnd=statKeys[Math.floor(Math.random()*statKeys.length)];state.stats[rnd]=Math.max(1,state.stats[rnd]-1);state.fatigue=Math.min(100,state.fatigue+10);save();renderQuest();renderQuestLog();renderStatus();
+  addLog('[WARNING] Quest abandoned. Stat -1, Fatigue +10.',' #FF2A2A');showToast('Quest abandoned • Stat -1');
+  const today=getToday();const failedToday=Object.keys(state.failed).filter(k=>k.startsWith(today)).length;if(failedToday>=3){document.getElementById('penaltyModal').classList.remove('hidden');document.getElementById('penaltyModal').classList.add('flex')}
 }
 
 function checkLevelUp(){
   while(state.exp>=expNeeded(state.level)){
-    state.exp-=expNeeded(state.level);
-    const old = state.level;
-    state.level++;
-    state.statPoints+=5;
-    save();
-    showLevelUp(old, state.level);
-    addLog(`[LEVEL UP] Lv.${old} → Lv.${state.level} • You have grown stronger.`, '#00D4FF');
-    if(getRank(old)!==getRank(state.level)){
-      addLog(`[RANK UP] ${getRank(old)} → ${getRank(state.level)} • New title: ${getTitle(state.level)}`, '#FFD700');
-    }
+    state.exp-=expNeeded(state.level);const old=state.level;state.level++;state.statPoints+=5;save();showLevelUp(old,state.level);addLog(`[LEVEL UP] Lv.${old} → Lv.${state.level}`,'#00D4FF');if(getRank(old)!==getRank(state.level))addLog(`[RANK UP] ${getRank(old)} → ${getRank(state.level)} — ${getTitle(state.level)}`,'#FFD700');
   }
   renderStatus();
 }
 
-function showLevelUp(oldLvl, newLvl){
-  document.getElementById('levelUpInfo').textContent = `Lv. ${oldLvl} → Lv. ${newLvl} • ${getTitle(newLvl)}`;
-  const statsDiv = document.getElementById('levelUpStats');
-  statsDiv.innerHTML='';
-  Object.entries(state.stats).forEach(([k,v])=>{
-    const row = document.createElement('div');
-    row.className='flex justify-between items-center bg-[#02040A] border border-[#1A2F5A]/30 rounded-[2px] px-3 py-2';
-    row.innerHTML=`<span class="font-mono text-[11px]"><span class="font-bold">${k}</span> <span class="text-white/40">${v}</span></span><button data-stat="${k}" class="level-stat-btn w-6 h-6 bg-[#00D4FF] text-black rounded-[2px] font-bold text-[12px]">+</button>`;
-    statsDiv.appendChild(row);
-  });
-  statsDiv.querySelectorAll('.level-stat-btn').forEach(b=>{
-    b.onclick=()=>{
-      const s=b.dataset.stat;
-      state.stats[s]++; state.statPoints--;
-      save(); renderStatus();
-      b.parentElement.querySelector('span').innerHTML=`<span class="font-bold">${s}</span> <span class="text-white/40">${state.stats[s]}</span>`;
-      if(state.statPoints<=0){
-        document.getElementById('levelUpModal').classList.add('hidden');
-        document.getElementById('levelUpModal').classList.remove('flex');
-      }
-    };
-  });
-  document.getElementById('levelUpModal').classList.remove('hidden');
-  document.getElementById('levelUpModal').classList.add('flex');
+function showLevelUp(oldLvl,newLvl){
+  document.getElementById('levelUpInfo').textContent=`Lv. ${oldLvl} → Lv. ${newLvl} • ${getTitle(newLvl)}`;
+  const statsDiv=document.getElementById('levelUpStats');statsDiv.innerHTML='';
+  Object.entries(state.stats).forEach(([k,v])=>{const row=document.createElement('div');row.className='flex justify-between items-center bg-[#02040A] border border-[#1A2F5A]/30 rounded-[2px] px-3 py-2';row.innerHTML=`<span class="font-mono text-[11px]"><span class="font-bold">${k}</span> <span class="text-white/40">${v}</span></span><button data-stat="${k}" class="level-stat-btn w-6 h-6 bg-[#00D4FF] text-black rounded-[2px] font-bold text-[12px]">+</button>`;statsDiv.appendChild(row)});
+  statsDiv.querySelectorAll('.level-stat-btn').forEach(b=>b.onclick=()=>{const s=b.dataset.stat;state.stats[s]++;state.statPoints--;save();renderStatus();b.parentElement.querySelector('span').innerHTML=`<span class="font-bold">${s}</span> <span class="text-white/40">${state.stats[s]}</span>`;if(state.statPoints<=0){closeModal('levelUpModal')}});
+  document.getElementById('levelUpModal').classList.remove('hidden');document.getElementById('levelUpModal').classList.add('flex');
 }
 
-function spawnParticles(){
-  for(let i=0;i<20;i++){
-    const p=document.createElement('div');
-    p.className='shadow-particle';
-    p.style.left='50%'; p.style.top='50%';
-    document.body.appendChild(p);
-    const angle=Math.random()*Math.PI*2;
-    const dist=100+Math.random()*200;
-    p.animate([
-      {transform:`translate(-50%,-50%)`, opacity:1},
-      {transform:`translate(calc(-50% + ${Math.cos(angle)*dist}px), calc(-50% + ${Math.sin(angle)*dist}px))`, opacity:0}
-    ],{duration:800+Math.random()*400, easing:'cubic-bezier(0.25,0.46,0.45,0.94)'}).onfinish=()=>p.remove();
+function checkJobChange(){
+  const nextJob=JOBS.find(j=>j.level===state.level||(state.level>=j.level&&state.jobLevel<JOBS.indexOf(j)+1));
+  if(!nextJob)return;
+  const jobIdx=JOBS.indexOf(nextJob);
+  if(state.jobLevel>jobIdx)return;
+  if(state.level>=nextJob.level){
+    document.getElementById('jobTitle').innerHTML=`BECOME A<br><span class="text-[#FFD700]">${nextJob.name.toUpperCase()}</span>`;
+    document.getElementById('jobDesc').textContent=`You have met the level requirement for ${nextJob.name}.`;
+    document.getElementById('jobReqs').innerHTML=`<div>• Level ${nextJob.level} — ${state.level>=nextJob.level?'✓':'✗'}</div><div>• ${nextJob.req}</div><div>• Rewards: ${nextJob.rewards}</div>`;
+    document.getElementById('jobModal').classList.remove('hidden');document.getElementById('jobModal').classList.add('flex');
   }
-}
-
-function showToast(msg){
-  const t=document.getElementById('toast');
-  document.getElementById('toastText').textContent=msg;
-  t.style.transform='translate(-50%,0)';
-  setTimeout(()=>{ t.style.transform='translate(-50%,150%)'; },3500);
 }
 
 // ---------- CLOCK ----------
 function updateClock(){
-  const now=new Date();
-  const next=new Date(now); next.setHours(now.getHours()+1,0,0,0);
-  const diff=next-now;
-  const cd=formatCountdown(diff);
-  document.getElementById('nextQuestTimer').textContent=cd;
-  document.getElementById('nextQuestTimerMobile').textContent=cd;
+  const now=new Date();const next=new Date(now);next.setHours(now.getHours()+1,0,0,0);const diff=next-now;const cd=formatCountdown(diff);
+  const el=document.getElementById('nextQuestTimer');if(el)el.textContent=cd;
+  const el2=document.getElementById('nextQuestTimerMobile');if(el2)el2.textContent=cd;
   document.getElementById('nextQuestIn').textContent=`in ${cd}`;
-  const lt=document.getElementById('liveTimeMobile');
-  if(lt) lt.textContent=now.toLocaleTimeString();
-  if(state.lastHour!==null && now.getHours()!==state.lastHour){
-    handleNewHour();
-  }
+  if(state.lastHour!==null&&now.getHours()!==state.lastHour)handleNewHour();
   state.lastHour=now.getHours();
+  // buff expiry check
+  const before=state.buffs.length;state.buffs=state.buffs.filter(b=>b.expires>Date.now());if(before!==state.buffs.length)renderBuffs();
 }
 function handleNewHour(){
-  const q=getQuestForHour();
-  renderQuest(); renderQuestLog();
-  addLog(`[NEW QUEST] ${q.name} [${q.rank}-RANK] has been issued.`, '#00D4FF');
-  showToast(`NEW QUEST: ${q.name}`);
-  // notification
-  if(state.notif && Notification.permission==='granted'){
-    new Notification(`[SYSTEM] New Quest: ${q.name}`, {body:q.desc});
-  }
-  // check failed previous
-  const prevHour = new Date(); prevHour.setHours(prevHour.getHours()-1);
-  const prevKey = `${getToday()}-${prevHour.getHours()}`;
-  if(!state.completed[prevKey] && prevHour.getHours()>=6){
-    state.failed[prevKey]=true; save();
-    addLog(`[QUEST FAILED] Previous quest failed. Penalty counter +1`, '#FF2A2A');
-  }
-  // sound
-  try{
-    const ctx=new (window.AudioContext||window.webkitAudioContext)();
-    const o=ctx.createOscillator(); o.frequency.value=880;
-    const g=ctx.createGain(); g.gain.value=0.08;
-    o.connect(g); g.connect(ctx.destination); o.start(); setTimeout(()=>{o.stop(); ctx.close();},250);
-  }catch{}
+  const q=getQuestForHour();renderQuest();renderQuestLog();addLog(`[NEW QUEST] ${q.name} [${q.rank}-RANK]`,'#00D4FF');showToast(`NEW QUEST: ${q.name}`);
+  if(state.notif&&Notification.permission==='granted'){new Notification(`[SYSTEM] New Quest: ${q.name}`,{body:q.desc})}
+  const prevHour=new Date();prevHour.setHours(prevHour.getHours()-1);const prevKey=`${getToday()}-${prevHour.getHours()}`;if(!state.completed[prevKey]&&prevHour.getHours()>=6){state.failed[prevKey]=true;save();addLog(`[QUEST FAILED] Previous quest failed. Penalty +1`,'#FF2A2A')}
+  // random dungeon spawn 25% chance each hour
+  if(Math.random()<0.25)spawnDungeon();
+  // boss spawn at 20:00
+  if(new Date().getHours()===20&&!state.bossActive&&Math.random()<0.7)spawnBoss();
+  try{const ctx=new (window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator();o.frequency.value=880;const g=ctx.createGain();g.gain.value=0.08;o.connect(g);g.connect(ctx.destination);o.start();setTimeout(()=>{o.stop();ctx.close()},250)}catch{}
 }
 
 // ---------- EVENTS ----------
 document.getElementById('acceptBtn').onclick=startQuest;
 document.getElementById('completeQuestBtn').onclick=()=>completeQuest(false);
 document.getElementById('abandonBtn').onclick=abandonQuest;
-document.getElementById('levelUpConfirm').onclick=()=>{
-  document.getElementById('levelUpModal').classList.add('hidden');
-  document.getElementById('levelUpModal').classList.remove('flex');
+document.getElementById('levelUpConfirm').onclick=()=>closeModal('levelUpModal');
+document.getElementById('penaltyAccept').onclick=()=>{document.getElementById('penaltyAccept').textContent='SURVIVING...';state.penaltyCount=0;document.getElementById('penaltyDoRep').classList.remove('hidden')};
+document.getElementById('penaltyDoRep').onclick=doPenaltyRep;
+window.addEventListener('keydown',e=>{if(e.code==='Space'&&!document.getElementById('penaltyModal').classList.contains('hidden')){e.preventDefault();doPenaltyRep()}});
+function doPenaltyRep(){
+  state.penaltyCount++;document.getElementById('penaltyCount').textContent=`${state.penaltyCount}/100`;document.getElementById('penaltyProgress').style.width=`${state.penaltyCount}%`;
+  if(state.penaltyCount>=100){closeModal('penaltyModal');state.failed={};save();renderQuestLog();addLog('[PENALTY CLEARED] You survived penalty zone. System forgives.',' #00D4FF');showToast('Penalty cleared — System forgives');state.penaltyCount=0;document.getElementById('penaltyProgress').style.width='0%';document.getElementById('penaltyCount').textContent='0/100'}
+}
+document.getElementById('dungeonEnter').onclick=()=>{if(!state.dungeonActive)return;closeModal('dungeonModal');addLog(`[GATE] Entered ${state.dungeonActive.data.name} — clear quests to progress`,'#FF8C00');showToast(`Entered ${state.dungeonActive.data.name}! Clear quests!`)};
+document.getElementById('dungeonLeave').onclick=()=>closeModal('dungeonModal');
+document.getElementById('bossAttackBtn').onclick=()=>{addLog('[BOSS] Attack boss by completing hourly quest!',' #FF2A2A');showToast('Complete hourly quest to damage boss!');document.getElementById('questTitle').scrollIntoView({behavior:'smooth'})};
+document.getElementById('bossFleeBtn').onclick=()=>{state.bossActive=null;document.getElementById('bossRaidBar').classList.add('hidden');renderDungeonAlert();addLog('[BOSS] Fled from boss raid.',' #FF8C00')};
+document.getElementById('clearLog').onclick=()=>{document.getElementById('systemLog').innerHTML='<div class="text-white/20">[SYSTEM] Log cleared.</div>'};
+document.getElementById('exportBtn').onclick=()=>{const data=JSON.stringify(state,null,2);const blob=new Blob([data],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`system-${getToday()}.json`;a.click();showToast('Progress exported!')};
+document.getElementById('openCalendar').onclick=()=>{renderCalendar();document.getElementById('calendarModal').classList.remove('hidden');document.getElementById('calendarModal').classList.add('flex')};
+document.getElementById('openAchievements').onclick=()=>{renderAchievements();document.getElementById('achievementsModal').classList.remove('hidden');document.getElementById('achievementsModal').classList.add('flex')};
+document.getElementById('armyManageBtn').onclick=()=>{document.getElementById('shopModal').classList.remove('hidden');document.getElementById('shopModal').classList.add('flex');renderShop()};
+document.getElementById('extractShadowBtn').onclick=()=>{if(state.gold<100){showToast('Need 100G');return}state.gold-=100;state.shadows++;state.shadowList.push({name:`Shadow ${state.shadows}`,icon:['💀','👤','⚔️'][Math.floor(Math.random()*3)]});save();renderStatus();showToast('Shadow extracted!')};
+document.getElementById('summonArmyBtn').onclick=()=>{if(state.shadows===0){showToast('No shadows to summon');return}showToast(`Summoned ${state.shadows} shadows! They fight for you.`);spawnParticles();addLog(`[SHADOW ARMY] Summoned ${state.shadows} shadows — ARISE!`,'#00D4FF')};
+document.getElementById('jobAccept').onclick=()=>{
+  const job=JOBS[state.jobLevel];if(!job)return;
+  state.job=job.name;state.jobLevel++;Object.keys(state.stats).forEach(k=>state.stats[k]+=10);state.statPoints+=10;save();renderStatus();closeModal('jobModal');addLog(`[JOB CHANGE] Became ${job.name}! All stats +10`,'#FFD700');showToast(`JOB CHANGE: ${job.name}!`);
 };
-document.getElementById('penaltyAccept').onclick=()=>{
-  document.getElementById('penaltyModal').classList.add('hidden');
-  document.getElementById('penaltyModal').classList.remove('flex');
-  addLog('[PENALTY QUEST ACCEPTED] Complete 100 reps or face teleportation.', '#FF2A2A');
-  showToast('Penalty accepted • 100 BURPEES • No escape');
-};
-document.getElementById('clearLog').onclick=()=>{ document.getElementById('systemLog').innerHTML='<div class="text-white/20">[SYSTEM] Log cleared.</div>'; };
+
+document.querySelectorAll('.nav-tab').forEach(tab=>{
+  tab.onclick=()=>{
+    document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    const t=tab.dataset.tab;
+    if(t==='shop'){renderShop();document.getElementById('shopModal').classList.remove('hidden');document.getElementById('shopModal').classList.add('flex')}
+    if(t==='skills'){renderSkills();document.getElementById('skillsModal').classList.remove('hidden');document.getElementById('skillsModal').classList.add('flex')}
+    if(t==='gates'){if(state.dungeonActive)openDungeonModal();else{spawnDungeon();setTimeout(openDungeonModal,100)}}
+    if(t==='army'){document.getElementById('shopModal').classList.remove('hidden');document.getElementById('shopModal').classList.add('flex');renderShop()}
+  };
+});
 
 document.querySelectorAll('.diff-btn').forEach(b=>{
-  if(b.dataset.diff===state.difficulty){ b.className='diff-btn h-8 rounded-[2px] border font-mono text-[10px] font-bold bg-[#00D4FF] text-black border-[#00D4FF]'; }
-  b.onclick=()=>{
-    document.querySelectorAll('.diff-btn').forEach(x=> x.className='diff-btn h-8 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px] font-bold hover:border-[#00D4FF]/30');
-    b.className='diff-btn h-8 rounded-[2px] border font-mono text-[10px] font-bold bg-[#00D4FF] text-black border-[#00D4FF]';
-    state.difficulty=b.dataset.diff; localStorage.setItem('sl-diff', state.difficulty);
-    renderQuest(); renderQuestLog(); showToast(`Difficulty: ${state.difficulty.toUpperCase()}`);
-  };
+  if(b.dataset.diff===state.difficulty)b.className='diff-btn h-8 rounded-[2px] border font-mono text-[10px] font-bold bg-[#00D4FF] text-black border-[#00D4FF]';
+  b.onclick=()=>{document.querySelectorAll('.diff-btn').forEach(x=>x.className='diff-btn h-8 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px] font-bold');b.className='diff-btn h-8 rounded-[2px] border font-mono text-[10px] font-bold bg-[#00D4FF] text-black border-[#00D4FF]';state.difficulty=b.dataset.diff;localStorage.setItem('sl-diff',state.difficulty);renderQuest();renderQuestLog();showToast(`Difficulty: ${state.difficulty.toUpperCase()}`)};
 });
 document.querySelectorAll('.focus-btn').forEach(b=>{
-  if(state.focuses.includes(b.dataset.focus)){ b.className='focus-btn px-2.5 py-1 rounded-[2px] bg-[#00D4FF] text-black font-mono text-[10px] font-bold'; }
-  b.onclick=()=>{
-    const f=b.dataset.focus;
-    if(state.focuses.includes(f)){
-      if(state.focuses.length>1) state.focuses=state.focuses.filter(x=>x!==f);
-    } else state.focuses.push(f);
-    localStorage.setItem('sl-focuses', JSON.stringify(state.focuses));
-    document.querySelectorAll('.focus-btn').forEach(x=>{
-      if(state.focuses.includes(x.dataset.focus)) x.className='focus-btn px-2.5 py-1 rounded-[2px] bg-[#00D4FF] text-black font-mono text-[10px] font-bold';
-      else x.className='focus-btn px-2.5 py-1 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px] font-bold hover:border-[#00D4FF]/30';
-    });
-    renderQuest(); renderQuestLog();
-  };
+  if(state.focuses.includes(b.dataset.focus))b.className='focus-btn px-2.5 py-1 rounded-[2px] bg-[#00D4FF] text-black font-mono text-[10px] font-bold';
+  b.onclick=()=>{const f=b.dataset.focus;if(state.focuses.includes(f)){if(state.focuses.length>1)state.focuses=state.focuses.filter(x=>x!==f)}else state.focuses.push(f);localStorage.setItem('sl-focuses',JSON.stringify(state.focuses));document.querySelectorAll('.focus-btn').forEach(x=>{if(state.focuses.includes(x.dataset.focus))x.className='focus-btn px-2.5 py-1 rounded-[2px] bg-[#00D4FF] text-black font-mono text-[10px] font-bold';else x.className='focus-btn px-2.5 py-1 rounded-[2px] border border-[#1A2F5A] font-mono text-[10px] font-bold'});renderQuest();renderQuestLog()};
 });
-
-document.getElementById('notifToggle').onclick=function(){
-  const knob=this.querySelector('span');
-  state.notif=!state.notif;
-  localStorage.setItem('sl-notif', state.notif);
-  if(state.notif){
-    this.style.background='#00D4FF'; knob.style.left='18px';
-    if(Notification.permission!=='granted') Notification.requestPermission();
-    showToast('System notifications enabled');
-  } else {
-    this.style.background='#1A2F5A'; knob.style.left='2px';
-    showToast('Notifications disabled');
-  }
-};
-// init toggle
-if(state.notif){
-  const t=document.getElementById('notifToggle');
-  t.style.background='#00D4FF'; t.querySelector('span').style.left='18px';
-}
+document.getElementById('notifToggle').onclick=function(){const knob=this.querySelector('span');state.notif=!state.notif;localStorage.setItem('sl-notif',state.notif);if(state.notif){this.style.background='#00D4FF';knob.style.left='18px';if(Notification.permission!=='granted')Notification.requestPermission();showToast('Notifications ON')}else{this.style.background='#1A2F5A';knob.style.left='2px';showToast('Notifications OFF')}};
+if(state.notif){const t=document.getElementById('notifToggle');t.style.background='#00D4FF';t.querySelector('span').style.left='18px'}
+document.getElementById('notifBtn').onclick=async()=>{if(Notification.permission!=='granted'){const p=await Notification.requestPermission();if(p==='granted'){state.notif=true;localStorage.setItem('sl-notif','true');document.getElementById('notifToggle').style.background='#00D4FF';document.getElementById('notifToggle').querySelector('span').style.left='18px';showToast('Notifications enabled')}}else{state.notif=!state.notif;localStorage.setItem('sl-notif',state.notif);showToast(state.notif?'Notifications ON':'OFF')}};
 
 // awakening
-const awakeningText = "You were the weakest of all hunters. The world called you useless. But now, the System has chosen you. Complete hourly quests, grow stronger, and rise from E-Rank to become the Shadow Monarch. Fail, and face penalty. This is your second chance.";
-let awIdx=0;
-function typeAwakening(){
-  const el=document.getElementById('awakeningText');
-  if(awIdx<awakeningText.length){
-    el.textContent+=awakeningText[awIdx++];
-    setTimeout(typeAwakening, 18);
-  }
-}
-typeAwakening();
-
-document.getElementById('awakenBtn').onclick=()=>{
-  const name=document.getElementById('hunterNameInput').value.trim() || 'SUNG JIN-WOO';
-  state.hunterName=name.toUpperCase();
-  localStorage.setItem('sl-hunter', state.hunterName);
-  localStorage.setItem('sl-awakened','1');
-  document.getElementById('awakening').style.display='none';
-  renderStatus(); addLog(`[SYSTEM] Welcome, Hunter ${state.hunterName}. Your leveling begins now.`, '#00D4FF');
-  showToast(`Welcome, ${state.hunterName} • System Activated`);
-};
-
-if(localStorage.getItem('sl-awakened')){
-  document.getElementById('awakening').style.display='none';
-}
+const awakeningText="You were the weakest. Now you are Player. The System v2.5 has awakened: Dungeons will open, Bosses will raid, Shadows will serve you. Shop, Skills, Job Changes, Double Dungeons, Achievements, Calendar. Every hour is a quest. Every day is survival. Fail and face penalty. Grow and become Shadow Monarch. This is your second chance.";
+let awIdx=0;function typeAwakening(){const el=document.getElementById('awakeningText');if(awIdx<awakeningText.length){el.textContent+=awakeningText[awIdx++];setTimeout(typeAwakening,14)}}typeAwakening();
+document.getElementById('awakenBtn').onclick=()=>{const name=document.getElementById('hunterNameInput').value.trim()||'SUNG JIN-WOO';state.hunterName=name.toUpperCase();localStorage.setItem('sl-hunter',state.hunterName);localStorage.setItem('sl-awakened','1');document.getElementById('awakening').style.display='none';renderStatus();addLog(`[SYSTEM] Welcome, Hunter ${state.hunterName}. v2.5 Protocol active.`,'#00D4FF');showToast(`Welcome, ${state.hunterName} • System v2.5`);};
+if(localStorage.getItem('sl-awakened'))document.getElementById('awakening').style.display='none';
 
 // init
-renderStatus(); renderQuest(); renderQuestLog();
-updateClock(); setInterval(updateClock,1000);
-if(state.notif && Notification.permission!=='granted') Notification.requestPermission();
+renderStatus();renderQuest();renderQuestLog();renderShop();renderSkills();renderAchievements();renderDungeonAlert();
+updateClock();setInterval(updateClock,1000);
+if(state.notif&&Notification.permission!=='granted')Notification.requestPermission();
+window.addEventListener('keydown',e=>{if(e.code==='Space'&&!document.getElementById('penaltyModal').classList.contains('hidden')){e.preventDefault();doPenaltyRep()}else if(e.code==='Space'){e.preventDefault();startQuest()}if(e.code==='KeyC')completeQuest()});
 
-// keyboard
-window.addEventListener('keydown', e=>{
-  if(e.code==='Space'){ e.preventDefault(); startQuest(); }
-  if(e.code==='KeyC'){ completeQuest(); }
-});
+// auto spawn first gate after 10s for demo
+setTimeout(()=>{if(!state.dungeonActive&&Math.random()<0.8)spawnDungeon()},10000);
+setInterval(()=>{if(!state.dungeonActive&&Math.random()<0.15)spawnDungeon()}, 120000);
+
+function closeModal(id){document.getElementById(id).classList.add('hidden');document.getElementById(id).classList.remove('flex')}
+window.closeModal=closeModal;
+window.openDungeonModal=openDungeonModal;
+window.startSecretDungeon=startSecretDungeon;
 </script>
 </body>
 </html>
