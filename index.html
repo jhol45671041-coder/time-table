@@ -147,6 +147,47 @@
 <div id="modal-root"></div>
 <div id="palette-root"></div>
 
+<script>
+  /* Boot diagnostics. If a module fails to load or throws during start-up the
+     page would otherwise sit there blank, so say what happened instead. */
+  (function () {
+    function banner(title, detail) {
+      if (document.querySelector('.boot-error')) return;
+      var box = document.createElement('div');
+      box.className = 'boot-error';
+      box.setAttribute('role', 'alert');
+      var heading = document.createElement('strong');
+      heading.textContent = title;
+      var body = document.createElement('code');
+      body.textContent = detail;
+      box.appendChild(heading);
+      box.appendChild(body);
+      document.body.appendChild(box);
+    }
+
+    window.addEventListener('error', function (e) {
+      var where = e.filename ? ' — ' + e.filename.replace(location.origin, '') + ':' + e.lineno : '';
+      banner('Timetable Studio failed to start', (e.message || 'Unknown error') + where);
+    });
+
+    window.addEventListener('unhandledrejection', function (e) {
+      var reason = e.reason;
+      banner('Timetable Studio hit an unhandled error', String((reason && reason.message) || reason));
+    });
+
+    // main.js publishes window.TimetableStudio and paints the dashboard on boot.
+    setTimeout(function () {
+      var page = document.getElementById('page-dashboard');
+      if (!window.TimetableStudio) {
+        banner('Timetable Studio did not start',
+          'The app module never ran. A blocked script, a stale cache or a dead server are the usual causes — reload to try again.');
+      } else if (!page || !page.innerHTML.trim()) {
+        banner('Timetable Studio did not finish loading',
+          'The app started but rendered nothing within 10 seconds — reload to try again.');
+      }
+    }, 10000);
+  })();
+</script>
 <script type="module" src="js/main.js"></script>
 </body>
 </html>

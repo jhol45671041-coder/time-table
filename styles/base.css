@@ -203,6 +203,46 @@ h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: var(--trackin
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
 
+/* ── boot diagnostics ──────────────────────────────────────────────────────
+   Shown by the inline watchdog in index.html when the app fails to start.
+   Kept deliberately self-contained: it must stay readable even if every other
+   stylesheet failed to load. */
+.boot-error {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  z-index: 400;
+  width: min(680px, calc(100vw - 32px));
+  padding: 14px 16px;
+  border: 1px solid var(--danger);
+  border-left-width: 4px;
+  border-radius: var(--radius);
+  background: var(--panel-solid);
+  color: var(--text);
+  box-shadow: var(--shadow-3);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.boot-error strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--danger);
+  font-size: 0.9rem;
+  font-weight: 680;
+  letter-spacing: -0.01em;
+}
+
+.boot-error code {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--muted);
+}
+
 /* ── scrollbars ────────────────────────────────────────────────────────── */
 * { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
 *::-webkit-scrollbar { width: 10px; height: 10px; }
