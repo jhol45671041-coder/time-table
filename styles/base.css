@@ -1,0 +1,341 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Timetable Studio — base.css
+   Reset · design tokens · typography · utilities · motion primitives
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── reset ─────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+* { margin: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  min-height: 100dvh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, picture, video, canvas, svg { display: block; max-width: 100%; }
+input, button, textarea, select { font: inherit; color: inherit; }
+button { background: none; border: 0; cursor: pointer; }
+p, h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; }
+ul[class], ol[class] { list-style: none; padding: 0; }
+a { color: inherit; text-decoration: none; }
+table { border-collapse: collapse; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* ── root tokens (defaults = the "aurora" dark theme) ───────────────────── */
+:root {
+  color-scheme: dark;
+
+  /* surfaces */
+  --bg: #0b0d1a;
+  --bg-2: #0e1124;
+  --bg-grad: radial-gradient(1200px 700px at 12% -10%, #2a2360 0%, transparent 60%),
+             radial-gradient(900px 600px at 100% 0%, #123a5c 0%, transparent 55%),
+             linear-gradient(180deg, #0b0d1a, #080a14);
+  --panel: rgba(255, 255, 255, 0.055);
+  --panel-solid: #14172b;
+  --panel-2: rgba(255, 255, 255, 0.03);
+  --panel-hover: rgba(255, 255, 255, 0.09);
+  --inset: rgba(0, 0, 0, 0.28);
+
+  /* text */
+  --text: #eef0ff;
+  --muted: #a3a8c9;
+  --faint: #767ca3;
+
+  /* lines */
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.2);
+
+  /* accent */
+  --accent: #7c6cff;
+  --accent-2: #37d6c0;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(124, 108, 255, 0.18);
+  --accent-grad: linear-gradient(135deg, var(--accent), var(--accent-2));
+
+  /* status */
+  --ok: #3ddc97;
+  --warn: #ffb547;
+  --danger: #ff6b7d;
+  --ok-soft: rgba(61, 220, 151, 0.16);
+  --warn-soft: rgba(255, 181, 71, 0.16);
+  --danger-soft: rgba(255, 107, 125, 0.16);
+
+  /* shape */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  /* elevation */
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-2: 0 10px 30px -12px rgba(0, 0, 0, 0.6);
+  --shadow-3: 0 30px 70px -24px rgba(0, 0, 0, 0.75);
+  --ring: 0 0 0 3px var(--accent-soft);
+
+  /* type */
+  --font-ui: "Inter", "SF Pro Text", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Inter", "SF Pro Display", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+  --font-active: var(--font-ui);
+  --tracking-display: -0.02em;
+
+  /* subject chip colouring (overridden per theme) */
+  --subj-s: 78%;
+  --subj-l: 26%;
+  --subj-text-l: 92%;
+  --subj-border-l: 40%;
+  --subj-chip-l: 34%;
+
+  /* layout */
+  --sidebar-w: 264px;
+  --sidebar-w-collapsed: 78px;
+  --header-h: 66px;
+  --gap: 18px;
+  --pad: 22px;
+
+  /* effects */
+  --glass-blur: 18px;
+  --grain-opacity: 0.035;
+  --hairline: 1px;
+
+  /* timing */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --t-fast: 140ms;
+  --t: 240ms;
+  --t-slow: 480ms;
+}
+
+/* ── page ──────────────────────────────────────────────────────────────── */
+body {
+  font-family: var(--font-active);
+  background-color: var(--bg);
+  background-image: var(--bg-grad);
+  background-attachment: fixed;
+  color: var(--text);
+  transition: background-color var(--t-slow) var(--ease), color var(--t-slow) var(--ease);
+}
+
+/* ambient grain overlay */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+  transition: opacity var(--t) linear;
+}
+[data-grain="off"] .grain { opacity: 0; }
+
+/* ambient floating light blobs (purely decorative) */
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ambient span {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.35;
+  animation: drift 26s var(--ease) infinite alternate;
+}
+.ambient span:nth-child(1) { width: 46vw; height: 46vw; left: -12vw; top: -14vw; background: var(--accent); }
+.ambient span:nth-child(2) { width: 38vw; height: 38vw; right: -10vw; top: 12vh; background: var(--accent-2); animation-delay: -8s; }
+.ambient span:nth-child(3) { width: 34vw; height: 34vw; left: 32vw; bottom: -18vh; background: var(--accent); opacity: 0.22; animation-delay: -16s; }
+[data-ambient="off"] .ambient { display: none; }
+
+/* ── typography ────────────────────────────────────────────────────────── */
+h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: var(--tracking-display); line-height: 1.15; font-weight: 700; }
+.display { font-size: clamp(1.9rem, 1.2rem + 2.4vw, 3.1rem); font-weight: 800; letter-spacing: -0.035em; line-height: 1.03; }
+.h1 { font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.1rem); font-weight: 750; }
+.h2 { font-size: 1.28rem; font-weight: 700; }
+.h3 { font-size: 1.05rem; font-weight: 650; }
+.lead { font-size: 1.02rem; color: var(--muted); max-width: 62ch; }
+.small { font-size: 0.82rem; }
+.tiny { font-size: 0.72rem; letter-spacing: 0.04em; }
+.muted { color: var(--muted); }
+.faint { color: var(--faint); }
+.mono { font-family: var(--font-mono); font-variant-ligatures: none; }
+.upper { text-transform: uppercase; letter-spacing: 0.14em; font-weight: 650; }
+
+.gradient-text {
+  background: var(--accent-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ── layout utilities ──────────────────────────────────────────────────── */
+.row { display: flex; align-items: center; gap: 10px; }
+.row-wrap { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.col { display: flex; flex-direction: column; gap: 10px; }
+.spread { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.grow { flex: 1 1 auto; min-width: 0; }
+.stack > * + * { margin-top: var(--gap); }
+.grid { display: grid; gap: var(--gap); }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ── boot diagnostics ──────────────────────────────────────────────────────
+   Shown by the inline watchdog in index.html when the app fails to start.
+   Kept deliberately self-contained: it must stay readable even if every other
+   stylesheet failed to load. */
+.boot-error {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  z-index: 400;
+  width: min(680px, calc(100vw - 32px));
+  padding: 14px 16px;
+  border: 1px solid var(--danger);
+  border-left-width: 4px;
+  border-radius: var(--radius);
+  background: var(--panel-solid);
+  color: var(--text);
+  box-shadow: var(--shadow-3);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.boot-error strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--danger);
+  font-size: 0.9rem;
+  font-weight: 680;
+  letter-spacing: -0.01em;
+}
+
+.boot-error code {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--muted);
+}
+
+/* ── scrollbars ────────────────────────────────────────────────────────── */
+* { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: var(--radius-pill);
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover { background: var(--accent); background-clip: content-box; }
+
+/* ── motion primitives ─────────────────────────────────────────────────── */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.9); }
+  60% { transform: scale(1.02); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(28px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulseRing {
+  0% { box-shadow: 0 0 0 0 var(--accent-soft); }
+  70% { box-shadow: 0 0 0 14px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+@keyframes gradientPan {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(4vw, 5vh, 0) scale(1.16); }
+}
+@keyframes tick {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+@keyframes barGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+.anim-rise { animation: rise var(--t-slow) var(--ease-out) both; }
+
+/* stagger helper — set --i on children */
+.stagger > * { animation: rise var(--t-slow) var(--ease-out) both; animation-delay: calc(var(--i, 0) * 34ms); }
+
+/* reduced motion + explicit "motion off" preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+[data-motion="off"] *,
+[data-motion="off"] *::before,
+[data-motion="off"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+[data-motion="off"] .ambient { display: none; }
+
+/* ── density ───────────────────────────────────────────────────────────── */
+[data-density="compact"] { --gap: 12px; --pad: 14px; --cell-pad: 4px; }
+[data-density="cosy"] { --gap: 18px; --pad: 22px; --cell-pad: 7px; }
+[data-density="roomy"] { --gap: 26px; --pad: 30px; --cell-pad: 11px; }
+
+/* ── typeface families ─────────────────────────────────────────────────── */
+/* "auto" (the default) lets each theme choose its own face — Paper is serif,
+   Brutalist is mono. An explicit choice below uses html[data-font=…] so it
+   out-specifies the theme rule and always wins. */
+html[data-font="grotesk"] { --font-active: var(--font-ui); }
+html[data-font="humanist"] {
+  --font-active: "Avenir Next", "Optima", "Segoe UI", "Trebuchet MS", var(--font-ui);
+}
+html[data-font="serif"] {
+  --font-active: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --tracking-display: -0.01em;
+}
+html[data-font="mono"] {
+  --font-active: var(--font-mono);
+  --tracking-display: -0.03em;
+}

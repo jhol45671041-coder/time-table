@@ -1,0 +1,263 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Timetable Studio — views.css
+   Component styles that belong to a single view: dashboard widgets, the
+   availability picker, the print mock, the accent swatch.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── dashboard · quality ring ──────────────────────────────────────────── */
+.ring { position: relative; display: grid; place-items: center; }
+.ring svg { overflow: visible; }
+.ring-label { position: absolute; text-align: center; pointer-events: none; }
+.ring-label strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--tone, var(--accent));
+  font-variant-numeric: tabular-nums;
+}
+.ring-label span {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+  font-weight: 700;
+}
+
+/* ── dashboard · today timeline ────────────────────────────────────────── */
+.today { display: flex; flex-direction: column; gap: 4px; }
+.today-row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 8px 11px;
+  border-radius: var(--radius-sm);
+  background: var(--panel-2);
+  border: var(--hairline) solid transparent;
+  transition: background-color var(--t-fast) linear, transform var(--t-fast) var(--ease),
+    border-color var(--t-fast) linear;
+}
+.today-row:hover { background: var(--panel-hover); transform: translateX(3px); }
+.today-row .t {
+  width: 44px;
+  flex: none;
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--faint);
+}
+.today-row strong { display: block; font-size: 0.87rem; font-weight: 700; }
+.today-row em { display: block; font-size: 0.72rem; color: var(--muted); font-style: normal; }
+.today-row .swatch {
+  width: 9px;
+  height: 26px;
+  flex: none;
+  border-radius: 3px;
+  background: hsl(var(--h, 222) var(--subj-s) var(--subj-border-l));
+}
+.today-row.now { border-color: var(--accent); background: var(--accent-soft); box-shadow: var(--shadow-1); }
+.today-row.break { background: transparent; border-style: dashed; border-color: var(--line); }
+.today-row.break .b,
+.today-row.free .b { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); font-weight: 700; }
+.today-row.free .b { letter-spacing: 0.02em; text-transform: none; font-weight: 550; font-size: 0.8rem; }
+
+/* ── dashboard · weekly spread matrix ──────────────────────────────────── */
+.sp-head,
+.sp-row {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr) 30px;
+  gap: 10px;
+  align-items: center;
+}
+.sp-head { margin-bottom: 6px; }
+.sp-day {
+  font-size: 0.64rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--faint);
+  text-align: center;
+  font-weight: 700;
+}
+.sp-body { display: flex; flex-direction: column; }
+.sp-row {
+  padding: 3px 0;
+  animation: rise var(--t-slow) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 26ms);
+}
+.sp-row:hover .sp-name { color: var(--text); }
+.sp-name { font-size: 0.74rem; font-weight: 750; color: var(--muted); font-family: var(--font-mono); }
+.sp-cells { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 5px; }
+.sp-cell {
+  height: 22px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  font-size: 0.68rem;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+  background: var(--panel-2);
+  border: var(--hairline) solid var(--line);
+  color: transparent;
+  transition: transform var(--t-fast) var(--ease);
+}
+.sp-row:hover .sp-cell { transform: scaleY(1.12); }
+.sp-cell.on {
+  background: hsl(var(--h) var(--subj-s) var(--subj-chip-l));
+  color: hsl(var(--h) var(--subj-s) var(--subj-text-l));
+  border-color: hsl(var(--h) var(--subj-s) var(--subj-border-l));
+}
+.sp-total { font-size: 0.72rem; text-align: right; color: var(--faint); font-variant-numeric: tabular-nums; }
+
+/* ── dashboard · candidate solutions ───────────────────────────────────── */
+.cand {
+  display: flex;
+  gap: 11px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  background: var(--panel-2);
+  border: var(--hairline) solid var(--line);
+  animation: rise var(--t-slow) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 50ms);
+  transition: border-color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.cand:hover { transform: translateX(3px); border-color: var(--line-strong); }
+.cand.active { border-color: var(--accent); background: var(--accent-soft); }
+.cand-rank {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--panel-solid);
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+.cand-rank svg { width: 14px; height: 14px; }
+.cand strong { display: block; font-size: 0.84rem; }
+.cand em {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--muted);
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+}
+.cand .meter { margin-top: 5px; height: 4px; }
+
+/* ── data · teacher availability picker ────────────────────────────────── */
+.avail {
+  display: grid;
+  grid-template-columns: 46px repeat(var(--cols, 5), minmax(34px, 1fr));
+  gap: 4px;
+  align-items: center;
+}
+.avail-day,
+.avail-time {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  font-weight: 700;
+  text-align: center;
+}
+.avail-time { text-align: left; }
+.avail-cell {
+  height: 26px;
+  border-radius: 6px;
+  background: var(--ok-soft);
+  border: var(--hairline) solid var(--line);
+  position: relative;
+  transition: transform var(--t-fast) var(--ease), background-color var(--t-fast) linear,
+    border-color var(--t-fast) linear;
+}
+.avail-cell:hover { transform: scale(1.08); }
+.avail-cell.off { background: var(--danger-soft); border-color: var(--danger); }
+.avail-cell.off::after {
+  content: "✕";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--danger);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+/* ── data · colour picker swatch ───────────────────────────────────────── */
+.hue-swatch {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border-radius: 12px;
+  background: hsl(var(--h, 222) var(--subj-s) var(--subj-chip-l));
+  border: var(--hairline) solid hsl(var(--h, 222) var(--subj-s) var(--subj-border-l));
+  transition: background-color var(--t-fast) linear;
+}
+
+/* ── export · print preview mock ───────────────────────────────────────── */
+.print-mock {
+  background: #fff;
+  color: #111;
+  border-radius: var(--radius);
+  padding: 16px;
+  border: 1px solid #ccc;
+}
+.print-mock-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  border-bottom: 2px solid #111;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+}
+.print-mock-head strong { font-size: 1rem; color: #111; }
+.print-mock-head span { font-size: 0.72rem; color: #444; }
+.print-mock-grid {
+  display: grid;
+  grid-template-columns: 52px repeat(var(--cols, 5), minmax(0, 1fr));
+  gap: 4px;
+}
+.pm-day {
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #333;
+  text-align: center;
+}
+.pm-time { font-size: 0.62rem; color: #555; font-family: var(--font-mono); display: grid; place-items: center; }
+.pm-cell {
+  height: 26px;
+  border-radius: 3px;
+  display: grid;
+  place-items: center;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #111;
+  background: #f2f2f2;
+  border: 1px solid #bbb;
+  border-left: 3px solid #666;
+}
+
+/* ── skip link (accessibility) ─────────────────────────────────────────── */
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 900;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 700;
+  font-size: 0.85rem;
+  transform: translateY(-160%);
+  transition: transform var(--t) var(--ease);
+}
+.skip-link:focus { transform: none; }

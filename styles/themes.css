@@ -1,0 +1,377 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Timetable Studio — themes.css
+   Twelve complete visual styles. Every theme redefines the whole token set,
+   so switching is a single attribute change on <html data-theme="…">.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Accent is expressed as H/S/L so the user's hue slider can recolour any
+   theme while keeping that theme's own contrast + saturation character. */
+:root {
+  --accent-h: 249;
+  --accent-s: 92%;
+  --accent-l: 68%;
+  --accent-2-h: 172;
+  --accent-2-s: 68%;
+  --accent-2-l: 52%;
+
+  --accent: hsl(var(--accent-h) var(--accent-s) var(--accent-l));
+  --accent-2: hsl(var(--accent-2-h) var(--accent-2-s) var(--accent-2-l));
+  --accent-soft: hsl(var(--accent-h) var(--accent-s) var(--accent-l) / 0.18);
+  --accent-line: hsl(var(--accent-h) var(--accent-s) var(--accent-l) / 0.4);
+  --accent-grad: linear-gradient(135deg, var(--accent), var(--accent-2));
+  --accent-grad-soft: linear-gradient(135deg,
+      hsl(var(--accent-h) var(--accent-s) var(--accent-l) / 0.22),
+      hsl(var(--accent-2-h) var(--accent-2-s) var(--accent-2-l) / 0.22));
+}
+
+/* ══════════════════════════ 1 · AURORA (default dark) ══════════════════════ */
+[data-theme="aurora"] {
+  color-scheme: dark;
+  --bg: #0b0d1a;
+  --bg-2: #10132a;
+  --bg-grad:
+    radial-gradient(1100px 680px at 10% -12%, #332a72 0%, transparent 58%),
+    radial-gradient(880px 560px at 102% 2%, #0f4a63 0%, transparent 55%),
+    linear-gradient(180deg, #0b0d1a, #070912);
+  --panel: rgba(255, 255, 255, 0.055);
+  --panel-solid: #151830;
+  --panel-2: rgba(255, 255, 255, 0.028);
+  --panel-hover: rgba(255, 255, 255, 0.1);
+  --inset: rgba(0, 0, 0, 0.3);
+  --text: #eef0ff;
+  --muted: #a5abc9; /* soft lavender grey */
+  --faint: #767ca3;
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.2);
+  --accent-h: 249; --accent-s: 92%; --accent-l: 70%;
+  --accent-2-h: 172; --accent-2-s: 70%; --accent-2-l: 56%;
+  --accent-ink: #ffffff;
+  --shadow-2: 0 12px 34px -14px rgba(0, 0, 0, 0.7);
+  --shadow-3: 0 34px 80px -26px rgba(0, 0, 0, 0.85);
+  --subj-s: 62%; --subj-l: 25%; --subj-text-l: 92%; --subj-border-l: 46%; --subj-chip-l: 34%;
+}
+
+/* ══════════════════════════ 2 · MIDNIGHT (navy + cyan) ═══════════════════ */
+[data-theme="midnight"] {
+  color-scheme: dark;
+  --bg: #04070f;
+  --bg-2: #070c18;
+  --bg-grad:
+    radial-gradient(1000px 620px at 80% -10%, #0d2c4d 0%, transparent 60%),
+    radial-gradient(760px 520px at 0% 100%, #06233a 0%, transparent 60%),
+    linear-gradient(180deg, #04070f, #020409);
+  --panel: rgba(126, 186, 255, 0.06);
+  --panel-solid: #0a1220;
+  --panel-2: rgba(126, 186, 255, 0.03);
+  --panel-hover: rgba(126, 186, 255, 0.12);
+  --inset: rgba(0, 0, 0, 0.4);
+  --text: #e6f0ff;
+  --muted: #93a9c6;
+  --faint: #64788f;
+  --line: rgba(140, 190, 255, 0.13);
+  --line-strong: rgba(140, 190, 255, 0.26);
+  --accent-h: 203; --accent-s: 96%; --accent-l: 62%;
+  --accent-2-h: 184; --accent-2-s: 88%; --accent-l: 56%;
+  --accent-ink: #03121e;
+  --subj-s: 58%; --subj-l: 22%; --subj-text-l: 90%; --subj-border-l: 44%; --subj-chip-l: 30%;
+}
+
+/* ══════════════════════════ 3 · NEON (cyberpunk) ═════════════════════════ */
+[data-theme="neon"] {
+  color-scheme: dark;
+  --bg: #06060a;
+  --bg-2: #0a0a12;
+  --bg-grad:
+    linear-gradient(rgba(0, 255, 170, 0.05) 1px, transparent 1px) 0 0 / 100% 34px,
+    linear-gradient(90deg, rgba(0, 255, 170, 0.05) 1px, transparent 1px) 0 0 / 34px 100%,
+    radial-gradient(700px 480px at 50% -10%, #16204a 0%, transparent 62%),
+    linear-gradient(180deg, #06060a, #04040a);
+  --panel: rgba(10, 255, 190, 0.045);
+  --panel-solid: #0c0c14;
+  --panel-2: rgba(255, 255, 255, 0.03);
+  --panel-hover: rgba(10, 255, 190, 0.1);
+  --inset: rgba(0, 0, 0, 0.55);
+  --text: #dcfff2;
+  --muted: #7f9c92;
+  --faint: #56716a;
+  --line: rgba(0, 255, 178, 0.18);
+  --line-strong: rgba(0, 255, 178, 0.4);
+  --accent-h: 158; --accent-s: 100%; --accent-l: 52%;
+  --accent-2-h: 314; --accent-2-s: 100%; --accent-2-l: 62%;
+  --accent-ink: #04120c;
+  --radius-xs: 3px; --radius-sm: 5px; --radius: 7px; --radius-lg: 10px; --radius-xl: 14px;
+  --shadow-1: 0 0 0 1px rgba(0, 255, 178, 0.14);
+  --shadow-2: 0 0 26px -4px rgba(0, 255, 178, 0.28);
+  --shadow-3: 0 0 60px -6px rgba(0, 255, 178, 0.35);
+  --subj-s: 90%; --subj-l: 14%; --subj-text-l: 84%; --subj-border-l: 52%; --subj-chip-l: 22%;
+  --grain-opacity: 0.06;
+}
+
+/* ══════════════════════════ 4 · FOREST (deep green) ══════════════════════ */
+[data-theme="forest"] {
+  color-scheme: dark;
+  --bg: #07110d;
+  --bg-2: #0a1712;
+  --bg-grad:
+    radial-gradient(900px 600px at 15% -10%, #14402c 0%, transparent 60%),
+    radial-gradient(700px 500px at 95% 10%, #1d3a1c 0%, transparent 58%),
+    linear-gradient(180deg, #07110d, #040a07);
+  --panel: rgba(190, 255, 220, 0.055);
+  --panel-solid: #0d1a14;
+  --panel-2: rgba(190, 255, 220, 0.03);
+  --panel-hover: rgba(190, 255, 220, 0.1);
+  --inset: rgba(0, 0, 0, 0.35);
+  --text: #e9f6ee;
+  --muted: #9ab7a7;
+  --faint: #6d8a7a;
+  --line: rgba(190, 255, 220, 0.12);
+  --line-strong: rgba(190, 255, 220, 0.24);
+  --accent-h: 152; --accent-s: 56%; --accent-l: 56%;
+  --accent-2-h: 82; --accent-2-s: 58%; --accent-2-l: 60%;
+  --accent-ink: #052016;
+  --subj-s: 46%; --subj-l: 22%; --subj-text-l: 90%; --subj-border-l: 42%; --subj-chip-l: 30%;
+}
+
+/* ══════════════════════════ 5 · SLATE (corporate dark) ═══════════════════ */
+[data-theme="slate"] {
+  color-scheme: dark;
+  --bg: #101317;
+  --bg-2: #14181d;
+  --bg-grad: linear-gradient(180deg, #14181d, #0d1014);
+  --panel: rgba(255, 255, 255, 0.045);
+  --panel-solid: #191e24;
+  --panel-2: rgba(255, 255, 255, 0.025);
+  --panel-hover: rgba(255, 255, 255, 0.085);
+  --inset: rgba(0, 0, 0, 0.3);
+  --text: #e9ecef;
+  --muted: #9aa4ae;
+  --faint: #6f7883;
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.18);
+  --radius: 10px; --radius-lg: 14px; --radius-xl: 18px; --radius-sm: 7px;
+  --accent-h: 212; --accent-s: 78%; --accent-l: 60%;
+  --accent-2-h: 190; --accent-2-s: 55%; --accent-2-l: 55%;
+  --accent-ink: #06121d;
+  --shadow-2: 0 8px 22px -12px rgba(0, 0, 0, 0.8);
+  --subj-s: 44%; --subj-l: 24%; --subj-text-l: 90%; --subj-border-l: 42%; --subj-chip-l: 30%;
+  --grain-opacity: 0;
+}
+
+/* ══════════════════════════ 6 · DAYLIGHT (clean light) ══════════════════ */
+[data-theme="daylight"] {
+  color-scheme: light;
+  --bg: #f5f7fc;
+  --bg-2: #ffffff;
+  --bg-grad:
+    radial-gradient(900px 520px at 100% -8%, #e3ecff 0%, transparent 60%),
+    radial-gradient(700px 460px at -5% 8%, #e8f7f4 0%, transparent 55%),
+    linear-gradient(180deg, #f7f9fd, #eef1f8);
+  --panel: #ffffff;
+  --panel-solid: #ffffff;
+  --panel-2: #f3f5fa;
+  --panel-hover: #eaeef7;
+  --inset: rgba(16, 24, 40, 0.04);
+  --text: #101828;
+  --muted: #5b6478;
+  --faint: #8b93a5;
+  --line: rgba(16, 24, 40, 0.1);
+  --line-strong: rgba(16, 24, 40, 0.2);
+  --accent-h: 224; --accent-s: 88%; --accent-l: 54%;
+  --accent-2-h: 190; --accent-2-s: 82%; --accent-2-l: 42%;
+  --accent-ink: #ffffff;
+  --shadow-1: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow-2: 0 12px 28px -16px rgba(16, 24, 40, 0.28);
+  --shadow-3: 0 32px 60px -28px rgba(16, 24, 40, 0.3);
+  --subj-s: 88%; --subj-l: 94%; --subj-text-l: 26%; --subj-border-l: 76%; --subj-chip-l: 88%;
+  --grain-opacity: 0;
+}
+
+/* ══════════════════════════ 7 · MINT (fresh light) ══════════════════════ */
+[data-theme="mint"] {
+  color-scheme: light;
+  --bg: #f1fbf6;
+  --bg-2: #ffffff;
+  --bg-grad:
+    radial-gradient(800px 520px at 12% -10%, #d6f5e6 0%, transparent 60%),
+    radial-gradient(700px 480px at 100% 0%, #dcf3fb 0%, transparent 55%),
+    linear-gradient(180deg, #f4fcf8, #eaf6f0);
+  --panel: #ffffff;
+  --panel-solid: #ffffff;
+  --panel-2: #eff9f4;
+  --panel-hover: #e3f5ec;
+  --inset: rgba(9, 60, 44, 0.05);
+  --text: #0c2a21;
+  --muted: #4e7265;
+  --faint: #7d9c90;
+  --line: rgba(9, 60, 44, 0.12);
+  --line-strong: rgba(9, 60, 44, 0.22);
+  --accent-h: 162; --accent-s: 72%; --accent-l: 34%;
+  --accent-2-h: 190; --accent-2-s: 74%; --accent-2-l: 40%;
+  --accent-ink: #ffffff;
+  --radius: 16px; --radius-lg: 22px; --radius-xl: 30px;
+  --shadow-2: 0 14px 30px -18px rgba(9, 60, 44, 0.3);
+  --subj-s: 68%; --subj-l: 92%; --subj-text-l: 22%; --subj-border-l: 72%; --subj-chip-l: 86%;
+  --grain-opacity: 0;
+}
+
+/* ══════════════════════════ 8 · SUNSET (warm light) ═════════════════════ */
+[data-theme="sunset"] {
+  color-scheme: light;
+  --bg: #fff6ef;
+  --bg-2: #fffbf7;
+  --bg-grad:
+    radial-gradient(880px 540px at 100% -12%, #ffe0c9 0%, transparent 58%),
+    radial-gradient(700px 480px at -8% 12%, #ffd9e2 0%, transparent 56%),
+    linear-gradient(180deg, #fff8f2, #fdeee4);
+  --panel: #fffcf9;
+  --panel-solid: #fffcf9;
+  --panel-2: #fdf1e8;
+  --panel-hover: #fbe7da;
+  --inset: rgba(90, 40, 16, 0.05);
+  --text: #382015;
+  --muted: #7d5b4a;
+  --faint: #a3836f;
+  --line: rgba(120, 60, 30, 0.14);
+  --line-strong: rgba(120, 60, 30, 0.26);
+  --accent-h: 16; --accent-s: 92%; --accent-l: 52%;
+  --accent-2-h: 42; --accent-2-s: 96%; --accent-2-l: 52%;
+  --accent-ink: #fff6ef;
+  --shadow-2: 0 14px 32px -18px rgba(120, 60, 30, 0.35);
+  --subj-s: 92%; --subj-l: 93%; --subj-text-l: 28%; --subj-border-l: 76%; --subj-chip-l: 87%;
+  --grain-opacity: 0;
+}
+
+/* ══════════════════════════ 9 · PAPER (academic print) ══════════════════ */
+[data-theme="paper"] {
+  color-scheme: light;
+  --bg: #f6f1e4;
+  --bg-2: #fffdf6;
+  --bg-grad:
+    repeating-linear-gradient(180deg, rgba(120, 100, 60, 0.045) 0 1px, transparent 1px 30px),
+    linear-gradient(180deg, #f8f3e7, #efe8d7);
+  --panel: #fffdf6;
+  --panel-solid: #fffdf6;
+  --panel-2: #f5efe0;
+  --panel-hover: #ece4d0;
+  --inset: rgba(70, 55, 25, 0.05);
+  --text: #23201a;
+  --muted: #6b6455;
+  --faint: #948b76;
+  --line: rgba(70, 55, 25, 0.22);
+  --line-strong: rgba(70, 55, 25, 0.42);
+  --accent-h: 212; --accent-s: 58%; --accent-l: 32%;
+  --accent-2-h: 8; --accent-2-s: 62%; --accent-2-l: 44%;
+  --accent-ink: #fffdf6;
+  --radius-xs: 2px; --radius-sm: 3px; --radius: 4px; --radius-lg: 6px; --radius-xl: 8px;
+  --font-active: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --shadow-1: 0 1px 0 rgba(70, 55, 25, 0.12);
+  --shadow-2: 0 2px 0 rgba(70, 55, 25, 0.14), 0 10px 20px -14px rgba(70, 55, 25, 0.4);
+  --shadow-3: 0 4px 0 rgba(70, 55, 25, 0.16), 0 22px 40px -22px rgba(70, 55, 25, 0.45);
+  --subj-s: 62%; --subj-l: 90%; --subj-text-l: 22%; --subj-border-l: 58%; --subj-chip-l: 84%;
+  --grain-opacity: 0.07;
+}
+
+/* ══════════════════════════ 10 · CLAY (neumorphic) ══════════════════════ */
+[data-theme="clay"] {
+  color-scheme: light;
+  --bg: #e7e9f0;
+  --bg-2: #e7e9f0;
+  --bg-grad: linear-gradient(160deg, #eceef4, #dfe2ea);
+  --panel: #e7e9f0;
+  --panel-solid: #e7e9f0;
+  --panel-2: #e2e5ed;
+  --panel-hover: #dfe2ec;
+  --inset: rgba(163, 177, 198, 0.25);
+  --text: #2c3242;
+  --muted: #6b7284;
+  --faint: #939aab;
+  --line: rgba(120, 132, 158, 0.16);
+  --line-strong: rgba(120, 132, 158, 0.3);
+  --accent-h: 248; --accent-s: 62%; --accent-l: 58%;
+  --accent-2-h: 190; --accent-2-s: 58%; --accent-2-l: 52%;
+  --accent-ink: #ffffff;
+  --radius: 18px; --radius-lg: 26px; --radius-xl: 34px; --radius-sm: 12px;
+  --shadow-1: 3px 3px 7px rgba(163, 177, 198, 0.5), -3px -3px 7px rgba(255, 255, 255, 0.85);
+  --shadow-2: 8px 8px 18px rgba(163, 177, 198, 0.55), -8px -8px 18px rgba(255, 255, 255, 0.9);
+  --shadow-3: 14px 14px 30px rgba(163, 177, 198, 0.6), -14px -14px 30px rgba(255, 255, 255, 0.95);
+  --subj-s: 52%; --subj-l: 88%; --subj-text-l: 26%; --subj-border-l: 70%; --subj-chip-l: 82%;
+  --grain-opacity: 0;
+}
+[data-theme="clay"] .card { border-color: transparent; }
+
+/* ══════════════════════════ 11 · CANDY (playful pastel) ═════════════════ */
+[data-theme="candy"] {
+  color-scheme: light;
+  --bg: #fff4fa;
+  --bg-2: #ffffff;
+  --bg-grad:
+    radial-gradient(700px 500px at 8% -6%, #ffe0f0 0%, transparent 58%),
+    radial-gradient(700px 500px at 96% 4%, #e3e0ff 0%, transparent 58%),
+    radial-gradient(600px 420px at 60% 108%, #d8f5ff 0%, transparent 58%),
+    linear-gradient(180deg, #fff7fb, #fdf0f8);
+  --panel: #ffffff;
+  --panel-solid: #ffffff;
+  --panel-2: #fdf1f8;
+  --panel-hover: #fbe6f3;
+  --inset: rgba(140, 60, 110, 0.05);
+  --text: #3b2340;
+  --muted: #82618a;
+  --faint: #a98cb0;
+  --line: rgba(140, 60, 110, 0.14);
+  --line-strong: rgba(140, 60, 110, 0.26);
+  --accent-h: 330; --accent-s: 92%; --accent-l: 62%;
+  --accent-2-h: 264; --accent-2-s: 88%; --accent-2-l: 68%;
+  --accent-ink: #ffffff;
+  --radius: 22px; --radius-lg: 30px; --radius-xl: 40px; --radius-sm: 14px;
+  --shadow-2: 0 16px 34px -20px rgba(160, 70, 130, 0.45);
+  --shadow-3: 0 30px 60px -26px rgba(160, 70, 130, 0.4);
+  --subj-s: 96%; --subj-l: 94%; --subj-text-l: 30%; --subj-border-l: 80%; --subj-chip-l: 89%;
+  --grain-opacity: 0;
+}
+
+/* ══════════════════════════ 12 · BRUTALIST (bold print) ═════════════════ */
+[data-theme="brutalist"] {
+  color-scheme: light;
+  --bg: #f4f2ec;
+  --bg-2: #ffffff;
+  --bg-grad: linear-gradient(180deg, #f6f4ee, #ece9e0);
+  --panel: #ffffff;
+  --panel-solid: #ffffff;
+  --panel-2: #f2f0e9;
+  --panel-hover: #fff9d6;
+  --inset: rgba(0, 0, 0, 0.06);
+  --text: #0a0a0a;
+  --muted: #3c3c3c;
+  --faint: #6a6a6a;
+  --line: #0a0a0a;
+  --line-strong: #0a0a0a;
+  --hairline: 2px;
+  --accent-h: 52; --accent-s: 100%; --accent-l: 50%;
+  --accent-2-h: 320; --accent-2-s: 100%; --accent-2-l: 52%;
+  --accent-ink: #0a0a0a;
+  --radius-xs: 0; --radius-sm: 0; --radius: 0; --radius-lg: 0; --radius-xl: 0; --radius-pill: 0;
+  --font-active: var(--font-mono);
+  --shadow-1: 3px 3px 0 #0a0a0a;
+  --shadow-2: 6px 6px 0 #0a0a0a;
+  --shadow-3: 10px 10px 0 #0a0a0a;
+  --subj-s: 100%; --subj-l: 88%; --subj-text-l: 12%; --subj-border-l: 20%; --subj-chip-l: 82%;
+  --grain-opacity: 0;
+}
+[data-theme="brutalist"] .card,
+[data-theme="brutalist"] .btn { border-width: 2px; }
+[data-theme="brutalist"] .lesson { border-width: 2px; border-left-width: 6px; }
+
+/* ── user accent override ──────────────────────────────────────────────── */
+[data-accent="on"] {
+  --accent: hsl(var(--accent-h) var(--accent-s) var(--accent-l));
+  --accent-2: hsl(var(--accent-2-h) var(--accent-2-s) var(--accent-2-l));
+}
+
+/* ── glass on/off ──────────────────────────────────────────────────────── */
+[data-glass="off"] { --glass-blur: 0px; }
+[data-glass="off"] .app-header,
+[data-glass="off"] .sidebar,
+[data-glass="off"] .popover,
+[data-glass="off"] .modal-shell { backdrop-filter: none; -webkit-backdrop-filter: none; }
+[data-glass="off"] .app-header,
+[data-glass="off"] .sidebar { background: var(--panel-solid); }

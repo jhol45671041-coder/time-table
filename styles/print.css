@@ -1,0 +1,155 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Timetable Studio — print.css
+   A clean, ink-friendly A4/Letter landscape timetable.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@page {
+  size: A4 landscape;
+  margin: 12mm;
+}
+
+@media print {
+  :root {
+    --bg: #ffffff;
+    --bg-grad: none;
+    --panel: #ffffff;
+    --panel-solid: #ffffff;
+    --panel-2: #ffffff;
+    --panel-hover: #f4f4f4;
+    --text: #000000;
+    --muted: #333333;
+    --faint: #555555;
+    --line: #999999;
+    --line-strong: #333333;
+    --accent: #000000;
+    --accent-2: #000000;
+    --accent-soft: #eeeeee;
+    --shadow-1: none;
+    --shadow-2: none;
+    --shadow-3: none;
+    --subj-s: 0%;
+    --subj-l: 96%;
+    --subj-text-l: 8%;
+    --subj-border-l: 35%;
+    --subj-chip-l: 90%;
+    --row-h: 15mm;
+    --tt-gap: 1.2mm;
+    --time-w: 16mm;
+  }
+
+  html, body {
+    background: #fff !important;
+    color: #000 !important;
+    font-family: "Helvetica Neue", Arial, sans-serif !important;
+    font-size: 9pt;
+  }
+
+  .ambient,
+  .grain,
+  .sidebar,
+  .mobile-nav,
+  .app-header,
+  .toasts,
+  .modal-backdrop,
+  .palette-backdrop,
+  .tt-toolbar,
+  .tt-legend,
+  .no-print,
+  .page:not(.is-active) { display: none !important; }
+
+  .app { display: block !important; }
+  .main { display: block !important; }
+  .content { padding: 0 !important; display: block !important; }
+  .page.is-active { display: block !important; animation: none !important; }
+
+  .card, .hero, .stat {
+    background: #fff !important;
+    border: 0.4pt solid #666 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* printable heading block injected by the app */
+  .print-head {
+    display: flex !important;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12pt;
+    border-bottom: 1.2pt solid #000;
+    padding-bottom: 5pt;
+    margin-bottom: 8pt;
+  }
+  .print-head h1 { font-size: 15pt; font-weight: 700; letter-spacing: -0.01em; }
+  .print-head p { font-size: 8.5pt; color: #333; }
+  .print-head .stamp { font-size: 7.5pt; color: #555; text-align: right; }
+
+  .tt-wrap {
+    overflow: visible !important;
+    max-height: none !important;
+    padding: 0 !important;
+  }
+  .tt { min-width: 0 !important; width: 100% !important; gap: 1.2mm !important; }
+  .tt-corner, .tt-dayhead, .tt-time {
+    position: static !important;
+    background: #f2f2f2 !important;
+    border: 0.4pt solid #666 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .tt-dayhead { padding: 2.5mm !important; }
+  .tt-cell { background: #fff !important; border: 0.3pt dotted #bbb !important; height: var(--row-h) !important; }
+  .tt-cell.is-break { background: #f7f7f7 !important; border: 0.3pt dashed #999 !important; }
+
+  .lesson {
+    animation: none !important;
+    background: #f6f6f6 !important;
+    border: 0.4pt solid #777 !important;
+    border-left: 1.6pt solid #222 !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    padding: 1.2mm 1.6mm !important;
+  }
+  .lesson-name { font-size: 8pt; }
+  .lesson-meta { font-size: 6.8pt; color: #333 !important; opacity: 1; }
+  .lesson-time { font-size: 6.4pt; color: #555 !important; display: block !important; opacity: 1; }
+
+  /* if the user prints from another page, keep it tidy too */
+  .hero { padding: 10pt 0 !important; background: none !important; border: 0 !important; box-shadow: none !important; }
+  .hero::before, .hero::after { display: none !important; }
+  .hero-grid { grid-template-columns: 1fr !important; }
+  .display { font-size: 17pt !important; }
+  .lead { font-size: 9pt !important; }
+  .stat-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 5pt !important; }
+  .stat { padding: 7pt 8pt !important; }
+  .stat-value { font-size: 14pt !important; }
+  .ring { display: none !important; }
+  .split { grid-template-columns: 1fr !important; }
+  .theme-grid, .empty-art, .brand-mark::after { display: none !important; }
+  table.data th, table.data td { padding: 4pt 6pt !important; font-size: 8pt !important; }
+  pre.code { max-height: none !important; font-size: 6.5pt !important; }
+  .btn { border: 0.4pt solid #666 !important; }
+
+  .agenda { padding: 0 !important; }
+  .agenda-item { border: 0.4pt solid #999 !important; background: #fff !important; }
+
+  .print-foot {
+    display: flex !important;
+    justify-content: space-between;
+    margin-top: 8pt;
+    padding-top: 4pt;
+    border-top: 0.4pt solid #999;
+    font-size: 7.5pt;
+    color: #444;
+  }
+
+  a[href]::after { content: ""; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* on screen the print-only blocks stay hidden */
+.print-head,
+.print-foot { display: none; }
