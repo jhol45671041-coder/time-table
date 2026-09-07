@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SMC Academy — Smart Money Concepts Strategy &amp; Video Library</title>
+  <meta name="description" content="Learn Smart Money Concepts (SMC) with a curated video library covering market structure, order blocks, fair value gaps, liquidity, killzones and full trading strategies — all free." />
+  <meta name="theme-color" content="#060a14" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23060a14'/%3E%3Cpath d='M7 20v-4h4l3-6 4 12 3-8h4' stroke='%232dd4a7' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+
+  <!-- scroll progress -->
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header" id="siteHeader">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="SMC Academy home">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <rect width="32" height="32" rx="7" fill="#0d1424" stroke="#1e293b"/>
+          <path d="M7 20v-4h4l3-6 4 12 3-8h4" stroke="#2dd4a7" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="brand-name">SMC<em>Academy</em></span>
+      </a>
+
+      <nav class="main-nav" aria-label="Primary">
+        <a href="#start">Start here</a>
+        <a href="#modules">Learning path</a>
+        <a href="#library">Video library</a>
+        <a href="#playbook">Strategy</a>
+        <a href="#glossary">Concepts</a>
+      </nav>
+
+      <a class="btn btn-ghost btn-sm nav-cta" href="#library">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        <span id="navVideoCount">Videos</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-line"></span> Smart Money Concepts · SMC &amp; ICT</p>
+          <h1>Trade like smart money.<br /><span class="grad-text">One library. Every concept.</span></h1>
+          <p class="hero-sub">
+            The complete SMC trading strategy hub — market structure, order blocks, fair value gaps,
+            liquidity, killzones &amp; full institutional models. Every video is <strong>curated, free,
+            and plays right here.</strong>
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-accent" href="#start">
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>
+              Start with the full course
+            </a>
+            <a class="btn btn-outline" href="#library">Browse all videos</a>
+          </div>
+          <ul class="hero-stats">
+            <li><strong id="statVideos">0</strong><span>curated videos</span></li>
+            <li><strong id="statModules">0</strong><span>learning modules</span></li>
+            <li><strong>7</strong><span>core concepts</span></li>
+            <li><strong>100%</strong><span>free &amp; on-demand</span></li>
+          </ul>
+        </div>
+
+        <div class="hero-chart" aria-hidden="true">
+          <div class="chart-card">
+            <div class="chart-head">
+              <span class="chart-title">
+                <i class="live-dot"></i> The Smart Money play in real time
+              </span>
+              <span class="chart-tf">H4 · XAUUSD</span>
+            </div>
+            <svg id="heroChart" viewBox="0 0 760 400" role="img" aria-label="Diagram of a smart money liquidity sweep, displacement, order block and fair value gap"></svg>
+          </div>
+          <div class="hero-note">
+            <span class="note-chip note-chip-g">▲ BSL — buy-side liquidity</span>
+            <span class="note-chip note-chip-r">▼ SSL — sell-side liquidity</span>
+            <span class="note-chip">OB · FVG · BOS</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- keyword ticker -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track" id="tickerTrack">
+        <span>Order Block</span><i>◆</i><span>Fair Value Gap</span><i>◆</i><span>BOS</span><i>◆</i>
+        <span>CHoCH</span><i>◆</i><span>Liquidity Sweep</span><i>◆</i><span>Power of 3</span><i>◆</i>
+        <span>Killzone</span><i>◆</i><span>OTE</span><i>◆</i><span>Premium &amp; Discount</span><i>◆</i>
+        <span>Silver Bullet</span><i>◆</i><span>Inducement</span><i>◆</i><span>Displacement</span><i>◆</i>
+        <span>Order Block</span><i>◆</i><span>Fair Value Gap</span><i>◆</i><span>BOS</span><i>◆</i>
+        <span>CHoCH</span><i>◆</i><span>Liquidity Sweep</span><i>◆</i><span>Power of 3</span><i>◆</i>
+        <span>Killzone</span><i>◆</i><span>OTE</span><i>◆</i><span>Premium &amp; Discount</span><i>◆</i>
+        <span>Silver Bullet</span><i>◆</i><span>Inducement</span><i>◆</i><span>Displacement</span><i>◆</i>
+      </div>
+    </div>
+
+    <!-- ============ START HERE / FEATURED PLAYER ============ -->
+    <section class="section featured" id="start">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow"><span class="eyebrow-line"></span> Start here</p>
+          <h2>Watch the full course first</h2>
+          <p class="section-sub">One recommendation to build the whole map, then five short wins in order. Pick any title to play it instantly.</p>
+        </div>
+
+        <div class="featured-grid">
+          <div class="player-wrap">
+            <div class="player-frame">
+              <iframe id="mainPlayer"
+                src="https://www.youtube-nocookie.com/embed/zrkfntcsorg?rel=0&modestbranding=1"
+                title="Video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen></iframe>
+            </div>
+            <div class="player-caption">
+              <p class="player-why" id="playerWhy">The full framework in one sitting — start with the complete guide.</p>
+              <a class="btn btn-ghost btn-sm" id="playerOpenLink" href="https://www.youtube.com/watch?v=zrkfntcsorg" target="_blank" rel="noopener noreferrer">
+                Watch on YouTube ↗
+              </a>
+            </div>
+          </div>
+
+          <ol class="watchlist" id="watchlist"><!-- injected --></ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LEARNING PATH / MODULES ============ -->
+    <section class="section modules" id="modules">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow"><span class="eyebrow-line"></span> Learning path</p>
+          <h2>Six modules. Zero filler.</h2>
+          <p class="section-sub">SMC is a language — learn it in the order smart money actually uses it. Each module opens the matching part of the library.</p>
+        </div>
+        <div class="modules-grid" id="modulesGrid"><!-- injected --></div>
+      </div>
+    </section>
+
+    <!-- ============ VIDEO LIBRARY ============ -->
+    <section class="section library" id="library">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow"><span class="eyebrow-line"></span> Video library</p>
+          <h2>Every SMC video you need</h2>
+          <p class="section-sub">Search, filter by concept, click any card to play — no sign-up, no paywall. Each video opens on YouTube too.</p>
+        </div>
+
+        <div class="library-toolbar">
+          <div class="filter-chips" id="filterChips" role="group" aria-label="Filter by concept"><!-- injected --></div>
+          <label class="search-box" for="searchInput">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input id="searchInput" type="search" placeholder="Search videos, topics, channels…  ( / )" autocomplete="off" />
+            <kbd id="searchHint">/</kbd>
+          </label>
+        </div>
+
+        <p class="result-count" id="resultCount" aria-live="polite"></p>
+        <div class="video-grid" id="videoGrid"><!-- injected --></div>
+        <div class="empty-state" id="emptyState" hidden>
+          <p class="empty-icon">◎</p>
+          <h3>No videos match that filter</h3>
+          <p>Try a different keyword or switch back to “All videos”.</p>
+          <button class="btn btn-outline btn-sm" id="emptyReset" type="button">Reset filters</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ STRATEGY PLAYBOOK ============ -->
+    <section class="section playbook" id="playbook">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow"><span class="eyebrow-line"></span> The strategy</p>
+          <h2>The 5-step SMC trade playbook</h2>
+          <p class="section-sub">The exact sequence the best free courses teach — structure → zones → liquidity → sweep → execution.</p>
+        </div>
+        <ol class="playbook-list" id="playbookList"><!-- injected --></ol>
+      </div>
+    </section>
+
+    <!-- ============ GLOSSARY ============ -->
+    <section class="section glossary" id="glossary">
+      <div class="container glossary-wrap">
+        <div class="section-head">
+          <p class="eyebrow"><span class="eyebrow-line"></span> Concepts</p>
+          <h2>SMC cheat sheet</h2>
+          <p class="section-sub">Plain-language definitions of the terms you’ll hear in every video.</p>
+        </div>
+        <dl class="glossary-list" id="glossaryList"><!-- injected --></dl>
+      </div>
+    </section>
+
+    <!-- ============ CTA BANNER ============ -->
+    <section class="cta-banner">
+      <div class="container cta-inner">
+        <div>
+          <h2>Ready to read the chart like an institution?</h2>
+          <p>Start module one — market structure — and build up one concept at a time.</p>
+        </div>
+        <a class="btn btn-accent" href="#modules">Jump into the learning path</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a class="brand" href="#top" aria-label="SMC Academy home">
+          <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true">
+            <rect width="32" height="32" rx="7" fill="#0d1424" stroke="#1e293b"/>
+            <path d="M7 20v-4h4l3-6 4 12 3-8h4" stroke="#2dd4a7" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="brand-name">SMC<em>Academy</em></span>
+        </a>
+        <p>A free, curated library for learning Smart Money Concepts — built for traders who want the full picture in one place.</p>
+      </div>
+
+      <div class="footer-links">
+        <h4>Explore</h4>
+        <a href="#start">Start here</a>
+        <a href="#modules">Learning path</a>
+        <a href="#library">Video library</a>
+        <a href="#playbook">Strategy playbook</a>
+      </div>
+      <div class="footer-links">
+        <h4>Topics</h4>
+        <a href="#library" data-chip="structure">Market structure</a>
+        <a href="#library" data-chip="liquidity">Liquidity &amp; sweeps</a>
+        <a href="#library" data-chip="ob-fvg">Order blocks &amp; FVGs</a>
+        <a href="#library" data-chip="sessions">Killzones &amp; models</a>
+      </div>
+    </div>
+
+    <div class="container footer-legal">
+      <p><strong>Educational use only.</strong> Trading foreign exchange, CFDs, stocks and crypto on margin carries a high level of risk and may not be suitable for all investors. This site is a video library and does not provide financial advice, signals or investment recommendations. Past performance in any video is not indicative of future results.</p>
+      <p>All videos are the property of their respective creators on YouTube and are embedded via YouTube’s public oEmbed interface. SMC Academy is not affiliated with ICT, LuxAlgo or any creator listed. <span id="footerYear"></span> © SMC Academy.</p>
+    </div>
+  </footer>
+
+  <!-- ============ PLAYER MODAL ============ -->
+  <div class="modal" id="playerModal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-dialog">
+      <div class="modal-top">
+        <div class="modal-titles">
+          <p class="modal-cat" id="modalCat"></p>
+          <h3 id="modalTitle"></h3>
+          <p class="modal-channel" id="modalChannel"></p>
+        </div>
+        <button class="modal-close" type="button" data-close-modal aria-label="Close player">✕</button>
+      </div>
+      <div class="modal-player">
+        <iframe id="modalIframe"
+          src="about:blank"
+          title="Video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen></iframe>
+      </div>
+      <p class="modal-desc" id="modalDesc"></p>
+      <div class="modal-actions">
+        <button class="btn btn-outline btn-sm" id="modalPrev" type="button">← Previous</button>
+        <a class="btn btn-accent btn-sm" id="modalWatch" href="#" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>
+        <button class="btn btn-outline btn-sm" id="modalNext" type="button">Next →</button>
+      </div>
+    </div>
+  </div>
+
+  <noscript>
+    <p style="color:#fff;padding:1rem;text-align:center">Please enable JavaScript to browse and play the SMC video library.</p>
+  </noscript>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
