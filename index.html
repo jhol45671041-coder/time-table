@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitSent — Fitness Sent Every Hour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['"Bebas Neue"', 'sans-serif'],
+        sans: ['"Instrument Sans"', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace']
+      }
+    }
+  }
+}
+</script>
+<style>
+  :root {
+    --lime: #D9FF00;
+    --lime-dark: #B8D900;
+    --bg: #0E0E10;
+    --card: #18181B;
+    --card-2: #1F1F23;
+    --border: #2A2A2E;
+  }
+  body { background: var(--bg); color: #fff; font-family: "Instrument Sans", sans-serif; overflow-x: hidden; }
+  .grid-pattern {
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .lime-glow { box-shadow: 0 0 40px rgba(217,255,0,0.25); }
+  .task-card { 
+    background: linear-gradient(135deg, #1A1A1E 0%, #141416 100%);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .task-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(217,255,0,0.5), transparent);
+  }
+  .noise::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .progress-ring { transform: rotate(-90deg); }
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    animation: shimmer 2s infinite;
+  }
+  @keyframes shimmer { 100% { left: 100%; } }
+  @keyframes pulse-lime {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(217,255,0,0.4); }
+    50% { box-shadow: 0 0 0 12px rgba(217,255,0,0); }
+  }
+  .pulse-lime { animation: pulse-lime 2s infinite; }
+  .timeline-item.active { background: var(--lime); color: #000; }
+  .timeline-item.done { opacity: 0.5; }
+  .timeline-item.done .check { display: flex; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #141416; }
+  ::-webkit-scrollbar-thumb { background: #2A2A2E; border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: #3A3A3E; }
+</style>
+</head>
+<body class="min-h-screen grid-pattern relative">
+  <!-- Top Glow -->
+  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[radial-gradient(ellipse_at_center,_rgba(217,255,0,0.12)_0%,_transparent_70%)] pointer-events-none"></div>
+
+  <!-- Header -->
+  <header class="relative z-20 border-b border-[#1F1F23] backdrop-blur-xl bg-[#0E0E10]/80 sticky top-0">
+    <div class="max-w-[1280px] mx-auto px-6 md:px-8 h-[64px] flex items-center justify-between">
+      <div class="flex items-center gap-8">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 bg-[#D9FF00] rounded-[10px] flex items-center justify-center font-display text-black text-[20px] tracking-wider">FS</div>
+          <div>
+            <div class="font-display text-[22px] leading-none tracking-[0.02em]">FITSENT</div>
+            <div class="font-mono text-[9px] tracking-[0.2em] text-white/40 -mt-1">HOURLY PROTOCOL</div>
+          </div>
+        </div>
+        <div class="hidden md:flex items-center gap-2 text-[12px] font-mono">
+          <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+          <span class="text-white/60">LIVE • </span><span id="liveClock" class="text-white">00:00:00</span>
+          <span class="text-white/20 ml-2">|</span>
+          <span class="text-white/60 ml-2">NEXT DROP IN</span>
+          <span id="nextDrop" class="ml-1 bg-[#D9FF00] text-black px-2 py-0.5 rounded font-bold">00:00</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="hidden md:flex items-center gap-3 bg-[#18181B] border border-[#2A2A2E] rounded-full px-3 py-1.5">
+          <div class="flex -space-x-1">
+            <div class="w-6 h-6 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 border-2 border-[#18181B]"></div>
+            <div class="w-6 h-6 rounded-full bg-[#D9FF00] border-2 border-[#18181B] flex items-center justify-center text-[10px] font-bold text-black">+3</div>
+          </div>
+          <div class="font-mono text-[11px]">
+            <span class="text-white/40">STREAK</span>
+            <span id="streakCount" class="text-white font-bold ml-1">0 DAYS</span>
+          </div>
+        </div>
+        <button id="notifBtn" class="w-9 h-9 bg-[#18181B] border border-[#2A2A2E] rounded-full flex items-center justify-center hover:border-white/20 transition">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M6 8a6 6 0 0 1 12 0c0 7 6 5 6 10H0s6-3 6-10"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        </button>
+        <button id="settingsBtn" class="w-9 h-9 bg-[#18181B] border border-[#2A2A2E] rounded-full flex items-center justify-center hover:border-white/20 transition">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 9 15a1.65 1.65 0 0 0-1-1.51V13a2 2 0 0 1 4 0v.49c.39.23.74.57 1 1.01Z"/></svg>
+        </button>
+      </div>
+    </div>
+    <!-- Mobile clock -->
+    <div class="md:hidden px-6 pb-3 flex items-center gap-3 font-mono text-[11px]">
+      <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+      <span id="liveClockMobile" class="text-white">00:00:00</span>
+      <span class="text-white/30">NEXT IN</span>
+      <span id="nextDropMobile" class="bg-[#D9FF00] text-black px-2 py-0.5 rounded font-bold">00:00</span>
+    </div>
+  </header>
+
+  <main class="relative z-10 max-w-[1280px] mx-auto px-6 md:px-8 py-6 md:py-8 grid grid-cols-12 gap-6">
+    
+    <!-- Left: Main Task -->
+    <div class="col-span-12 lg:col-span-8 space-y-6">
+      
+      <!-- Current Mission Header -->
+      <div class="flex items-end justify-between">
+        <div>
+          <div class="flex items-center gap-3 mb-2">
+            <span class="bg-[#D9FF00] text-black font-mono text-[10px] font-bold tracking-[0.15em] px-2.5 py-1 rounded-full">CURRENT MISSION</span>
+            <span id="timeSlot" class="font-mono text-[11px] text-white/50 tracking-widest">-- -- --</span>
+            <span class="hidden md:flex items-center gap-1.5 text-[11px] font-mono text-emerald-400">
+              <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span> LIVE
+            </span>
+          </div>
+          <h1 class="font-display text-[44px] md:text-[64px] leading-[0.9] tracking-[-0.02em]">SENT EVERY HOUR.<br><span class="text-white/20">BUILT FOR MOTION.</span></h1>
+        </div>
+        <div class="hidden md:block text-right">
+          <div class="font-mono text-[10px] text-white/30 tracking-[0.2em]">PROTOCOL</div>
+          <div class="font-display text-[18px]">MOVE / 24</div>
+        </div>
+      </div>
+
+      <!-- Main Task Card -->
+      <div class="task-card rounded-[24px] md:rounded-[32px] p-6 md:p-8 noise">
+        <!-- Top meta -->
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+          <div class="flex items-center gap-3">
+            <div id="categoryIcon" class="w-12 h-12 rounded-[14px] bg-[#D9FF00] flex items-center justify-center text-black">
+              <!-- icon injected -->
+            </div>
+            <div>
+              <div id="categoryName" class="font-mono text-[11px] tracking-[0.15em] text-white/50">STRENGTH</div>
+              <div id="difficulty" class="flex items-center gap-1.5 mt-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#D9FF00]"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-[#D9FF00]"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-white/20"></span>
+                <span class="font-mono text-[10px] text-white/60 ml-1">INTERMEDIATE</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="bg-[#1F1F23] border border-[#2A2A2E] rounded-full px-3 py-1.5 flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D9FF00" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span id="taskDuration" class="font-mono text-[12px]">3 MIN</span>
+            </div>
+            <div class="bg-[#1F1F23] border border-[#2A2A2E] rounded-full px-3 py-1.5 flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6B6B" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              <span id="taskCalories" class="font-mono text-[12px]">42 KCAL</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Title & Desc -->
+        <div class="mb-8">
+          <h2 id="taskTitle" class="font-display text-[36px] md:text-[52px] leading-[0.9] tracking-[-0.01em] mb-4">Loading mission...</h2>
+          <p id="taskDesc" class="text-[16px] md:text-[18px] leading-[1.5] text-white/60 max-w-[560px]">Preparing your hourly drop. Stay ready.</p>
+        </div>
+
+        <!-- Visual / Timer Area -->
+        <div class="grid md:grid-cols-[1.2fr_0.8fr] gap-6">
+          <!-- Exercise visual + reps -->
+          <div class="bg-[#0E0E10] border border-[#1F1F23] rounded-[20px] p-5 md:p-6 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-[#D9FF00]/[0.04] rounded-full blur-[20px]"></div>
+            <div class="flex justify-between items-start mb-6">
+              <div class="font-mono text-[10px] tracking-[0.2em] text-white/30">EXECUTION</div>
+              <div class="font-mono text-[10px] bg-white/5 px-2 py-1 rounded-full">REP-BASED</div>
+            </div>
+            <div id="taskSteps" class="space-y-3">
+              <!-- steps injected -->
+            </div>
+            <div class="mt-6 pt-5 border-t border-[#1F1F23] flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-[#D9FF00] flex items-center justify-center">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <span class="font-mono text-[11px] text-white/50">No equipment needed • Do it where you are</span>
+            </div>
+          </div>
+
+          <!-- Timer / Action -->
+          <div class="bg-[#D9FF00] rounded-[20px] p-5 md:p-6 text-black relative overflow-hidden flex flex-col">
+            <div class="absolute -right-10 -top-10 w-40 h-40 bg-black/10 rounded-full blur-[10px]"></div>
+            <div class="relative z-10 flex-1 flex flex-col">
+              <div class="flex justify-between items-start mb-4">
+                <div class="font-mono text-[10px] tracking-[0.2em] opacity-60">TIMER</div>
+                <div id="taskStatus" class="font-mono text-[10px] bg-black text-[#D9FF00] px-2 py-1 rounded-full">READY</div>
+              </div>
+              
+              <!-- Circular progress -->
+              <div class="flex-1 flex flex-col items-center justify-center py-2">
+                <div class="relative w-[160px] h-[160px]">
+                  <svg class="w-full h-full progress-ring">
+                    <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(0,0,0,0.1)" stroke-width="8"/>
+                    <circle id="progressCircle" cx="80" cy="80" r="70" fill="none" stroke="black" stroke-width="8" stroke-linecap="round" stroke-dasharray="439.8" stroke-dashoffset="439.8" class="transition-all duration-500"/>
+                  </svg>
+                  <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <div id="timerDisplay" class="font-display text-[48px] leading-none tracking-[-0.02em]">02:00</div>
+                    <div id="timerLabel" class="font-mono text-[10px] tracking-[0.15em] opacity-60 mt-1">MINUTES</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="space-y-2.5 mt-4">
+                <button id="mainAction" class="w-full h-[48px] bg-black text-[#D9FF00] rounded-full font-mono text-[13px] tracking-[0.1em] font-bold hover:bg-[#111] transition flex items-center justify-center gap-2">
+                  <span>▶</span> START MISSION
+                </button>
+                <div class="grid grid-cols-2 gap-2">
+                  <button id="completeBtn" class="h-[40px] bg-white/20 backdrop-blur rounded-full font-mono text-[11px] tracking-[0.1em] font-bold hover:bg-white/30 transition">COMPLETE</button>
+                  <button id="skipBtn" class="h-[40px] bg-transparent border border-black/20 rounded-full font-mono text-[11px] tracking-[0.1em] font-bold hover:bg-black/5 transition">SKIP →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Next preview -->
+        <div class="mt-6 bg-[#121214] border border-[#1F1F23] rounded-[16px] px-4 py-3 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="font-mono text-[10px] tracking-[0.15em] text-white/30">NEXT DROP</span>
+            <span id="nextTaskPreview" class="font-mono text-[12px] text-white/70">Mobility Reset • 2 min</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 bg-[#D9FF00] rounded-full animate-pulse"></div>
+            <span id="nextInSmall" class="font-mono text-[11px]">in 42m 12s</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Motivation / Quote -->
+      <div class="grid md:grid-cols-3 gap-4">
+        <div class="md:col-span-2 bg-[#18181B] border border-[#2A2A2E] rounded-[20px] p-5 flex gap-4">
+          <div class="w-10 h-10 rounded-full bg-[#D9FF00]/10 border border-[#D9FF00]/20 flex items-center justify-center shrink-0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D9FF00" stroke-width="1.5"><path d="M12 2a10 10 0 1 0 10 10H12V2Z"/><path d="M12 2a10 10 0 0 1 10 10"/><path d="M12 12 2.69 8.5"/></svg>
+          </div>
+          <div>
+            <div class="font-mono text-[10px] tracking-[0.2em] text-white/30 mb-1">FITSENT INSIGHT</div>
+            <p id="insightText" class="text-[14px] leading-[1.5] text-white/70">Hourly movement boosts focus by 23% and burns an extra 300 kcal per day without a gym. Small sends, big returns.</p>
+          </div>
+        </div>
+        <div class="bg-[#18181B] border border-[#2A2A2E] rounded-[20px] p-5">
+          <div class="font-mono text-[10px] tracking-[0.2em] text-white/30 mb-3">FOCUS TODAY</div>
+          <div id="focusTags" class="flex flex-wrap gap-2">
+            <span class="px-2.5 py-1 rounded-full bg-[#D9FF00] text-black font-mono text-[10px] font-bold">CORE</span>
+            <span class="px-2.5 py-1 rounded-full bg-[#1F1F23] border border-[#2A2A2E] font-mono text-[10px]">POSTURE</span>
+            <span class="px-2.5 py-1 rounded-full bg-[#1F1F23] border border-[#2A2A2E] font-mono text-[10px]">ENERGY</span>
+          </div>
+          <div class="mt-4 h-1.5 bg-[#1F1F23] rounded-full overflow-hidden">
+            <div id="dayProgressBar" class="h-full bg-[#D9FF00] transition-all duration-700" style="width: 0%"></div>
+          </div>
+          <div class="mt-2 flex justify-between font-mono text-[10px] text-white/40">
+            <span>DAY PROGRESS</span>
+            <span id="dayProgressText">0/16</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="col-span-12 lg:col-span-4 space-y-6">
+      
+      <!-- Stats -->
+      <div class="bg-[#18181B] border border-[#2A2A2E] rounded-[24px] p-6">
+        <div class="flex items-center justify-between mb-5">
+          <h3 class="font-display text-[20px] tracking-[0.02em]">TODAY'S PULSE</h3>
+          <span class="font-mono text-[10px] bg-[#1F1F23] border border-[#2A2A2E] px-2 py-1 rounded-full">UTC • AUTO</span>
+        </div>
+        <div class="grid grid-cols-3 gap-3 mb-6">
+          <div class="bg-[#0E0E10] border border-[#1F1F23] rounded-[16px] p-3">
+            <div class="font-mono text-[10px] text-white/30 tracking-widest">DONE</div>
+            <div id="statDone" class="font-display text-[28px] leading-none mt-1">0</div>
+            <div class="font-mono text-[10px] text-emerald-400 mt-1">↑ 12%</div>
+          </div>
+          <div class="bg-[#0E0E10] border border-[#1F1F23] rounded-[16px] p-3">
+            <div class="font-mono text-[10px] text-white/30 tracking-widest">KCAL</div>
+            <div id="statKcal" class="font-display text-[28px] leading-none mt-1">0</div>
+            <div class="font-mono text-[10px] text-white/40 mt-1">burned</div>
+          </div>
+          <div class="bg-[#0E0E10] border border-[#1F1F23] rounded-[16px] p-3">
+            <div class="font-mono text-[10px] text-white/30 tracking-widest">MIN</div>
+            <div id="statMin" class="font-display text-[28px] leading-none mt-1">0</div>
+            <div class="font-mono text-[10px] text-white/40 mt-1">active</div>
+          </div>
+        </div>
+        <!-- Mini chart -->
+        <div class="bg-[#0E0E10] border border-[#1F1F23] rounded-[16px] p-4">
+          <div class="flex justify-between items-center mb-3">
+            <span class="font-mono text-[10px] tracking-[0.2em] text-white/30">ACTIVITY MAP</span>
+            <span class="font-mono text-[10px] text-white/30">6AM — 11PM</span>
+          </div>
+          <div id="activityBars" class="flex items-end gap-[3px] h-[48px]">
+            <!-- bars injected -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="bg-[#18181B] border border-[#2A2A2E] rounded-[24px] p-6">
+        <div class="flex items-center justify-between mb-5">
+          <h3 class="font-display text-[20px] tracking-[0.02em]">HOURLY DROPS</h3>
+          <div class="flex items-center gap-2">
+            <button id="timelinePrev" class="w-7 h-7 rounded-full bg-[#1F1F23] border border-[#2A2A2E] flex items-center justify-center hover:border-white/20">‹</button>
+            <button id="timelineNext" class="w-7 h-7 rounded-full bg-[#1F1F23] border border-[#2A2A2E] flex items-center justify-center hover:border-white/20">›</button>
+          </div>
+        </div>
+        <div id="timeline" class="space-y-2 max-h-[420px] overflow-y-auto pr-1">
+          <!-- timeline injected -->
+        </div>
+        <div class="mt-4 pt-4 border-t border-[#1F1F23] flex items-center justify-between font-mono text-[10px]">
+          <span class="text-white/30">LOCAL TIMEZONE</span>
+          <span id="tzLabel" class="text-white/60">--</span>
+        </div>
+      </div>
+
+      <!-- Settings / Mode -->
+      <div class="bg-[#D9FF00] rounded-[24px] p-6 text-black relative overflow-hidden">
+        <div class="absolute -right-12 -bottom-12 w-32 h-32 bg-black/10 rounded-full"></div>
+        <div class="relative z-10">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-display text-[20px]">PROTOCOL SETTINGS</h3>
+            <div class="w-8 h-8 bg-black rounded-full flex items-center justify-center">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D9FF00" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <div>
+              <label class="font-mono text-[10px] tracking-[0.15em] opacity-60">INTENSITY</label>
+              <div class="grid grid-cols-3 gap-2 mt-2">
+                <button data-intensity="chill" class="intensity-btn h-9 rounded-full border border-black/20 font-mono text-[11px] font-bold bg-black text-[#D9FF00]">CHILL</button>
+                <button data-intensity="push" class="intensity-btn h-9 rounded-full border border-black/20 font-mono text-[11px] font-bold hover:bg-black/10">PUSH</button>
+                <button data-intensity="beast" class="intensity-btn h-9 rounded-full border border-black/20 font-mono text-[11px] font-bold hover:bg-black/10">BEAST</button>
+              </div>
+            </div>
+            <div>
+              <label class="font-mono text-[10px] tracking-[0.15em] opacity-60">FOCUS AREAS</label>
+              <div class="flex flex-wrap gap-2 mt-2">
+                <button data-focus="strength" class="focus-btn px-3 py-1.5 rounded-full bg-black text-[#D9FF00] font-mono text-[11px] font-bold">STRENGTH</button>
+                <button data-focus="cardio" class="focus-btn px-3 py-1.5 rounded-full border border-black/20 font-mono text-[11px] font-bold">CARDIO</button>
+                <button data-focus="mobility" class="focus-btn px-3 py-1.5 rounded-full border border-black/20 font-mono text-[11px] font-bold">MOBILITY</button>
+                <button data-focus="mind" class="focus-btn px-3 py-1.5 rounded-full border border-black/20 font-mono text-[11px] font-bold">MIND</button>
+              </div>
+            </div>
+            <label class="flex items-center justify-between bg-black/10 rounded-full px-4 py-3 cursor-pointer hover:bg-black/15 transition">
+              <span class="font-mono text-[11px] font-bold tracking-[0.05em]">DESKTOP NOTIFICATIONS</span>
+              <input id="notifToggle" type="checkbox" class="sr-only">
+              <span id="notifToggleUi" class="w-10 h-6 bg-black/20 rounded-full relative flex items-center transition">
+                <span class="w-4 h-4 bg-black rounded-full absolute left-1 transition-all"></span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Confetti canvas -->
+  <canvas id="confetti" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#18181B] border border-[#2A2A2E] text-white px-5 py-3 rounded-full font-mono text-[12px] flex items-center gap-3 shadow-2xl translate-y-[150%] transition-transform duration-500 z-50">
+    <span class="w-6 h-6 bg-[#D9FF00] rounded-full flex items-center justify-center text-black font-bold">✓</span>
+    <span id="toastText">Mission completed!</span>
+  </div>
+
+  <!-- New hour modal -->
+  <div id="newHourModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-40 hidden items-center justify-center p-6">
+    <div class="bg-[#18181B] border border-[#2A2A2E] rounded-[32px] max-w-[480px] w-full p-8 text-center relative overflow-hidden">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[150px] bg-[#D9FF00]/20 blur-[40px] rounded-full"></div>
+      <div class="relative z-10">
+        <div class="w-16 h-16 bg-[#D9FF00] rounded-[18px] mx-auto flex items-center justify-center mb-6 pulse-lime">
+          <span class="font-display text-[28px] text-black">NEW</span>
+        </div>
+        <div class="font-mono text-[10px] tracking-[0.2em] text-white/40 mb-2">HOURLY DROP • JUST LANDED</div>
+        <h2 id="modalTitle" class="font-display text-[36px] leading-[0.9] mb-3">Desk Push-up Burst</h2>
+        <p id="modalDesc" class="text-white/60 text-[14px] leading-[1.5] mb-6">Your next micro-mission is here. 2 minutes to reset.</p>
+        <div class="flex gap-3">
+          <button id="modalDismiss" class="flex-1 h-12 rounded-full bg-[#1F1F23] border border-[#2A2A2E] font-mono text-[12px] font-bold tracking-widest">LATER</button>
+          <button id="modalStart" class="flex-1 h-12 rounded-full bg-[#D9FF00] text-black font-mono text-[12px] font-bold tracking-widest">START NOW</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+// ---------- TASK DATABASE ----------
+const TASK_POOL = [
+  { id:1, title:"Desk Push-up Burst", cat:"strength", diff:1, dur:2, kcal:28, desc:"Elevate your heart rate without leaving your chair zone. Explosive push-ups using your desk.", steps:["10 desk push-ups (hands on desk edge)","15 sec plank hold","Repeat 2x with 20 sec rest"], color:"#D9FF00", icon:"💪", insight:"Push-ups every hour improve posture and counteract sitting." },
+  { id:2, title:"Stair Sprint Reset", cat:"cardio", diff:2, dur:3, kcal:55, desc:"If you have stairs nearby, own them. If not, high knees will do the trick.", steps:["30 sec stair climb or high knees","20 bodyweight squats","30 sec rest, repeat once"], color:"#FF5A5F", icon:"⚡", insight:"3-min cardio spikes increase BDNF for sharper focus." },
+  { id:3, title:"Spinal Wave Flow", cat:"mobility", diff:1, dur:3, kcal:18, desc:"Decompress your spine. Your back has been waiting for this since 9AM.", steps:["Cat-cow x 10 slow","Seated spinal twist 30s each side","Neck rolls 10 each direction"], color:"#8B5CF6", icon:"🌀", insight:"Spinal mobility work reduces afternoon back pain by 67%." },
+  { id:4, title:"Box Breathing + Hold", cat:"mind", diff:1, dur:2, kcal:5, desc:"Navy SEALs use this. Reset your nervous system in 120 seconds.", steps:["Inhale 4s → Hold 4s → Exhale 4s → Hold 4s","Repeat 4 cycles","Last cycle: hold breath as long as comfy"], color:"#06B6D4", icon:"🧘", insight:"Box breathing lowers cortisol in under 2 minutes." },
+  { id:5, title:"Lunge Matrix", cat:"strength", diff:2, dur:3, kcal:42, desc:"Forward, side, reverse. Hit every angle your chair doesn't.", steps:["8 forward lunges each leg","8 lateral lunges each leg","8 reverse lunges + 20s hold"], color:"#D9FF00", icon:"🦵", insight:"Multi-directional lunges prevent tight hip flexors." },
+  { id:6, title:"Shadow Boxing Rush", cat:"cardio", diff:2, dur:2, kcal:48, desc:"No gloves needed. Just you vs. stale air. Jab-cross-hook for 2 minutes.", steps:["30s jab-cross nonstop","30s hooks + uppercuts","60s freestyle combo + footwork"], color:"#FF5A5F", icon:"🥊", insight:"Shadow boxing is top 3 for stress release at work." },
+  { id:7, title:"Dead Hang Challenge", cat:"strength", diff:3, dur:2, kcal:22, desc:"Find a door frame, bar, or sturdy edge. Just hang. Gravity does the work.", steps:["Hang 30s (or max)","10 scapular shrugs","Hang again 30s, shake out"], color:"#D9FF00", icon:"🦍", insight:"Daily hanging decompresses 15+ lbs of spinal compression." },
+  { id:8, title:"Ankle & Wrist Revive", cat:"mobility", diff:1, dur:2, kcal:12, desc:"The joints you forget until they hurt. Give them 2 minutes now.", steps:["Ankle circles 15 each foot","Wrist circles + finger spreads 20s","Calf raises 20x slow"], color:"#8B5CF6", icon:"🦶", insight:"Desk workers lose 30% ankle mobility per year." },
+  { id:9, title:"Core Ignition", cat:"strength", diff:2, dur:3, kcal:38, desc:"No crunches. Real core: anti-rotation, stability, breathe.", steps:["30s dead bug","30s side plank each side","20 bird-dogs alternating"], color:"#D9FF00", icon:"🔥", insight:"A strong core = 40% less lower back pain." },
+  { id:10, title:"4-7-8 Wind Down", cat:"mind", diff:1, dur:2, kcal:6, desc:"If stress is high, this is your parachute. Inhale, hold longer, exhale slowly.", steps:["Inhale 4s, hold 7s, exhale 8s","Repeat 3 times","Sit 20s noticing heartbeat"], color:"#06B6D4", icon:"🌊", insight:"4-7-8 breathing activates parasympathetic in 45s." },
+  { id:11, title:"Jump Squat Ladder", cat:"cardio", diff:3, dur:3, kcal:62, desc:"Explosive legs, no equipment. Land soft, jump hard.", steps:["5 jump squats","10 air squats","15 sec rest - repeat 3 rounds"], color:"#FF5A5F", icon:"🚀", insight:"Plyometrics boost metabolism for 14 hours post." },
+  { id:12, title:"Hip Flexor Unstick", cat:"mobility", diff:1, dur:3, kcal:16, desc:"Sitting shortens hip flexors. This lengthens them back.", steps:["Half-kneeling hip flexor stretch 45s each","Glute bridge 15x","Pigeon or figure-4 30s each"], color:"#8B5CF6", icon:"🧩", insight:"Tight hip flexors tilt pelvis and cause low back ache." },
+  { id:13, title:"Isometric Wall Siege", cat:"strength", diff:2, dur:3, kcal:35, desc:"No movement, all tension. Walls become your gym.", steps:["Wall sit 40s","Wall push hold 30s","Plank to wall walk 30s"], color:"#D9FF00", icon:"🧱", insight:"Isometrics build strength at joint angles you actually use." },
+  { id:14, title:"Eye + Neck Reset", cat:"mind", diff:1, dur:2, kcal:4, desc:"20-20-20 rule plus neck release. For screen warriors.", steps:["Look 20ft away for 20s","Chin tucks 10x","Upper trap stretch 20s each side"], color:"#06B6D4", icon:"👁️", insight:"Every 20 min, look 20ft away for 20s to save eyes." },
+  { id:15, title:"Burpee Lite EMOM", cat:"cardio", diff:3, dur:3, kcal:58, desc:"Every minute on the minute: 5 burpees. 3 minutes. You vs clock.", steps:["Minute 1: 5 burpees","Minute 2: 5 burpees","Minute 3: 5 burpees + max air squats"], color:"#FF5A5F", icon:"⏱️", insight:"EMOMs build mental toughness in tiny doses." },
+  { id:16, title:"Thoracic Opener", cat:"mobility", diff:1, dur:2, kcal:14, desc:"Open the upper back. Breathe deeper instantly.", steps:["Open book stretch 8 each side","Thread the needle 30s each","Chest doorway stretch 30s"], color:"#8B5CF6", icon:"📖", insight:"Thoracic mobility = better breathing + less neck pain." },
+  { id:17, title:"Single-Leg Balance", cat:"strength", diff:2, dur:2, kcal:20, desc:"Balance is a skill. Train it hourly, keep it for life.", steps:["Balance left leg 30s eyes open","Balance right leg 30s eyes closed","10 single-leg calf raises each"], color:"#D9FF00", icon:"⚖️", insight:"Balance training reduces fall risk and improves proprioception." },
+  { id:18, title:"Gratitude Micro-Journal", cat:"mind", diff:1, dur:2, kcal:3, desc:"Not woo-woo. 60 seconds of gratitude rewires your brain.", steps:["Write 3 things you're grateful for","Write 1 win from today","Take 3 deep breaths smiling"], color:"#06B6D4", icon:"✨", insight:"Gratitude journaling increases dopamine for 4 hours." },
+];
+
+const INSIGHTS = [
+  "Hourly movement boosts focus by 23% and burns an extra 300 kcal per day without a gym.",
+  "2 minutes every hour is more effective than one 60-min gym session for metabolic health.",
+  "Standing for 3 hours a day = burning 30,000 extra calories a year.",
+  "Micro-workouts improve insulin sensitivity better than long sedentary + gym.",
+  "Your brain learns 15% faster after 2 min of movement."
+];
+
+// ---------- STATE ----------
+let state = {
+  intensity: localStorage.getItem('fitsent-intensity') || 'chill',
+  focuses: JSON.parse(localStorage.getItem('fitsent-focuses') || '["strength"]'),
+  completed: JSON.parse(localStorage.getItem('fitsent-completed') || '{}'), // key: YYYY-MM-DD-HH
+  notifEnabled: localStorage.getItem('fitsent-notif') === 'true',
+  streak: parseInt(localStorage.getItem('fitsent-streak') || '0'),
+  timerInterval: null,
+  timerRunning: false,
+  timerSeconds: 0,
+  timerTotal: 0,
+  currentHour: new Date().getHours(),
+  lastHourChecked: null
+};
+
+// ---------- HELPERS ----------
+function getTodayKey(){ return new Date().toISOString().slice(0,10); }
+function getHourKey(date = new Date()){ return `${getTodayKey()}-${date.getHours()}`; }
+function hashDayHour(date){
+  const str = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}-${date.getHours()}-${state.intensity}-${state.focuses.join('')}`;
+  let hash = 0; for(let i=0;i<str.length;i++){ hash = ((hash<<5)-hash)+str.charCodeAt(i); hash|=0; }
+  return Math.abs(hash);
+}
+function getTaskForHour(date = new Date()){
+  // filter by focus
+  let pool = TASK_POOL;
+  if(state.focuses.length){
+    const filtered = TASK_POOL.filter(t=> state.focuses.includes(t.cat));
+    if(filtered.length) pool = filtered;
+  }
+  // intensity filter
+  if(state.intensity === 'chill') pool = pool.filter(t=> t.diff <=2);
+  if(state.intensity === 'beast') pool = pool.filter(t=> t.diff >=2);
+  if(!pool.length) pool = TASK_POOL;
+  const idx = hashDayHour(date) % pool.length;
+  return pool[idx];
+}
+function formatTime(date){ return date.toLocaleTimeString('en-US',{hour12:false}); }
+function formatCountdown(ms){
+  const totalSec = Math.max(0, Math.floor(ms/1000));
+  const m = Math.floor(totalSec/60).toString().padStart(2,'0');
+  const s = (totalSec%60).toString().padStart(2,'0');
+  return `${m}:${s}`;
+}
+function timeSlotLabel(date){
+  const h = date.getHours();
+  const next = (h+1)%24;
+  const fmt = (n)=> n===0?12: n>12? n-12 : n;
+  const ap = (n)=> n>=12?'PM':'AM';
+  return `${fmt(h)}${ap(h)} — ${fmt(next)}${ap(next)}`;
+}
+
+// ---------- RENDER CURRENT TASK ----------
+function renderCurrentTask(){
+  const now = new Date();
+  const task = getTaskForHour(now);
+  const slot = timeSlotLabel(now);
+  
+  document.getElementById('timeSlot').textContent = slot;
+  document.getElementById('categoryName').textContent = task.cat.toUpperCase();
+  document.getElementById('taskTitle').textContent = task.title;
+  document.getElementById('taskDesc').textContent = task.desc;
+  document.getElementById('taskDuration').textContent = `${task.dur} MIN`;
+  document.getElementById('taskCalories').textContent = `${task.kcal} KCAL`;
+  document.getElementById('categoryIcon').innerHTML = `<span class="text-[22px]">${task.icon}</span>`;
+  document.getElementById('categoryIcon').style.background = task.color;
+  
+  // difficulty dots
+  const diffContainer = document.getElementById('difficulty');
+  diffContainer.innerHTML = '';
+  for(let i=0;i<3;i++){
+    const dot = document.createElement('span');
+    dot.className = `w-1.5 h-1.5 rounded-full ${i<task.diff ? 'bg-[#D9FF00]' : 'bg-white/20'}`;
+    diffContainer.appendChild(dot);
+  }
+  const diffLabel = document.createElement('span');
+  diffLabel.className = 'font-mono text-[10px] text-white/60 ml-1';
+  diffLabel.textContent = ['BEGINNER','INTERMEDIATE','ADVANCED'][task.diff-1] || 'ALL LEVELS';
+  diffContainer.appendChild(diffLabel);
+
+  // steps
+  const stepsEl = document.getElementById('taskSteps');
+  stepsEl.innerHTML = '';
+  task.steps.forEach((s,i)=>{
+    const div = document.createElement('div');
+    div.className = 'flex gap-3';
+    div.innerHTML = `<span class="w-6 h-6 rounded-full bg-[#1F1F23] border border-[#2A2A2E] flex items-center justify-center font-mono text-[10px] shrink-0">${i+1}</span><span class="text-[13px] leading-[1.4] text-white/70">${s}</span>`;
+    stepsEl.appendChild(div);
+  });
+
+  // insight
+  document.getElementById('insightText').textContent = task.insight || INSIGHTS[Math.floor(Math.random()*INSIGHTS.length)];
+
+  // timer setup
+  if(!state.timerRunning){
+    state.timerTotal = task.dur*60;
+    state.timerSeconds = task.dur*60;
+    updateTimerDisplay();
+    updateProgress(0);
+  }
+
+  // next preview
+  const nextHour = new Date(now); nextHour.setHours(now.getHours()+1); nextHour.setMinutes(0,0,0);
+  const nextTask = getTaskForHour(nextHour);
+  document.getElementById('nextTaskPreview').textContent = `${nextTask.title} • ${nextTask.dur} min`;
+
+  // check if completed
+  const key = getHourKey(now);
+  const isDone = !!state.completed[key];
+  const statusEl = document.getElementById('taskStatus');
+  if(isDone){
+    statusEl.textContent = 'COMPLETED';
+    statusEl.className = 'font-mono text-[10px] bg-emerald-500 text-black px-2 py-1 rounded-full';
+    document.getElementById('mainAction').innerHTML = '✓ DONE FOR THIS HOUR';
+    document.getElementById('mainAction').disabled = true;
+    document.getElementById('mainAction').classList.add('opacity-50');
+  } else {
+    statusEl.textContent = state.timerRunning ? 'IN PROGRESS' : 'READY';
+    statusEl.className = 'font-mono text-[10px] bg-black text-[#D9FF00] px-2 py-1 rounded-full';
+    document.getElementById('mainAction').disabled = false;
+    document.getElementById('mainAction').classList.remove('opacity-50');
+    document.getElementById('mainAction').innerHTML = state.timerRunning ? '⏸ PAUSE' : '▶ START MISSION';
+  }
+}
+
+function updateTimerDisplay(){
+  const m = Math.floor(state.timerSeconds/60).toString().padStart(2,'0');
+  const s = (state.timerSeconds%60).toString().padStart(2,'0');
+  document.getElementById('timerDisplay').textContent = `${m}:${s}`;
+}
+
+function updateProgress(percent){
+  const circle = document.getElementById('progressCircle');
+  const circumference = 2*Math.PI*70;
+  const offset = circumference - (percent/100)*circumference;
+  circle.style.strokeDashoffset = offset;
+}
+
+// ---------- TIMELINE ----------
+function renderTimeline(){
+  const timeline = document.getElementById('timeline');
+  timeline.innerHTML = '';
+  const now = new Date();
+  const todayKey = getTodayKey();
+  
+  for(let h=6; h<=22; h++){
+    const d = new Date(); d.setHours(h,0,0,0);
+    const key = `${todayKey}-${h}`;
+    const task = getTaskForHour(d);
+    const isCurrent = h===now.getHours();
+    const isPast = h<now.getHours();
+    const isDone = !!state.completed[key];
+    const isFuture = h>now.getHours();
+
+    const item = document.createElement('div');
+    item.className = `timeline-item group flex items-center gap-3 p-3 rounded-[14px] border transition cursor-pointer ${isCurrent ? 'active border-[#D9FF00] lime-glow' : isDone ? 'done bg-[#1A1A1E] border-[#2A2A2E]' : 'bg-[#121214] border-[#1F1F23] hover:border-[#2A2A2E]'}`;
+    item.innerHTML = `
+      <div class="w-10 h-10 rounded-[10px] ${isCurrent ? 'bg-black' : 'bg-[#1F1F23]'} flex items-center justify-center text-[16px] shrink-0 relative">
+        ${task.icon}
+        <div class="check hidden absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full items-center justify-center"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2">
+          <span class="font-mono text-[10px] ${isCurrent?'text-black/60':'text-white/30'}">${h.toString().padStart(2,'0')}:00</span>
+          ${isCurrent?'<span class="w-1 h-1 bg-black rounded-full animate-pulse"></span><span class="font-mono text-[9px] font-bold tracking-widest">NOW</span>':''}
+          ${isDone?'<span class="font-mono text-[9px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded-full">DONE</span>':''}
+        </div>
+        <div class="font-mono text-[12px] font-semibold truncate ${isCurrent?'text-black':'text-white/80'}">${task.title}</div>
+        <div class="font-mono text-[10px] ${isCurrent?'text-black/50':'text-white/30'}">${task.cat} • ${task.dur}m</div>
+      </div>
+      <div class="w-6 h-6 rounded-full ${isCurrent?'bg-black/10':'bg-[#1F1F23]'} flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="${isCurrent?'black':'white'}" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+    `;
+    item.onclick = ()=>{
+      // preview that hour's task
+      const previewDate = new Date(); previewDate.setHours(h,0,0,0);
+      // temporarily render
+      const orig = state.currentHour;
+      state.currentHour = h;
+      // we won't change global, just show modal-ish via toast
+      const t = getTaskForHour(previewDate);
+      showToast(`${h}:00 — ${t.title} • ${t.dur}min`);
+      if(isCurrent) renderCurrentTask();
+    };
+    timeline.appendChild(item);
+  }
+  document.getElementById('tzLabel').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+}
+
+function renderStats(){
+  const todayKey = getTodayKey();
+  let done=0, kcal=0, mins=0;
+  Object.keys(state.completed).forEach(k=>{
+    if(k.startsWith(todayKey)){
+      done++;
+      const hour = parseInt(k.split('-').pop());
+      const d = new Date(); d.setHours(hour,0,0,0);
+      const t = getTaskForHour(d);
+      kcal+=t.kcal;
+      mins+=t.dur;
+    }
+  });
+  document.getElementById('statDone').textContent = done;
+  document.getElementById('statKcal').textContent = kcal;
+  document.getElementById('statMin').textContent = mins;
+  document.getElementById('dayProgressText').textContent = `${done}/17`;
+  document.getElementById('dayProgressBar').style.width = `${(done/17)*100}%`;
+  document.getElementById('streakCount').textContent = `${state.streak} DAYS`;
+
+  // activity bars
+  const bars = document.getElementById('activityBars');
+  bars.innerHTML='';
+  for(let h=6; h<=22; h++){
+    const key = `${todayKey}-${h}`;
+    const isDone = !!state.completed[key];
+    const isCurrent = h===new Date().getHours();
+    const height = isDone ? 100 : isCurrent ? 60 : 20 + Math.random()*30;
+    const bar = document.createElement('div');
+    bar.className = `flex-1 rounded-full transition-all ${isDone ? 'bg-[#D9FF00]' : isCurrent ? 'bg-white' : 'bg-[#2A2A2E]'}`;
+    bar.style.height = `${height}%`;
+    bars.appendChild(bar);
+  }
+}
+
+// ---------- TIMER LOGIC ----------
+function startTimer(){
+  if(state.timerRunning){
+    // pause
+    clearInterval(state.timerInterval);
+    state.timerRunning=false;
+    document.getElementById('mainAction').innerHTML='▶ RESUME';
+    document.getElementById('taskStatus').textContent='PAUSED';
+    return;
+  }
+  state.timerRunning=true;
+  document.getElementById('mainAction').innerHTML='⏸ PAUSE';
+  document.getElementById('taskStatus').textContent='IN PROGRESS';
+  state.timerInterval = setInterval(()=>{
+    if(state.timerSeconds>0){
+      state.timerSeconds--;
+      updateTimerDisplay();
+      const percent = ((state.timerTotal-state.timerSeconds)/state.timerTotal)*100;
+      updateProgress(percent);
+    } else {
+      clearInterval(state.timerInterval);
+      state.timerRunning=false;
+      // auto complete?
+      completeTask(true);
+    }
+  },1000);
+}
+
+function completeTask(auto=false){
+  const key = getHourKey();
+  if(state.completed[key] && !auto) return;
+  state.completed[key]=true;
+  localStorage.setItem('fitsent-completed', JSON.stringify(state.completed));
+  // streak logic
+  const today = getTodayKey();
+  const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
+  const yKey = yesterday.toISOString().slice(0,10);
+  const hasYesterday = Object.keys(state.completed).some(k=>k.startsWith(yKey));
+  if(!localStorage.getItem('fitsent-last-active') || localStorage.getItem('fitsent-last-active')!==today){
+    if(hasYesterday || state.streak===0) state.streak++;
+    else if(Object.keys(state.completed).filter(k=>k.startsWith(today)).length===1 && !hasYesterday) state.streak=1;
+    localStorage.setItem('fitsent-streak', state.streak);
+    localStorage.setItem('fitsent-last-active', today);
+  }
+  clearInterval(state.timerInterval);
+  state.timerRunning=false;
+  state.timerSeconds=0;
+  updateTimerDisplay();
+  updateProgress(100);
+  renderCurrentTask();
+  renderTimeline();
+  renderStats();
+  triggerConfetti();
+  showToast(auto ? 'Mission auto-completed! Nice work.' : 'Mission completed! +1 streak 🔥');
+  if(state.notifEnabled && Notification.permission==='granted'){
+    new Notification('FitSent — Mission Complete!', {body:`${getTaskForHour().title} done. ${getTaskForHour(new Date(Date.now()+3600000)).title} next hour.`});
+  }
+}
+
+function skipTask(){
+  const now = new Date();
+  const nextHour = new Date(now); nextHour.setHours(now.getHours()+1); nextHour.setMinutes(0,0,0);
+  // mark skipped? just show next
+  showToast(`Skipped. Next: ${getTaskForHour(nextHour).title}`);
+  // optionally jump time for demo: set current to next hour in UI only
+  // For real, we keep same hour but allow user to see next
+}
+
+// ---------- CLOCK & HOURLY CHECK ----------
+function updateClocks(){
+  const now = new Date();
+  const nextHour = new Date(now); nextHour.setHours(now.getHours()+1,0,0,0);
+  const diff = nextHour - now;
+  const countdown = formatCountdown(diff);
+  document.getElementById('liveClock').textContent = formatTime(now);
+  document.getElementById('liveClockMobile').textContent = formatTime(now);
+  document.getElementById('nextDrop').textContent = countdown;
+  document.getElementById('nextDropMobile').textContent = countdown;
+  document.getElementById('nextInSmall').textContent = `in ${countdown}`;
+  
+  // hourly change detection
+  if(state.lastHourChecked!==null && now.getHours()!==state.lastHourChecked){
+    // new hour!
+    state.lastHourChecked = now.getHours();
+    handleNewHour();
+  }
+  if(state.lastHourChecked===null) state.lastHourChecked = now.getHours();
+}
+
+function handleNewHour(){
+  const task = getTaskForHour();
+  // reset timer
+  state.timerRunning=false;
+  clearInterval(state.timerInterval);
+  renderCurrentTask();
+  renderTimeline();
+  // show modal
+  document.getElementById('modalTitle').textContent = task.title;
+  document.getElementById('modalDesc').textContent = task.desc;
+  document.getElementById('newHourModal').classList.remove('hidden');
+  document.getElementById('newHourModal').classList.add('flex');
+  // notification
+  if(state.notifEnabled && Notification.permission==='granted'){
+    new Notification(`FitSent — New Drop: ${task.title}`, {body: task.desc, icon: ''});
+  }
+  // sound (optional beep via Web Audio)
+  try{
+    const ctx = new (window.AudioContext||window.webkitAudioContext)();
+    const o = ctx.createOscillator(); o.type='sine'; o.frequency.value=880;
+    const g = ctx.createGain(); g.gain.value=0.1;
+    o.connect(g); g.connect(ctx.destination); o.start(); setTimeout(()=>{o.stop(); ctx.close();},300);
+  }catch{}
+}
+
+// ---------- UI EVENTS ----------
+document.getElementById('mainAction').onclick = startTimer;
+document.getElementById('completeBtn').onclick = ()=>completeTask(false);
+document.getElementById('skipBtn').onclick = skipTask;
+document.getElementById('modalDismiss').onclick = ()=>{
+  document.getElementById('newHourModal').classList.add('hidden');
+  document.getElementById('newHourModal').classList.remove('flex');
+};
+document.getElementById('modalStart').onclick = ()=>{
+  document.getElementById('newHourModal').classList.add('hidden');
+  document.getElementById('newHourModal').classList.remove('flex');
+  if(!state.timerRunning) startTimer();
+  window.scrollTo({top:0, behavior:'smooth'});
+};
+
+document.querySelectorAll('.intensity-btn').forEach(btn=>{
+  if(btn.dataset.intensity===state.intensity){
+    btn.className='intensity-btn h-9 rounded-full border border-black/20 font-mono text-[11px] font-bold bg-black text-[#D9FF00]';
+  }
+  btn.onclick = ()=>{
+    document.querySelectorAll('.intensity-btn').forEach(b=> b.className='intensity-btn h-9 rounded-full border border-black/20 font-mono text-[11px] font-bold hover:bg-black/10');
+    btn.className='intensity-btn h-9 rounded-full border border-black/20 font-mono text-[11px] font-bold bg-black text-[#D9FF00]';
+    state.intensity=btn.dataset.intensity;
+    localStorage.setItem('fitsent-intensity', state.intensity);
+    renderCurrentTask();
+    renderTimeline();
+    showToast(`Intensity: ${state.intensity.toUpperCase()}`);
+  };
+});
+
+document.querySelectorAll('.focus-btn').forEach(btn=>{
+  const isActive = state.focuses.includes(btn.dataset.focus);
+  if(isActive){
+    btn.className='focus-btn px-3 py-1.5 rounded-full bg-black text-[#D9FF00] font-mono text-[11px] font-bold';
+  }
+  btn.onclick = ()=>{
+    const f = btn.dataset.focus;
+    if(state.focuses.includes(f)){
+      if(state.focuses.length>1) state.focuses = state.focuses.filter(x=>x!==f);
+    } else {
+      state.focuses.push(f);
+    }
+    localStorage.setItem('fitsent-focuses', JSON.stringify(state.focuses));
+    document.querySelectorAll('.focus-btn').forEach(b=>{
+      if(state.focuses.includes(b.dataset.focus)) b.className='focus-btn px-3 py-1.5 rounded-full bg-black text-[#D9FF00] font-mono text-[11px] font-bold';
+      else b.className='focus-btn px-3 py-1.5 rounded-full border border-black/20 font-mono text-[11px] font-bold';
+    });
+    renderCurrentTask();
+    renderTimeline();
+  };
+});
+
+document.getElementById('notifBtn').onclick = async ()=>{
+  if(Notification.permission!=='granted'){
+    const perm = await Notification.requestPermission();
+    if(perm==='granted'){
+      state.notifEnabled=true;
+      localStorage.setItem('fitsent-notif','true');
+      updateNotifToggle();
+      showToast('Notifications enabled — we’ll ping you every hour');
+      new Notification('FitSent — You’re all set!', {body:'We’ll send you a task every hour.'});
+    } else {
+      showToast('Notifications blocked in browser');
+    }
+  } else {
+    state.notifEnabled=!state.notifEnabled;
+    localStorage.setItem('fitsent-notif', state.notifEnabled);
+    updateNotifToggle();
+    showToast(state.notifEnabled?'Hourly pings ON':'Hourly pings OFF');
+  }
+};
+
+function updateNotifToggle(){
+  const ui = document.getElementById('notifToggleUi');
+  const knob = ui.querySelector('span');
+  if(state.notifEnabled){
+    ui.classList.add('bg-black'); ui.classList.remove('bg-black/20');
+    ui.classList.add('bg-black'); 
+    knob.style.left='22px';
+    ui.style.background='#000';
+  } else {
+    knob.style.left='4px';
+    ui.style.background='rgba(0,0,0,0.2)';
+  }
+  document.getElementById('notifToggle').checked = state.notifEnabled;
+}
+document.getElementById('notifToggle').addEventListener('change', (e)=>{
+  state.notifEnabled=e.target.checked;
+  localStorage.setItem('fitsent-notif', state.notifEnabled);
+  updateNotifToggle();
+  if(state.notifEnabled && Notification.permission!=='granted') Notification.requestPermission();
+});
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  document.getElementById('toastText').textContent=msg;
+  t.style.transform='translate(-50%,0)';
+  setTimeout(()=>{ t.style.transform='translate(-50%,150%)'; },3000);
+}
+
+// ---------- CONFETTI ----------
+function triggerConfetti(){
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
+  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+  const pieces=[];
+  for(let i=0;i<120;i++){
+    pieces.push({
+      x: canvas.width/2 + (Math.random()-0.5)*200,
+      y: canvas.height/2,
+      vx: (Math.random()-0.5)*12,
+      vy: -Math.random()*12 -2,
+      rot: Math.random()*360,
+      vr: (Math.random()-0.5)*10,
+      color: ['#D9FF00','#fff','#8B5CF6','#FF5A5F'][Math.floor(Math.random()*4)],
+      size: Math.random()*8+4
+    });
+  }
+  let frame=0;
+  function anim(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy; p.vy+=0.25; p.rot+=p.vr;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.color; ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size);
+      ctx.restore();
+    });
+    frame++;
+    if(frame<180) requestAnimationFrame(anim);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  anim();
+}
+
+// ---------- INIT ----------
+function init(){
+  renderCurrentTask();
+  renderTimeline();
+  renderStats();
+  updateNotifToggle();
+  updateClocks();
+  setInterval(updateClocks,1000);
+  // check streak reset daily
+  const today = getTodayKey();
+  if(localStorage.getItem('fitsent-last-active') && localStorage.getItem('fitsent-last-active')!==today){
+    const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
+    const yKey = yesterday.toISOString().slice(0,10);
+    const hasYesterday = Object.keys(state.completed).some(k=>k.startsWith(yKey));
+    if(!hasYesterday) { state.streak=0; localStorage.setItem('fitsent-streak','0'); }
+  }
+}
+init();
+
+// keyboard shortcuts
+window.addEventListener('keydown', (e)=>{
+  if(e.code==='Space'){ e.preventDefault(); startTimer(); }
+  if(e.code==='KeyC'){ completeTask(); }
+});
+
+// PWA-ish: register service worker if needed later
+</script>
+</body>
+</html>
